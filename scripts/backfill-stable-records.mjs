@@ -1,7 +1,11 @@
 import { readFile, writeFile } from "node:fs/promises";
 
 const path = new URL("../src/data/generated/player-stats.json", import.meta.url);
+const seedsPath = new URL("../src/data/player-seeds.json", import.meta.url);
+const legendCareerPath = new URL("../src/data/legend-career-records.json", import.meta.url);
 const data = JSON.parse(await readFile(path, "utf8"));
+const seeds = JSON.parse(await readFile(seedsPath, "utf8"));
+const legendCareers = JSON.parse(await readFile(legendCareerPath, "utf8"));
 const verifiedAt = new Date().toISOString();
 
 function record(sourceUrl, groups) {
@@ -64,6 +68,30 @@ const fallbacks = {
     { scope: "T20I career", values: [["Matches", 99], ["Runs", 1416], ["Wickets", 98], ["Economy", "6.63"]] },
   ]),
 };
+
+for (const [id, career] of Object.entries(legendCareers)) {
+  const groups = [];
+  for (const [format, matches, primary, averageOrWickets, centuriesOrBest] of career.formats ?? []) {
+    groups.push({
+      scope: `${format} career`,
+      values: career.bowling
+        ? [["Matches", matches], ["Wickets", primary], ["Bowling average", averageOrWickets], ["Best innings", centuriesOrBest]]
+        : [["Matches", matches], ["Runs", primary], ["Batting average", averageOrWickets], ["Centuries", centuriesOrBest]],
+    });
+  }
+  for (const [format, matches, runs, wickets] of career.allRound ?? []) {
+    groups.push({ scope: `${format} career`, values: [["Matches", matches], ["Runs", runs], ["Wickets", wickets]] });
+  }
+  fallbacks[id] = record(career.sourceUrl, groups);
+}
+
+for (const seed of seeds.filter((candidate) => candidate.sport === "football" && candidate.era === "legend" && candidate.career)) {
+  const [caps, goals, worldCups, championsLeagues] = seed.career;
+  fallbacks[seed.id] = record(`https://en.wikipedia.org/wiki/${encodeURIComponent(seed.name.replaceAll(" ", "_"))}`, [
+    { scope: "Senior international career", values: [["International caps", caps], ["International goals", goals]] },
+    { scope: "Career honours", values: [["FIFA World Cups", worldCups], ["UEFA Champions Leagues", championsLeagues]] },
+  ]);
+}
 
 for (const [id, fallback] of Object.entries(fallbacks)) {
   if (!data[id]?.stats?.length) data[id] = fallback;

@@ -165,7 +165,19 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
+    expect(current).toHaveLength(20);
+    expect(legends).toHaveLength(50);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
+    expect(mixed.every((id) => athlete(id).realStats.length > 0)).toBe(true);
+  });
+
+  it("keeps fifty fully sourced legends in each sport", () => {
+    for (const sport of ["cricket", "football"] as const) {
+      const legends = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === "legend");
+      expect(legends).toHaveLength(50);
+      expect(legends.every((athlete) => athlete.realStats.length > 0)).toBe(true);
+      expect(legends.every((athlete) => athlete.realStats.every((stat) => stat.source.sourceUrl))).toBe(true);
+    }
   });
 });

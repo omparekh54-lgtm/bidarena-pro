@@ -25,8 +25,8 @@ Identity data, performance statistics, game ratings, and auction prices are deli
 
 - `gameRating` and `basePrice` are auction game mechanics, never presented as official statistics.
 - Every displayed performance field has a named source, competition/format scope, and retrieval or verification time.
-- The checked-in catalog contains 58 cricketers and 44 footballers: 34 current + 24 cricket icons and 20 current + 24 football icons.
-- All 102 player records have sourced statistics, totaling 2,165 performance data points. Current-player records come from the configured sports-data providers; retired icons use clearly labelled stable career records with direct source links.
+- The checked-in catalog contains 84 cricketers and 70 footballers: 34 current + 50 cricket icons and 20 current + 50 football icons.
+- All 154 player records have sourced statistics, totaling 2,465 performance data points. Current-player records come from the configured sports-data providers; retired icons use clearly labelled stable career records with direct source links.
 - Current Only excludes retired icons, Icons Only contains retired greats, and Ultimate Mix combines both pools before applying the auction sequence and per-room shuffle.
 - Expanding to 500 per sport is an incremental licensed-data ingestion project; free API quotas make a verified 1,000-player sync a multi-day process.
 

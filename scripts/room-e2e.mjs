@@ -31,7 +31,7 @@ assert.equal(joined.room.isAdmin, false);
 await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500, playerPoolMode: "mixed" }, created.session);
 const started = await post(`/api/rooms/${code}/start`, undefined, created.session);
 assert.equal(started.room.phase, "reveal");
-assert.equal(started.room.queueLength, 44);
+assert.equal(started.room.queueLength, 70);
 assert.equal(started.room.playerPoolMode, "mixed");
 assert.ok(started.room.currentAthlete.realStats.length >= 4);
 assert.equal(started.room.participants.every((team) => team.budget === 500), true);

@@ -25019,5 +25019,3721 @@
         }
       }
     ]
+  },
+  "cricket-legend-25": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "125",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "10122",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "51.12",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "34",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "108",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3092",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "35.13",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "1",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Sunil_Gavaskar",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-26": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "121",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8540",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "50.23",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "24",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "187",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "6721",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "47.00",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "11",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Viv_Richards",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-27": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "124",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8832",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "52.57",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "23",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "233",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "7381",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "41.70",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "8",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javed_Miandad",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-28": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "120",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8830",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "49.60",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "25",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "378",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "11739",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "39.52",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "10",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Inzamam-ul-Haq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-29": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "164",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "11867",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "51.37",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "30",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "268",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8778",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "41.60",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "11",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shivnarine_Chanderpaul",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-30": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "103",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8625",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "50.73",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "30",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "161",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "6133",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "43.80",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "10",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Matthew_Hayden",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-31": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "161",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "12472",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "45.35",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "33",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "92",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3204",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "36.40",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "5",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alastair_Cook",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-32": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "149",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "11814",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "49.84",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "34",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "448",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "12650",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "33.37",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "19",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Mahela_Jayawardene",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-33": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "134",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8781",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "45.97",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "17",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "86",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "2338",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "30.76",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "6",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/VVS_Laxman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-34": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "93",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "6361",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "42.97",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "20",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "308",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "9284",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Batting average",
+        "value": "34.90",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Centuries",
+        "value": "11",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Aravinda_de_Silva",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-35": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "98",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "405",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "20.99",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "8/45",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "176",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "225",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "24.12",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/17",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Curtly_Ambrose",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-36": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "132",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "519",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "24.44",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "7/37",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "205",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "227",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "30.47",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/1",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Courtney_Walsh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-37": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "60",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "249",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "23.68",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "8/92",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "102",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "142",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "21.36",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/26",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michael_Holding",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-38": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "70",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "355",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "23.92",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "7/83",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "63",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "103",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "20.82",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/34",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Dennis_Lillee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-39": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "72",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "330",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "22.25",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "8/71",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "164",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "272",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "21.78",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "6/23",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Allan_Donald",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-40": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "108",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "421",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "23.11",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "7/87",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "303",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "393",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "24.50",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "6/35",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Shaun_Pollock",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-41": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "30",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "101",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "33.15",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/50",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "226",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "338",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "28.87",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "6/38",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lasith_Malinga",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-42": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "49",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "208",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "29.83",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "8/164",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "169",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "288",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "21.78",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/20",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Saqlain_Mushtaq",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-43": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "103",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "417",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "32.46",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "8/84",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "236",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "269",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "33.35",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/31",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Harbhajan_Singh",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-44": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "113",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "362",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "34.36",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "7/87",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "295",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "305",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Bowling average",
+        "value": "31.71",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Best innings",
+        "value": "5/7",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Vettori",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-45": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "102",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "5200",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "383",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "116",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "2113",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "145",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ian_Botham",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-46": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "88",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3807",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "362",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "175",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3709",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "182",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Imran_Khan",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-47": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "86",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3124",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "431",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "115",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "1751",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "158",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Richard_Hadlee",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-48": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "93",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "8032",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "235",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "1",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "0",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "1",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garfield_Sobers",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-49": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "79",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3845",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "226",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "141",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3394",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "169",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andrew_Flintoff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "cricket-legend-50": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "Matches",
+        "value": "49",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "1906",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "80",
+        "scope": "Test career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Matches",
+        "value": "171",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Runs",
+        "value": "3576",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "Wickets",
+        "value": "192",
+        "scope": "ODI career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lance_Klusener",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-25": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "74",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lev_Yashin",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "0",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lev_Yashin",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lev_Yashin",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lev_Yashin",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-26": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "129",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Peter_Schmeichel",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "1",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Peter_Schmeichel",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Peter_Schmeichel",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Peter_Schmeichel",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-27": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "142",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Cafu",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "5",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Cafu",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "2",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Cafu",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Cafu",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-28": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "103",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franz_Beckenbauer",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "14",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franz_Beckenbauer",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franz_Beckenbauer",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franz_Beckenbauer",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-29": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "81",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franco_Baresi",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "1",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franco_Baresi",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franco_Baresi",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Franco_Baresi",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-30": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "78",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alessandro_Nesta",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "0",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alessandro_Nesta",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alessandro_Nesta",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "2",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Alessandro_Nesta",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-31": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "136",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Fabio_Cannavaro",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "2",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Fabio_Cannavaro",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Fabio_Cannavaro",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Fabio_Cannavaro",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-32": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "107",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ashley_Cole",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "0",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ashley_Cole",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ashley_Cole",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ashley_Cole",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-33": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "145",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Zanetti",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "5",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Zanetti",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Zanetti",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Zanetti",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-34": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "78",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ronald_Koeman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "14",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ronald_Koeman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ronald_Koeman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "2",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ronald_Koeman",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-35": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "72",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michel_Platini",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "41",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michel_Platini",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michel_Platini",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Michel_Platini",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-36": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "48",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Johan_Cruyff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "33",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Johan_Cruyff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Johan_Cruyff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Johan_Cruyff",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-37": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "91",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Maradona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "34",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Maradona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Maradona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Maradona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-38": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "92",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Pel%C3%A9",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "77",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Pel%C3%A9",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Pel%C3%A9",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Pel%C3%A9",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-39": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "50",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garrincha",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "12",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garrincha",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "2",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garrincha",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Garrincha",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-40": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "127",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lu%C3%ADs_Figo",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "32",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lu%C3%ADs_Figo",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lu%C3%ADs_Figo",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lu%C3%ADs_Figo",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-41": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "66",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Paul_Scholes",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "14",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Paul_Scholes",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Paul_Scholes",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "2",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Paul_Scholes",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-42": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "106",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Frank_Lampard",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "29",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Frank_Lampard",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Frank_Lampard",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Frank_Lampard",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-43": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "107",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Patrick_Vieira",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "6",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Patrick_Vieira",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Patrick_Vieira",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Patrick_Vieira",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-44": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "150",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lothar_Matth%C3%A4us",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "23",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lothar_Matth%C3%A4us",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lothar_Matth%C3%A4us",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Lothar_Matth%C3%A4us",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-45": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "64",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eus%C3%A9bio",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "41",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eus%C3%A9bio",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eus%C3%A9bio",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eus%C3%A9bio",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-46": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "58",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Marco_van_Basten",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "24",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Marco_van_Basten",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Marco_van_Basten",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Marco_van_Basten",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-47": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "37",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/George_Best",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "9",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/George_Best",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/George_Best",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/George_Best",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-48": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "102",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Gonz%C3%A1lez",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "44",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Gonz%C3%A1lez",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Gonz%C3%A1lez",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "3",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Gonz%C3%A1lez",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-49": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "111",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andriy_Shevchenko",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "48",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andriy_Shevchenko",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andriy_Shevchenko",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "1",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Andriy_Shevchenko",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
+  },
+  "football-legend-50": {
+    "verifiedAt": "2026-08-29T14:21:05.919Z",
+    "profile": {
+      "providerRole": "Career record"
+    },
+    "stats": [
+      {
+        "label": "International caps",
+        "value": "45",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eric_Cantona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "International goals",
+        "value": "20",
+        "scope": "Senior international career",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eric_Cantona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "FIFA World Cups",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eric_Cantona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      },
+      {
+        "label": "UEFA Champions Leagues",
+        "value": "0",
+        "scope": "Career honours",
+        "source": {
+          "provider": "Verified career record",
+          "kind": "performance",
+          "sourceUrl": "https://en.wikipedia.org/wiki/Eric_Cantona",
+          "verifiedAt": "2026-08-29T14:21:05.919Z"
+        }
+      }
+    ]
   }
 }
