@@ -3,7 +3,7 @@ import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
 import { addParticipant, bidForParticipant, configureRoom, createRoomState, pauseRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
 import { createRoomIfAvailable, mutateStoredRoom, readStoredRoom } from "./room-store";
-import type { AuctionRoom, PlayerSession, RoomParticipant, RoomView, Sport } from "./types";
+import type { AuctionRoom, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
 
@@ -96,11 +96,11 @@ export async function getGame(code: string, playerId: string, token: string): Pr
   return toRoomView(result.room, playerId);
 }
 
-export async function configureGame(code: string, playerId: string, token: string, sport: Sport, purse: number) {
+export async function configureGame(code: string, playerId: string, token: string, sport: Sport, purse: number, playerPoolMode: PlayerPoolMode) {
   validateRoomCode(code);
   const result = await mutateStoredRoom(code, (room) => {
     authenticate(room, playerId, token);
-    configureRoom(room, playerId, sport, purse);
+    configureRoom(room, playerId, sport, purse, playerPoolMode);
   });
   return toRoomView(result.room, playerId);
 }
@@ -151,9 +151,21 @@ export async function placeGameBid(code: string, playerId: string, token: string
 }
 
 export function playerCatalogSummary() {
+  const byMode = (sport: Sport, era: "current" | "legend") => {
+    const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === era);
+    return {
+      players: athletes.length,
+      playersWithStats: athletes.filter((athlete) => athlete.realStats.length > 0).length,
+      stats: athletes.reduce((count, athlete) => count + athlete.realStats.length, 0),
+    };
+  };
   return {
     cricket: athleteCatalog.filter((athlete) => athlete.sport === "cricket").length,
     football: athleteCatalog.filter((athlete) => athlete.sport === "football").length,
     performanceStats: athleteCatalog.reduce((count, athlete) => count + athlete.realStats.length, 0),
+    coverage: {
+      cricket: { current: byMode("cricket", "current"), legends: byMode("cricket", "legend") },
+      football: { current: byMode("football", "current"), legends: byMode("football", "legend") },
+    },
   };
 }

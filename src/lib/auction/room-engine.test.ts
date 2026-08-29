@@ -38,7 +38,7 @@ describe("server-authoritative auction room", () => {
     const challenger = participant("challenger", "Bravo United", "#ff6b67");
     const room = createRoomState("1234", admin, 0);
     addParticipant(room, challenger, 1);
-    configureRoom(room, admin.id, "football", 500, 2);
+    configureRoom(room, admin.id, "football", 500, "current", 2);
     startRoom(room, admin.id, 10);
 
     expect(room.phase).toBe("reveal");
@@ -63,7 +63,7 @@ describe("server-authoritative auction room", () => {
     const winner = participant("winner", "Bravo United", "#ff6b67");
     const room = createRoomState("2345", admin, 0);
     addParticipant(room, winner, 1);
-    configureRoom(room, admin.id, "cricket", 10_000, 2);
+    configureRoom(room, admin.id, "cricket", 10_000, "current", 2);
     startRoom(room, admin.id, 10);
     settleRoom(room, 10 + REVEAL_WINDOW_MS);
     bidForParticipant(room, winner.id, 4_000);
@@ -84,7 +84,7 @@ describe("server-authoritative auction room", () => {
   it("marks a player unsold when the ten-second window expires without a bid", () => {
     const admin = participant("admin", "Alpha Eleven", "#56e0c4");
     const room = createRoomState("3456", admin, 0);
-    configureRoom(room, admin.id, "football", 500, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
     startRoom(room, admin.id, 10);
     settleRoom(room, 10 + REVEAL_WINDOW_MS);
     const closingTime = Date.parse(room.deadlineAt!);
@@ -98,14 +98,14 @@ describe("server-authoritative auction room", () => {
   it("rejects administrator commands from another team", () => {
     const admin = participant("admin", "Alpha Eleven", "#56e0c4");
     const room = createRoomState("4567", admin, 0);
-    expect(() => configureRoom(room, "attacker", "cricket", 10_000, 1)).toThrowError(AuctionError);
+    expect(() => configureRoom(room, "attacker", "cricket", 10_000, "current", 1)).toThrowError(AuctionError);
     expect(room.sport).toBeNull();
   });
 
   it("uses the administrator's purse for every existing and future team", () => {
     const admin = participant("admin", "Alpha Eleven", "#56e0c4");
     const room = createRoomState("5678", admin, 0);
-    configureRoom(room, admin.id, "cricket", 10_000, 1);
+    configureRoom(room, admin.id, "cricket", 10_000, "current", 1);
     const lateJoiner = participant("late", "Late Lions", "#ff6b67");
     addParticipant(room, lateJoiner, 2);
 
@@ -116,7 +116,7 @@ describe("server-authoritative auction room", () => {
   it("freezes the authoritative timer while paused and resumes with the same time remaining", () => {
     const admin = participant("admin", "Alpha Eleven", "#56e0c4");
     const room = createRoomState("6789", admin, 0);
-    configureRoom(room, admin.id, "football", 500, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
     startRoom(room, admin.id, 10);
     settleRoom(room, 10 + REVEAL_WINDOW_MS);
     const originalDeadline = Date.parse(room.deadlineAt!);
@@ -137,7 +137,7 @@ describe("server-authoritative auction room", () => {
   it("lets only the administrator stop an active auction", () => {
     const admin = participant("admin", "Alpha Eleven", "#56e0c4");
     const room = createRoomState("7890", admin, 0);
-    configureRoom(room, admin.id, "football", 500, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
     startRoom(room, admin.id, 2);
     expect(() => stopRoom(room, "attacker", 3)).toThrowError(AuctionError);
     stopRoom(room, admin.id, 4);
@@ -146,7 +146,7 @@ describe("server-authoritative auction room", () => {
   });
 
   it("orders cricket as ten batters, seven pacers, three spinners, then all-rounders", () => {
-    const queue = buildAuctionQueue("cricket");
+    const queue = buildAuctionQueue("cricket", "current");
     const athletes = queue.map((id) => athleteCatalog.find((athlete) => athlete.id === id)!);
     const lower = (value: string | undefined) => value?.toLowerCase() ?? "";
 
@@ -155,5 +155,17 @@ describe("server-authoritative auction room", () => {
     expect(athletes.slice(10, 17).every((athlete) => lower(athlete.role).includes("fast bowler"))).toBe(true);
     expect(athletes.slice(17, 20).every((athlete) => lower(athlete.role).includes("spin bowler"))).toBe(true);
     expect(athletes.slice(20, 24).every((athlete) => lower(athlete.role).includes("all-rounder"))).toBe(true);
+  });
+
+  it("builds isolated current, legends, and mixed player pools", () => {
+    const current = buildAuctionQueue("football", "current");
+    const legends = buildAuctionQueue("football", "legends");
+    const mixed = buildAuctionQueue("football", "mixed");
+    const athlete = (id: string) => athleteCatalog.find((candidate) => candidate.id === id)!;
+
+    expect(current.every((id) => athlete(id).era === "current")).toBe(true);
+    expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
+    expect(mixed.length).toBe(current.length + legends.length);
+    expect(new Set(mixed).size).toBe(mixed.length);
   });
 });

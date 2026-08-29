@@ -6,7 +6,7 @@ BidArena Pro is a server-authoritative multiplayer auction game for cricket and 
 
 - Create Game makes the creator the room administrator.
 - Join Game requires the four-digit room code and a unique team name.
-- The administrator selects cricket or football and controls the start.
+- The administrator selects cricket or football, chooses Current Only, Icons Only, or Ultimate Mix, and controls the start.
 - The administrator sets the per-team purse before the auction; every winning purchase is deducted only from that franchise.
 - The administrator can pause/resume the authoritative clock or stop the game while preserving completed sales and squads.
 - Each new room receives a new cryptographically shuffled player sequence.
@@ -24,9 +24,10 @@ BidArena Pro is a server-authoritative multiplayer auction game for cricket and 
 Identity data, performance statistics, game ratings, and auction prices are deliberately separate:
 
 - `gameRating` and `basePrice` are auction game mechanics, never presented as official statistics.
-- Real performance fields remain blank until a configured provider returns them.
-- Every imported stat includes provider, competition/format scope, and retrieval time.
-- The checked-in catalog currently contains a 20-player cricket validation pool and a 20-player football validation pool. It does **not** claim to contain 500 verified players per sport yet.
+- Every displayed performance field has a named source, competition/format scope, and retrieval or verification time.
+- The checked-in catalog contains 58 cricketers and 44 footballers: 34 current + 24 cricket icons and 20 current + 24 football icons.
+- All 102 player records have sourced statistics, totaling 2,165 performance data points. Current-player records come from the configured sports-data providers; retired icons use clearly labelled stable career records with direct source links.
+- Current Only excludes retired icons, Icons Only contains retired greats, and Ultimate Mix combines both pools before applying the auction sequence and per-room shuffle.
 - Expanding to 500 per sport is an incremental licensed-data ingestion project; free API quotas make a verified 1,000-player sync a multi-day process.
 
 Supported adapters:
@@ -34,7 +35,7 @@ Supported adapters:
 - [API-Football v3](https://api-sports.io/documentation/football/v3)
 - [CricketData.org](https://cricketdata.org/)
 
-Player photography is excluded until a licensed image source is configured.
+Provider-hosted player photography is shown when returned by the configured provider; the interface falls back to a generated identity mark when no licensed image is available.
 
 ## Local setup
 
@@ -59,16 +60,15 @@ Never prefix provider or Redis credentials with `NEXT_PUBLIC_`.
 
 ## Verified statistics synchronization
 
-1. Copy `src/data/provider-bindings.example.json` to `src/data/provider-bindings.json`.
-2. Replace placeholders with provider-issued player IDs and, for football, league and season IDs.
-3. Add rotated provider keys to `.env.local` or the shell environment.
-4. Run a quota-safe batch:
+1. Add rotated provider keys to `.env.local` or the shell environment.
+2. Run one sport at a time in quota-safe batches. Football synchronization is intentionally rate-limited for the free API-Football plan:
 
 ```bash
-BIDARENA_SYNC_LIMIT=20 npm run data:sync
+BIDARENA_SYNC_SPORT=football BIDARENA_SYNC_OFFSET=0 BIDARENA_SYNC_LIMIT=10 npm run data:sync
+BIDARENA_SYNC_SPORT=cricket BIDARENA_SYNC_OFFSET=0 BIDARENA_SYNC_LIMIT=20 npm run data:sync
 ```
 
-The command updates `src/data/generated/player-stats.json`. It does not generate estimates or silently match similar names. Review provider IDs before synchronizing.
+The command updates `src/data/generated/player-stats.json`. It does not generate estimates or silently match similar names. The curated seed catalog stores reviewed provider search metadata and stable player identities. `npm run data:backfill` restores the checked-in, source-labelled retired-player career records after a provider refresh.
 
 ## Verification
 

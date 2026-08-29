@@ -1,7 +1,7 @@
-import { athleteCatalog } from "@/data/catalog";
+import { athleteCatalog, athletesForPool } from "@/data/catalog";
 import { canBid, nextBidAmount, secureShuffle } from "./engine";
 import { assertAuction } from "./errors";
-import type { Athlete, AuctionRoom, ParticipantView, RoomParticipant, RoomView, Sport } from "./types";
+import type { Athlete, AuctionRoom, ParticipantView, PlayerPoolMode, RoomParticipant, RoomView, Sport } from "./types";
 
 export const BID_WINDOW_MS = 10_000;
 export const REVEAL_WINDOW_MS = 3_200;
@@ -37,8 +37,8 @@ function cricketGroup(athlete: Athlete) {
   return "other";
 }
 
-export function buildAuctionQueue(sport: Sport) {
-  const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport);
+export function buildAuctionQueue(sport: Sport, playerPoolMode: PlayerPoolMode = "current") {
+  const athletes = athletesForPool(sport, playerPoolMode);
   if (sport === "football") return secureShuffle(athletes.map((athlete) => athlete.id));
 
   const groups = {
@@ -68,6 +68,7 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
     code,
     adminPlayerId: admin.id,
     sport: null,
+    playerPoolMode: null,
     purse: null,
     phase: "lobby",
     queue: [],
@@ -103,13 +104,14 @@ export function addParticipant(room: AuctionRoom, participant: RoomParticipant, 
   touch(room, now);
 }
 
-export function configureRoom(room: AuctionRoom, adminPlayerId: string, sport: Sport, purse: number, now = Date.now()) {
+export function configureRoom(room: AuctionRoom, adminPlayerId: string, sport: Sport, purse: number, playerPoolMode: PlayerPoolMode, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can configure the game.", 403, "ADMIN_ONLY");
   assertAuction(room.phase === "lobby", "The sport cannot be changed after the auction starts.", 409, "ROOM_STARTED");
   const minimumPurse = sport === "cricket" ? 100 : 50;
   const maximumPurse = sport === "cricket" ? 100_000 : 10_000;
   assertAuction(Number.isInteger(purse) && purse >= minimumPurse && purse <= maximumPurse, "Choose a valid team purse for this sport.", 422, "INVALID_PURSE");
   room.sport = sport;
+  room.playerPoolMode = playerPoolMode;
   room.purse = purse;
   for (const participant of room.participants) {
     participant.budget = purse;
@@ -125,7 +127,7 @@ export function startRoom(room: AuctionRoom, adminPlayerId: string, now = Date.n
   assertAuction(room.purse, "Set the team purse before starting.", 422, "PURSE_REQUIRED");
   assertAuction(room.participants.length > 0, "At least one team is required.", 422, "TEAM_REQUIRED");
 
-  room.queue = buildAuctionQueue(room.sport);
+  room.queue = buildAuctionQueue(room.sport, room.playerPoolMode ?? "current");
   assertAuction(room.queue.length > 0, "No athletes are available for that sport.", 503, "EMPTY_CATALOG");
   room.lotIndex = 0;
   room.phase = "reveal";
@@ -286,13 +288,20 @@ function participantToView(room: AuctionRoom, participant: RoomParticipant): Par
 
 export function toRoomView(room: AuctionRoom, selfPlayerId: string, now = Date.now()): RoomView {
   const { participants, queue, ...safeRoom } = room;
+  const composition = new Map<string, number>();
+  for (const athleteId of queue) {
+    const role = athleteById.get(athleteId)?.role;
+    if (role) composition.set(role, (composition.get(role) ?? 0) + 1);
+  }
   return {
     ...safeRoom,
+    playerPoolMode: room.playerPoolMode ?? "current",
     serverTime: toIso(now),
     isAdmin: room.adminPlayerId === selfPlayerId,
     selfPlayerId,
     currentAthlete: currentAthlete(room),
     queueLength: queue.length,
+    poolComposition: [...composition].map(([role, count]) => ({ role, count })),
     participants: participants.map((participant) => participantToView(room, participant)),
   };
 }

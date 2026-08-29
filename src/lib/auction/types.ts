@@ -1,7 +1,9 @@
 export type Sport = "cricket" | "football";
+export type PlayerPoolMode = "current" | "legends" | "mixed";
+export type AthleteEra = "current" | "legend";
 
 export type AthleteSource = {
-  provider: "API-Football" | "CricketData.org" | "Curated profile";
+  provider: "API-Football" | "CricketData.org" | "Curated profile" | "Verified career record";
   kind: "identity" | "performance";
   sourceUrl?: string;
   verifiedAt?: string;
@@ -17,12 +19,15 @@ export type AthleteStat = {
 export type Athlete = {
   id: string;
   sport: Sport;
+  era: AthleteEra;
   name: string;
   shortName: string;
   country: string;
   team: string;
   role: string;
   secondaryRole?: string;
+  imageUrl?: string;
+  providerId?: string;
   basePrice: number;
   gameRating: number;
   accent: string;
@@ -76,6 +81,7 @@ export type AuctionRoom = {
   code: string;
   adminPlayerId: string;
   sport: Sport | null;
+  playerPoolMode: PlayerPoolMode | null;
   purse: number | null;
   phase: AuctionPhase;
   queue: string[];
@@ -101,6 +107,7 @@ export type RoomView = Omit<AuctionRoom, "participants" | "queue"> & {
   selfPlayerId: string;
   currentAthlete: Athlete | null;
   queueLength: number;
+  poolComposition: Array<{ role: string; count: number }>;
   participants: ParticipantView[];
 };
 

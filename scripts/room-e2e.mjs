@@ -28,10 +28,12 @@ const joined = await post(`/api/rooms/${code}/join`, { teamName: "Challenger Cit
 assert.equal(joined.room.participants.length, 2);
 assert.equal(joined.room.isAdmin, false);
 
-await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500 }, created.session);
+await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500, playerPoolMode: "mixed" }, created.session);
 const started = await post(`/api/rooms/${code}/start`, undefined, created.session);
 assert.equal(started.room.phase, "reveal");
-assert.equal(started.room.queueLength, 20);
+assert.equal(started.room.queueLength, 44);
+assert.equal(started.room.playerPoolMode, "mixed");
+assert.ok(started.room.currentAthlete.realStats.length >= 4);
 assert.equal(started.room.participants.every((team) => team.budget === 500), true);
 
 await new Promise((resolve) => setTimeout(resolve, 3_350));
