@@ -34,7 +34,7 @@ import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
 import type { PlayerSession, RoomView, Sport } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
-const POLL_INTERVAL_MS = 650;
+const POLL_INTERVAL_MS = 1_000;
 
 class ApiClientError extends Error {
   constructor(message: string, readonly status: number) {

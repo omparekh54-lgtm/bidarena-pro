@@ -105,6 +105,14 @@ export async function createRoomIfAvailable(room: AuctionRoom) {
   });
 }
 
+export async function readStoredRoom(code: string) {
+  const room = redis
+    ? await redis.get<AuctionRoom>(roomKey(code))
+    : getMemoryRoom(code);
+  if (!room) throw new AuctionError("That room code does not exist or has expired.", 404, "ROOM_NOT_FOUND");
+  return room;
+}
+
 export async function mutateStoredRoom<T>(code: string, operation: (room: AuctionRoom) => T | Promise<T>) {
   if (!redis) {
     return withMemoryLock(code, async () => {

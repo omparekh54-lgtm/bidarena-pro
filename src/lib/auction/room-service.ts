@@ -1,8 +1,8 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
-import { addParticipant, bidForParticipant, configureRoom, createRoomState, settleRoom, startRoom, toRoomView } from "./room-engine";
-import { createRoomIfAvailable, mutateStoredRoom } from "./room-store";
+import { addParticipant, bidForParticipant, configureRoom, createRoomState, roomNeedsSettlement, settleRoom, startRoom, toRoomView } from "./room-engine";
+import { createRoomIfAvailable, mutateStoredRoom, readStoredRoom } from "./room-store";
 import type { AuctionRoom, PlayerSession, RoomParticipant, RoomView, Sport } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
@@ -85,6 +85,10 @@ export async function joinGame(code: string, teamName: string) {
 
 export async function getGame(code: string, playerId: string, token: string): Promise<RoomView> {
   validateRoomCode(code);
+  const snapshot = await readStoredRoom(code);
+  authenticate(snapshot, playerId, token);
+  if (!roomNeedsSettlement(snapshot)) return toRoomView(snapshot, playerId);
+
   const result = await mutateStoredRoom(code, (room) => {
     authenticate(room, playerId, token);
     settleRoom(room);

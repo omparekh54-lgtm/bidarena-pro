@@ -152,6 +152,15 @@ export function settleRoom(room: AuctionRoom, now = Date.now()) {
   return changed;
 }
 
+export function roomNeedsSettlement(room: AuctionRoom, now = Date.now()) {
+  if (room.phase === "reveal") return Boolean(room.transitionAt && now >= Date.parse(room.transitionAt));
+  if (room.phase === "bidding") return Boolean(room.deadlineAt && now >= Date.parse(room.deadlineAt));
+  if (room.phase === "sold" || room.phase === "unsold") {
+    return Boolean(room.transitionAt && now >= Date.parse(room.transitionAt));
+  }
+  return false;
+}
+
 export function bidForParticipant(room: AuctionRoom, participantId: string, now = Date.now()) {
   settleRoom(room, now);
   assertAuction(room.phase === "bidding", "Bidding is not open for this lot.", 409, "BIDDING_CLOSED");
