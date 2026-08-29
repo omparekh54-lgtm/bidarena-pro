@@ -4,8 +4,12 @@ import type { AuctionRoom } from "./types";
 
 const ROOM_TTL_SECONDS = 60 * 60 * 18;
 const LOCK_TTL_MS = 5_000;
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL
+  ?? process.env.KV_REST_API_URL
+  ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN
+  ?? process.env.KV_REST_API_TOKEN
+  ?? process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN;
 const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null;
 
 type MemoryState = {
