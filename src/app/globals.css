@@ -19,14 +19,20 @@ button { font: inherit; }
 .room-status>span { display: flex; align-items: center; gap: 6px; color: var(--lime); font: 700 10px var(--font-geist-mono); }
 .room-status strong { font: 600 12px var(--font-geist-mono); color: #c7ceda; padding-left: 12px; border-left: 1px solid var(--line); }
 .icon-button { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); color: #a9b2c2; background: rgba(255,255,255,.03); border-radius: 8px; cursor: pointer; }
+.admin-game-controls { display: flex; gap: 6px; }
+.admin-game-controls button { display: flex; align-items: center; gap: 5px; min-height: 31px; padding: 0 9px; border: 1px solid rgba(86,224,196,.25); border-radius: 7px; color: var(--lime); background: rgba(86,224,196,.06); font: 700 8px var(--font-geist-mono); letter-spacing: .06em; cursor: pointer; }
+.admin-game-controls button.stop-control { border-color: rgba(255,91,89,.3); color: #ff8582; background: rgba(255,91,89,.07); }
+.admin-game-controls button:disabled { opacity: .45; cursor: wait; }
 .command-strip { height: 42px; display: grid; grid-template-columns: 245px 1fr 245px; gap: 20px; align-items: center; padding: 0 28px; background: #090c12; border-bottom: 1px solid var(--line); color: #8791a2; font: 600 9px var(--font-geist-mono); letter-spacing: .08em; }
 .command-strip>div:first-child { gap: 8px; color: var(--lime); }
+.command-strip.paused { border-bottom-color: rgba(244,185,65,.28); }
+.command-strip.paused>div:first-child { color: var(--gold); }
 .progress-track { height: 2px; background: #1e2531; border-radius: 2px; overflow: hidden; }
 .progress-track span { display: block; height: 100%; background: linear-gradient(90deg, #2e9180, var(--lime)); box-shadow: 0 0 10px var(--lime); }
 .command-meta { justify-content: flex-end; gap: 18px; }
 .workspace { min-height: calc(100vh - 144px); display: grid; grid-template-columns: 275px minmax(520px, 1fr) 295px; }
 .panel { min-width: 0; padding: 22px 17px; background: var(--panel); border-right: 1px solid var(--line); backdrop-filter: blur(15px); }
-.intelligence-panel { border-right: 0; border-left: 1px solid var(--line); }
+.intelligence-panel { max-height: calc(100vh - 144px); overflow-y: auto; border-right: 0; border-left: 1px solid var(--line); }
 .panel-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; color: #788396; }
 .panel-heading>div { display: flex; flex-direction: column; gap: 4px; }
 .panel-heading span, .section-label { font: 600 9px var(--font-geist-mono); color: #727d8f; letter-spacing: .1em; }
@@ -90,6 +96,9 @@ button { font: inherit; }
 .result-slam.unsold { background: rgba(174,55,55,.92); box-shadow: 0 0 65px rgba(232,66,66,.35); }
 .result-slam strong { font-size: 48px; letter-spacing: .08em; line-height: 1; }
 .result-slam span { margin-top: 4px; font: 650 9px var(--font-geist-mono); text-transform: uppercase; }
+.pause-banner { position: absolute; z-index: 8; top: 47%; display: flex; align-items: center; gap: 10px; padding: 13px 19px; border: 1px solid rgba(244,185,65,.48); border-radius: 10px; color: var(--gold); background: rgba(20,16,8,.94); box-shadow: 0 0 55px rgba(244,185,65,.2); backdrop-filter: blur(12px); }
+.pause-banner span { display: flex; flex-direction: column; color: #9c9279; font-size: 8px; line-height: 1.45; }
+.pause-banner strong { color: #f5d57d; font: 800 10px var(--font-geist-mono); letter-spacing: .08em; }
 .complete-state { position: relative; z-index: 2; text-align: center; }
 .complete-state svg { color: var(--gold); }
 .complete-state>span { display: block; margin-top: 15px; color: var(--gold); font: 700 10px var(--font-geist-mono); }
@@ -184,6 +193,15 @@ footer button { border: 0; color: #7d8798; background: transparent; font: inheri
 .sport-choice strong { font: 750 11px var(--font-geist-mono); letter-spacing: .08em; }
 .sport-choice small { margin-top: 5px; color: #707b8c; font-size: 9px; }
 .lobby-start { width: 100%; }
+.purse-control { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin: -8px 0 17px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.02); }
+.purse-control label { display: grid; gap: 7px; }
+.purse-control label>span { color: #7e899a; font: 650 8px var(--font-geist-mono); letter-spacing: .1em; }
+.purse-control label>div { display: flex; align-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; overflow: hidden; background: #0b1018; }
+.purse-control input { min-width: 0; width: 100%; padding: 10px 11px; border: 0; outline: 0; color: #edf2f7; background: transparent; font: 750 16px var(--font-geist-mono); }
+.purse-control label b { padding: 0 10px; color: var(--lime); font: 700 10px var(--font-geist-mono); }
+.purse-control>button { align-self: end; min-height: 40px; display: flex; align-items: center; gap: 6px; padding: 0 11px; border: 1px solid rgba(86,224,196,.25); border-radius: 8px; color: var(--lime); background: rgba(86,224,196,.06); font-size: 9px; cursor: pointer; }
+.purse-control>button:disabled { color: #6f798a; border-color: var(--line); cursor: default; }
+.purse-control>small { grid-column: 1 / -1; color: #717c8d; font-size: 8px; line-height: 1.5; }
 .waiting-state { display: flex; gap: 10px; align-items: center; padding: 13px; border: 1px solid var(--line); border-radius: 9px; color: var(--lime); background: rgba(255,255,255,.025); }
 .waiting-state span { display: flex; flex-direction: column; color: #758092; font-size: 8px; line-height: 1.5; }
 .waiting-state strong { color: #b9c3d1; font-size: 10px; }
@@ -211,8 +229,9 @@ footer button { border: 0; color: #7d8798; background: transparent; font: inheri
 
 @media (max-width: 1050px) {
   .workspace { grid-template-columns: 235px 1fr; }
-  .intelligence-panel { display: none; }
+  .intelligence-panel { grid-column: 1 / -1; max-height: none; border-top: 1px solid var(--line); }
   .command-strip { grid-template-columns: 190px 1fr 190px; }
+  .admin-game-controls span { display: none; }
 }
 @media (max-width: 760px) {
   .entry-card { padding-top: 25px; }
@@ -234,6 +253,7 @@ footer button { border: 0; color: #7d8798; background: transparent; font: inheri
   .workspace { display: flex; flex-direction: column; }
   .auction-stage { order: 1; min-height: 680px; }
   .teams-panel { order: 2; border-top: 1px solid var(--line); }
+  .intelligence-panel { order: 3; }
   .team-list { grid-template-columns: 1fr 1fr; }
   .panel { border-right: 0; }
   .player-card { width: 285px; }

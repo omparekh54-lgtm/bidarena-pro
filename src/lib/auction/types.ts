@@ -76,6 +76,7 @@ export type AuctionRoom = {
   code: string;
   adminPlayerId: string;
   sport: Sport | null;
+  purse: number | null;
   phase: AuctionPhase;
   queue: string[];
   lotIndex: number;
@@ -83,6 +84,8 @@ export type AuctionRoom = {
   leaderId: string | null;
   deadlineAt: string | null;
   transitionAt: string | null;
+  pausedAt: string | null;
+  stoppedAt: string | null;
   participants: RoomParticipant[];
   bids: BidEvent[];
   sales: Sale[];
@@ -107,4 +110,3 @@ export type PlayerSession = {
   token: string;
   teamName: string;
 };
-

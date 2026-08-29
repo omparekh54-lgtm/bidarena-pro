@@ -26,6 +26,20 @@ const cricket: Seed[] = [
   { name: "Babar Azam", shortName: "B. Azam", country: "Pakistan", team: "Pakistan", role: "Top-order batter", secondaryRole: "Right-hand bat", metrics: ["PAK", "BAT", "RHB", "INTL"] },
   { name: "Shaheen Shah Afridi", shortName: "S. Afridi", country: "Pakistan", team: "Pakistan", role: "Fast bowler", secondaryRole: "Left-arm fast", metrics: ["PAK", "PACE", "LAF", "INTL"] },
   { name: "Nicholas Pooran", shortName: "N. Pooran", country: "West Indies", team: "West Indies", role: "Wicketkeeper-batter", secondaryRole: "Left-hand bat", metrics: ["WI", "WK", "LHB", "T20"] },
+  { name: "Yashasvi Jaiswal", shortName: "Y. Jaiswal", country: "India", team: "India", role: "Opening batter", secondaryRole: "Left-hand bat", metrics: ["IND", "OPN", "LHB", "INTL"] },
+  { name: "KL Rahul", shortName: "K. Rahul", country: "India", team: "India", role: "Wicketkeeper-batter", secondaryRole: "Right-hand bat", metrics: ["IND", "WK", "RHB", "INTL"] },
+  { name: "Abhishek Sharma", shortName: "A. Sharma", country: "India", team: "India", role: "Opening batter", secondaryRole: "Left-hand bat", metrics: ["IND", "OPN", "LHB", "T20"] },
+  { name: "Shreyas Iyer", shortName: "S. Iyer", country: "India", team: "India", role: "Middle-order batter", secondaryRole: "Right-hand bat", metrics: ["IND", "MID", "RHB", "INTL"] },
+  { name: "Ruturaj Gaikwad", shortName: "R. Gaikwad", country: "India", team: "India", role: "Opening batter", secondaryRole: "Right-hand bat", metrics: ["IND", "OPN", "RHB", "T20"] },
+  { name: "Steve Smith", shortName: "S. Smith", country: "Australia", team: "Australia", role: "Top-order batter", secondaryRole: "Right-hand bat", metrics: ["AUS", "BAT", "RHB", "INTL"] },
+  { name: "Joe Root", shortName: "J. Root", country: "England", team: "England", role: "Top-order batter", secondaryRole: "Right-hand bat", metrics: ["ENG", "BAT", "RHB", "INTL"] },
+  { name: "Kane Williamson", shortName: "K. Williamson", country: "New Zealand", team: "New Zealand", role: "Top-order batter", secondaryRole: "Right-hand bat", metrics: ["NZ", "BAT", "RHB", "INTL"] },
+  { name: "Quinton de Kock", shortName: "Q. de Kock", country: "South Africa", team: "South Africa", role: "Wicketkeeper-batter", secondaryRole: "Left-hand bat", metrics: ["RSA", "WK", "LHB", "T20"] },
+  { name: "Devon Conway", shortName: "D. Conway", country: "New Zealand", team: "New Zealand", role: "Wicketkeeper-batter", secondaryRole: "Left-hand bat", metrics: ["NZ", "WK", "LHB", "INTL"] },
+  { name: "Josh Hazlewood", shortName: "J. Hazlewood", country: "Australia", team: "Australia", role: "Fast bowler", secondaryRole: "Right-arm fast-medium", metrics: ["AUS", "PACE", "RFM", "INTL"] },
+  { name: "Trent Boult", shortName: "T. Boult", country: "New Zealand", team: "New Zealand", role: "Fast bowler", secondaryRole: "Left-arm fast", metrics: ["NZ", "PACE", "LAF", "T20"] },
+  { name: "Kuldeep Yadav", shortName: "K. Yadav", country: "India", team: "India", role: "Spin bowler", secondaryRole: "Left-arm wrist-spin", metrics: ["IND", "SPIN", "LWS", "INTL"] },
+  { name: "Adam Zampa", shortName: "A. Zampa", country: "Australia", team: "Australia", role: "Spin bowler", secondaryRole: "Leg-spin", metrics: ["AUS", "SPIN", "LBG", "INTL"] },
 ];
 
 const football: Seed[] = [

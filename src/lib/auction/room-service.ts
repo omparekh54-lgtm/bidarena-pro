@@ -1,7 +1,7 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
-import { addParticipant, bidForParticipant, configureRoom, createRoomState, roomNeedsSettlement, settleRoom, startRoom, toRoomView } from "./room-engine";
+import { addParticipant, bidForParticipant, configureRoom, createRoomState, pauseRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
 import { createRoomIfAvailable, mutateStoredRoom, readStoredRoom } from "./room-store";
 import type { AuctionRoom, PlayerSession, RoomParticipant, RoomView, Sport } from "./types";
 
@@ -37,8 +37,8 @@ function makeParticipant(teamName: string, color: string, token: string, now = D
     teamName: teamName.trim(),
     code: teamCode(teamName),
     color,
-    budget: 1200,
-    initialBudget: 1200,
+    budget: 0,
+    initialBudget: 0,
     squad: [],
     joinedAt: new Date(now).toISOString(),
     tokenHash: tokenHash(token),
@@ -96,11 +96,38 @@ export async function getGame(code: string, playerId: string, token: string): Pr
   return toRoomView(result.room, playerId);
 }
 
-export async function configureGame(code: string, playerId: string, token: string, sport: Sport) {
+export async function configureGame(code: string, playerId: string, token: string, sport: Sport, purse: number) {
   validateRoomCode(code);
   const result = await mutateStoredRoom(code, (room) => {
     authenticate(room, playerId, token);
-    configureRoom(room, playerId, sport);
+    configureRoom(room, playerId, sport, purse);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function pauseGame(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    pauseRoom(room, playerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function resumeGame(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    resumeRoom(room, playerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function stopGame(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    stopRoom(room, playerId);
   });
   return toRoomView(result.room, playerId);
 }

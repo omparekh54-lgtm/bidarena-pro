@@ -7,12 +7,16 @@ BidArena Pro is a server-authoritative multiplayer auction game for cricket and 
 - Create Game makes the creator the room administrator.
 - Join Game requires the four-digit room code and a unique team name.
 - The administrator selects cricket or football and controls the start.
+- The administrator sets the per-team purse before the auction; every winning purchase is deducted only from that franchise.
+- The administrator can pause/resume the authoritative clock or stop the game while preserving completed sales and squads.
 - Each new room receives a new cryptographically shuffled player sequence.
+- Cricket rooms use randomized category sets: 10 batters, 7 pace bowlers, 3 spin bowlers, all-rounders, then the remaining batters and players.
 - Every lot has a cinematic reveal followed by a ten-second bidding window.
 - Every accepted bid resets the shared server deadline to a full ten seconds.
 - With no opening bid, the player is unsold. Otherwise the highest bidder wins.
 - The server—not the browser—calculates bid increments, validates budget, closes lots, and assigns squads.
 - Each participant sees their own current squad, purse, the other teams, and the live bid ledger.
+- The personal squad appears directly below Recent Bids in the intelligence sidebar.
 - Rooms expire after 18 hours and support 1–10 teams.
 
 ## Data integrity
@@ -75,7 +79,7 @@ npm run test:e2e
 npm run build
 ```
 
-The end-to-end test creates a room, joins a second team, starts football, places competing bids, verifies the full ten-second reset, closes the lot, and checks the winner's squad.
+The end-to-end test creates a room, sets the purse, joins a second team, starts football, pauses and resumes the timer, places competing bids, verifies the full ten-second reset, closes the lot, checks the winner's squad, and stops the game.
 
 `GET /api/status` reports health, catalog coverage, provider configuration, and whether the room store is durable. It never returns credential values.
 

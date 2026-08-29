@@ -6,7 +6,7 @@ Provider and Redis keys are server-only environment variables. Never commit, log
 
 ## Auction integrity
 
-The server owns room state, randomized lot order, deadlines, legal bid amounts, purse checks, winning bids, and squad assignment. Browsers send authenticated commands and render sanitized room views; they never submit a price or choose the winner.
+The server owns room state, category-aware randomized lot order, administrator purse configuration, pause/resume timing, stop state, deadlines, legal bid amounts, purse checks, winning bids, and squad assignment. Browsers send authenticated commands and render sanitized room views; they never submit a price or choose the winner.
 
 Each room mutation is serialized with a per-room distributed lock when Upstash Redis is configured. Production must use the durable store; the in-memory implementation is only a local development fallback.
 

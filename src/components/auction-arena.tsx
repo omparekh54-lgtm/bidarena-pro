@@ -15,12 +15,14 @@ import {
   Gavel,
   LoaderCircle,
   LogIn,
+  Pause,
   Play,
   Plus,
   Radio,
   RefreshCw,
   ShieldCheck,
   Sparkles,
+  Square,
   Trophy,
   UserPlus,
   Users,
@@ -74,6 +76,14 @@ function readSession(): PlayerSession | null {
 
 function formatRoomCode(value: string) {
   return value.replace(/\D/g, "").slice(0, 4);
+}
+
+function purseToStoredAmount(sport: Sport, displayAmount: number) {
+  return sport === "cricket" ? Math.round(displayAmount * 100) : Math.round(displayAmount);
+}
+
+function purseToDisplayAmount(sport: Sport, storedAmount: number) {
+  return sport === "cricket" ? storedAmount / 100 : storedAmount;
 }
 
 export function AuctionArena() {
@@ -240,6 +250,11 @@ export function AuctionArena() {
     window.setTimeout(() => setCopied(false), 1400);
   }
 
+  async function stopAuction() {
+    if (!window.confirm("Stop this auction now? Current bids on this unfinished lot will not be charged.")) return;
+    await command("stop");
+  }
+
   if (!session) {
     return (
       <main className="entry-shell">
@@ -274,19 +289,19 @@ export function AuctionArena() {
   }
 
   if (room.phase === "lobby") {
-    return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport) => void command("configure", { sport })} onStart={() => void command("start")} />;
+    return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse) => void command("configure", { sport, purse })} onStart={() => void command("start")} />;
   }
 
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId);
   const leader = room.participants.find((participant) => participant.id === room.leaderId);
   const current = room.currentAthlete;
   const proposedBid = current ? (room.leaderId ? nextBidAmount(room.currentBid, current.basePrice) : current.basePrice) : 0;
-  const canSelfBid = Boolean(self && room.phase === "bidding" && room.leaderId !== self.id && canBid(self, proposedBid));
+  const canSelfBid = Boolean(self && !room.pausedAt && room.phase === "bidding" && room.leaderId !== self.id && canBid(self, proposedBid));
   const deadline = room.deadlineAt ? Date.parse(room.deadlineAt) : 0;
-  const timer = room.phase === "bidding" ? Math.max(0, Math.ceil((deadline - (clock + serverOffset)) / 1_000)) : 0;
+  const effectiveClock = room.pausedAt ? Date.parse(room.pausedAt) : clock + serverOffset;
+  const timer = room.phase === "bidding" ? Math.max(0, Math.ceil((deadline - effectiveClock) / 1_000)) : 0;
   const progress = room.queueLength ? Math.round(((room.lotIndex + (room.phase === "complete" ? 1 : 0)) / room.queueLength) * 100) : 0;
-  const committed = room.sales.reduce((sum, sale) => sum + sale.amount, 0);
-  const available = room.participants.reduce((sum, participant) => sum + participant.budget, 0);
+  const selfSpent = self ? self.initialBudget - self.budget : 0;
   const roleCounts = Object.entries(athleteCatalog.filter((athlete) => athlete.sport === room.sport).reduce<Record<string, number>>((result, athlete) => ({ ...result, [athlete.role]: (result[athlete.role] ?? 0) + 1 }), {})).slice(0, 4);
 
   return (
@@ -294,22 +309,24 @@ export function AuctionArena() {
       <header className="topbar">
         <div className="brand-lockup"><div className="brand-mark"><Gavel size={22} /></div><div><strong>BIDARENA</strong><span>LIVE MULTIPLAYER</span></div></div>
         <div className="sport-switch locked" aria-label="Selected sport"><button className="active">{room.sport}</button></div>
-        <div className="room-status"><span><Radio size={14} /> LIVE ROOM</span><strong>{room.code}</strong><button className="icon-button" onClick={() => setSound((value) => !value)} aria-label="Toggle sound">{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button></div>
+        <div className="room-status">
+          {room.isAdmin && room.phase !== "complete" ? <div className="admin-game-controls"><button disabled={Boolean(pending)} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button><button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction"><Square size={14} /><span>STOP</span></button></div> : null}
+          <span><Radio size={14} /> {room.pausedAt ? "ROOM PAUSED" : "LIVE ROOM"}</span><strong>{room.code}</strong><button className="icon-button" onClick={() => setSound((value) => !value)} aria-label="Toggle sound">{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
+        </div>
       </header>
 
-      <section className="command-strip"><div><Activity size={15} /><span>AUCTION {room.phase.toUpperCase()}</span></div><div className="progress-track"><motion.span animate={{ width: `${progress}%` }} /></div><div className="command-meta"><span>LOT {String(room.lotIndex + 1).padStart(3, "0")}</span><span>{room.participants.length} LIVE TEAMS</span></div></section>
+      <section className={`command-strip ${room.pausedAt ? "paused" : ""}`}><div><Activity size={15} /><span>{room.pausedAt ? "AUCTION PAUSED" : `AUCTION ${room.phase.toUpperCase()}`}</span></div><div className="progress-track"><motion.span animate={{ width: `${progress}%` }} /></div><div className="command-meta"><span>LOT {String(room.lotIndex + 1).padStart(3, "0")}</span><span>{room.participants.length} LIVE TEAMS</span></div></section>
 
       <div className="workspace">
         <aside className="panel teams-panel">
           <div className="panel-heading"><div><span>FRANCHISES</span><strong>War room</strong></div><Users size={18} /></div>
           <div className="team-list">{room.participants.map((participant) => <div key={participant.id} className={`team-card readonly ${room.leaderId === participant.id ? "leading" : ""} ${participant.id === room.selfPlayerId ? "self-team" : ""}`} style={{ "--team": participant.color } as React.CSSProperties}><span className="team-avatar">{participant.code}</span><span className="team-copy"><strong>{participant.teamName}</strong><small>{participant.squad.length} players · {formatMoney(participant.budget, room.sport)} left</small></span><span className="bid-action">{participant.id === room.selfPlayerId ? "YOU" : room.leaderId === participant.id ? "LEADS" : "LIVE"}</span></div>)}</div>
-          <div className="my-squad"><div className="section-label">MY CURRENT SQUAD</div>{self?.squad.length ? self.squad.map((entry) => <div key={entry.athleteId}><span><strong>{entry.athlete.shortName}</strong><small>{entry.athlete.role}</small></span><b>{formatMoney(entry.amount, room.sport)}</b></div>) : <p>Your successful purchases will appear here.</p>}</div>
           <div className="integrity-note"><ShieldCheck size={17} /><span><strong>Budget guard active</strong>Every bid is serialized and validated on the server.</span></div>
         </aside>
 
         <section className="auction-stage"><div className="stage-lights" aria-hidden="true"><i /><i /><i /><i /><i /></div><div className="stage-grid" aria-hidden="true" />
           <AnimatePresence mode="wait">{room.phase === "complete" ? (
-            <motion.div key="complete" className="complete-state" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}><Trophy size={60} /><span>AUCTION COMPLETE</span><h1>Final squads are locked</h1><p>{room.sales.length} players sold · {room.unsoldAthleteIds.length} unsold.</p><button className="primary-button" onClick={leaveLocalRoom}><RefreshCw size={17} /> Return to dashboard</button></motion.div>
+            <motion.div key="complete" className="complete-state" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}><Trophy size={60} /><span>{room.stoppedAt ? "AUCTION STOPPED" : "AUCTION COMPLETE"}</span><h1>{room.stoppedAt ? "The administrator ended the game" : "Final squads are locked"}</h1><p>{room.sales.length} players sold · {room.unsoldAthleteIds.length} unsold.</p><button className="primary-button" onClick={leaveLocalRoom}><RefreshCw size={17} /> Return to dashboard</button></motion.div>
           ) : current ? (
             <motion.div key={current.id} className="player-presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.96 }}>
               <motion.div className="reveal-kicker" initial={{ y: -12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }}><Sparkles size={14} /> {current.role} · {current.country}</motion.div>
@@ -317,20 +334,22 @@ export function AuctionArena() {
                 <div className="card-shine" /><div className="card-top"><div><strong>{current.gameRating}</strong><span>GAME RATING</span></div><BadgeCheck size={22} /></div><div className="player-silhouette" aria-hidden="true"><span>{current.shortName.split(" ").map((part) => part[0]).join("")}</span></div>
                 <div className="card-identity"><span>{current.country.toUpperCase()} · {current.team.toUpperCase()}</span><h1>{current.name}</h1><p>{current.secondaryRole ?? current.role}</p></div><div className="stat-grid">{current.identity.map((stat) => <div key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>)}</div><div className="data-stamp"><BadgeCheck size={12} /> Profile source · {current.source.provider}</div>
               </motion.div>
-              <div className="bid-console"><div><span>{leader ? "CURRENT BID" : "BASE PRICE"}</span><motion.strong key={room.currentBid} initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>{formatMoney(room.currentBid, room.sport)}</motion.strong><small>{leader ? `Leading: ${leader.teamName}` : "Waiting for opening bid"}</small></div><div className={`timer-ring ${timer <= 3 && room.phase === "bidding" ? "urgent" : ""}`} style={{ "--timer": `${(timer / 10) * 360}deg` } as React.CSSProperties}><span>{room.phase === "bidding" ? timer : room.phase === "reveal" ? "··" : room.phase === "sold" ? "✓" : "—"}</span></div><div className="auctioneer-actions"><button disabled={!canSelfBid || Boolean(pending)} onClick={() => void bid()}>{pending === "bid" ? <LoaderCircle className="spin" size={18} /> : <Gavel size={18} />}{room.leaderId === room.selfPlayerId ? "HIGHEST BID" : room.phase === "reveal" ? "GET READY" : room.phase === "bidding" ? `BID ${formatMoney(proposedBid, room.sport)}` : "NEXT LOT LOADING"}</button></div></div>
+              <div className="bid-console"><div><span>{leader ? "CURRENT BID" : "BASE PRICE"}</span><motion.strong key={room.currentBid} initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>{formatMoney(room.currentBid, room.sport)}</motion.strong><small>{room.pausedAt ? "Timer frozen by administrator" : leader ? `Leading: ${leader.teamName}` : "Waiting for opening bid"}</small></div><div className={`timer-ring ${timer <= 3 && room.phase === "bidding" && !room.pausedAt ? "urgent" : ""}`} style={{ "--timer": `${(timer / 10) * 360}deg` } as React.CSSProperties}><span>{room.pausedAt ? "Ⅱ" : room.phase === "bidding" ? timer : room.phase === "reveal" ? "··" : room.phase === "sold" ? "✓" : "—"}</span></div><div className="auctioneer-actions"><button disabled={!canSelfBid || Boolean(pending)} onClick={() => void bid()}>{pending === "bid" ? <LoaderCircle className="spin" size={18} /> : <Gavel size={18} />}{room.pausedAt ? "AUCTION PAUSED" : room.leaderId === room.selfPlayerId ? "HIGHEST BID" : room.phase === "reveal" ? "GET READY" : room.phase === "bidding" ? `BID ${formatMoney(proposedBid, room.sport)}` : "NEXT LOT LOADING"}</button></div></div>
+              {room.pausedAt ? <motion.div className="pause-banner" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}><Pause size={18} /><span><strong>GAME PAUSED</strong>The administrator controls when bidding resumes.</span></motion.div> : null}
               <AnimatePresence>{room.phase === "sold" || room.phase === "unsold" ? <motion.div className={`result-slam ${room.phase}`} initial={{ scale: 2.2, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: -2 }}><strong>{room.phase.toUpperCase()}</strong><span>{room.phase === "sold" ? `${leader?.teamName} · ${formatMoney(room.currentBid, room.sport)}` : "No bids received"}</span></motion.div> : null}</AnimatePresence>
             </motion.div>
           ) : null}</AnimatePresence>
         </section>
 
-        <aside className="panel intelligence-panel"><div className="panel-heading"><div><span>LIVE INTELLIGENCE</span><strong>Auction ledger</strong></div><Clock3 size={18} /></div><div className="metric-row"><div><CircleDollarSign size={17} /><span><small>Committed</small><strong>{formatMoney(committed, room.sport)}</strong></span></div><div><Banknote size={17} /><span><small>Available</small><strong>{formatMoney(available, room.sport)}</strong></span></div></div><div className="section-label">RECENT BIDS</div>
+        <aside className="panel intelligence-panel"><div className="panel-heading"><div><span>LIVE INTELLIGENCE</span><strong>Auction ledger</strong></div><Clock3 size={18} /></div><div className="metric-row"><div><CircleDollarSign size={17} /><span><small>My spent</small><strong>{formatMoney(selfSpent, room.sport)}</strong></span></div><div><Banknote size={17} /><span><small>My purse</small><strong>{formatMoney(self?.budget ?? 0, room.sport)}</strong></span></div></div><div className="section-label">RECENT BIDS</div>
           <div className="bid-ledger">{room.bids.length ? room.bids.slice(0, 6).map((event) => { const participant = room.participants.find((item) => item.id === event.participantId); return <div key={event.id}><span className="ledger-dot" style={{ background: participant?.color }} /><span><strong>{participant?.code}</strong><small>{new Date(event.at).toLocaleTimeString([], { minute: "2-digit", second: "2-digit" })}</small></span><b>{formatMoney(event.amount, room.sport)}</b></div>; }) : <div className="empty-ledger">Bids from every device will appear here.</div>}</div>
+          <div className="my-squad"><div className="section-label">MY CURRENT SQUAD</div>{self?.squad.length ? self.squad.map((entry) => <div key={entry.athleteId}><span><strong>{entry.athlete.shortName}</strong><small>{entry.athlete.role}</small></span><b>{formatMoney(entry.amount, room.sport)}</b></div>) : <p>Your successful purchases will appear here.</p>}</div>
           <div className="section-label">POOL COMPOSITION</div><div className="role-list">{roleCounts.map(([role, count]) => <div key={role}><span>{role}</span><strong>{count}</strong></div>)}</div>
           <div className="section-label">REAL PERFORMANCE STATS</div>{current?.realStats.length ? <div className="role-list">{current.realStats.slice(0, 4).map((stat) => <div key={`${stat.label}-${stat.scope}`}><span>{stat.label}</span><strong>{stat.value}</strong></div>)}</div> : <div className="stats-pending"><Clock3 size={15} /><span><strong>Provider sync pending</strong>No performance number is shown until it is returned by the configured sports API with provenance.</span></div>}
           <div className="source-note"><BadgeCheck size={16} /><span><strong>Transparent data policy</strong>The card rating and base price are game mechanics. Real statistics are displayed separately with their provider and scope.</span></div>
         </aside>
       </div>
-      <footer><span><ShieldCheck size={14} /> SERVER-AUTHORITY ACTIVE</span><span>10-SECOND RESET · ATOMIC BIDS · RANDOMIZED LOT ORDER</span><button onClick={leaveLocalRoom}>LEAVE ROOM</button></footer>
+      <footer><span><ShieldCheck size={14} /> SERVER-AUTHORITY ACTIVE</span><span>10-SECOND RESET · ADMIN PURSE · CATEGORY QUEUE</span><button onClick={leaveLocalRoom}>LEAVE ROOM</button></footer>
       {error ? <div className="floating-error" role="alert">{error}</div> : null}
     </main>
   );
@@ -343,12 +362,21 @@ type LobbyProps = {
   error: string | null;
   onCopy: () => void;
   onLeave: () => void;
-  onConfigure: (sport: Sport) => void;
+  onConfigure: (sport: Sport, purse: number) => void;
   onStart: () => void;
 };
 
 function Lobby({ room, copied, pending, error, onCopy, onLeave, onConfigure, onStart }: LobbyProps) {
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId);
+  const [purseAmount, setPurseAmount] = useState(() => room.sport && room.purse ? purseToDisplayAmount(room.sport, room.purse) : 100);
+  const displayedPurse = room.isAdmin ? purseAmount : room.sport && room.purse ? purseToDisplayAmount(room.sport, room.purse) : 0;
+  const selectedPurse = room.sport ? purseToStoredAmount(room.sport, purseAmount) : 0;
+  const setupSaved = Boolean(room.sport && room.purse === selectedPurse);
+  const chooseSport = (sport: Sport) => {
+    const defaultPurse = sport === "cricket" ? 100 : 500;
+    setPurseAmount(defaultPurse);
+    onConfigure(sport, purseToStoredAmount(sport, defaultPurse));
+  };
   return (
     <main className="lobby-shell">
       <div className="entry-grid" aria-hidden="true" />
@@ -362,8 +390,9 @@ function Lobby({ room, copied, pending, error, onCopy, onLeave, onConfigure, onS
         </motion.section>
         <motion.aside className="lobby-control" initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }}>
           <span>AUCTION SETUP</span><h2>{room.isAdmin ? "Administrator controls" : "Waiting for administrator"}</h2>
-          <div className="sport-choice"><button disabled={!room.isAdmin || Boolean(pending)} className={room.sport === "cricket" ? "active" : ""} onClick={() => onConfigure("cricket")}><strong>CRICKET</strong><small>Batters · bowlers · all-rounders</small></button><button disabled={!room.isAdmin || Boolean(pending)} className={room.sport === "football" ? "active" : ""} onClick={() => onConfigure("football")}><strong>FOOTBALL</strong><small>GK · defence · midfield · attack</small></button></div>
-          {room.isAdmin ? <button className="primary-button lobby-start" disabled={!room.sport || Boolean(pending)} onClick={onStart}>{pending === "start" ? <LoaderCircle className="spin" size={18} /> : <Play size={18} />}{pending === "start" ? "Starting…" : "Start auction"}</button> : <div className="waiting-state"><LoaderCircle className="spin" size={18} /><span><strong>{room.sport ? `${room.sport} selected` : "Sport not selected"}</strong>The auction will launch automatically when the administrator starts.</span></div>}
+          <div className="sport-choice"><button disabled={!room.isAdmin || Boolean(pending)} className={room.sport === "cricket" ? "active" : ""} onClick={() => chooseSport("cricket")}><strong>CRICKET</strong><small>10 batters · 7 pace · 3 spin · all-rounders</small></button><button disabled={!room.isAdmin || Boolean(pending)} className={room.sport === "football" ? "active" : ""} onClick={() => chooseSport("football")}><strong>FOOTBALL</strong><small>GK · defence · midfield · attack</small></button></div>
+          <div className="purse-control"><label><span>TEAM PURSE</span><div><input type="number" min={room.sport === "football" ? 50 : 1} max={room.sport === "football" ? 10000 : 1000} step={room.sport === "cricket" ? 0.5 : 10} value={displayedPurse} disabled={!room.isAdmin || !room.sport || Boolean(pending)} onChange={(event) => setPurseAmount(Number(event.target.value))} /><b>{room.sport === "football" ? "€m" : "Cr"}</b></div></label>{room.isAdmin ? <button disabled={!room.sport || setupSaved || Boolean(pending) || purseAmount <= 0} onClick={() => room.sport && onConfigure(room.sport, selectedPurse)}>{setupSaved ? <Check size={15} /> : <Banknote size={15} />}{setupSaved ? "Purse saved" : "Save purse"}</button> : null}<small>Every franchise starts with this purse. Purchases are deducted only from that franchise.</small></div>
+          {room.isAdmin ? <button className="primary-button lobby-start" disabled={!room.sport || !room.purse || !setupSaved || Boolean(pending)} onClick={onStart}>{pending === "start" ? <LoaderCircle className="spin" size={18} /> : <Play size={18} />}{pending === "start" ? "Starting…" : "Start auction"}</button> : <div className="waiting-state"><LoaderCircle className="spin" size={18} /><span><strong>{room.sport && room.purse ? `${room.sport} · ${formatMoney(room.purse, room.sport)} team purse` : "Setup not complete"}</strong>The auction will launch automatically when the administrator starts.</span></div>}
           <div className="lobby-rulebook"><div><strong>10 sec</strong><span>Opening bid window</span></div><div><strong>+10 sec</strong><span>After every accepted bid</span></div><div><strong>Auto</strong><span>Sold or unsold settlement</span></div></div>
           {error ? <div className="error-banner" role="alert">{error}</div> : null}
         </motion.aside>

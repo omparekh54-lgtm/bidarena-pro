@@ -28,10 +28,11 @@ const joined = await post(`/api/rooms/${code}/join`, { teamName: "Challenger Cit
 assert.equal(joined.room.participants.length, 2);
 assert.equal(joined.room.isAdmin, false);
 
-await post(`/api/rooms/${code}/configure`, { sport: "football" }, created.session);
+await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500 }, created.session);
 const started = await post(`/api/rooms/${code}/start`, undefined, created.session);
 assert.equal(started.room.phase, "reveal");
 assert.equal(started.room.queueLength, 20);
+assert.equal(started.room.participants.every((team) => team.budget === 500), true);
 
 await new Promise((resolve) => setTimeout(resolve, 3_350));
 const [adminView, challengerView] = await Promise.all([
@@ -41,6 +42,18 @@ const [adminView, challengerView] = await Promise.all([
 assert.equal(adminView.room.phase, "bidding");
 assert.equal(challengerView.room.currentAthlete.id, adminView.room.currentAthlete.id);
 assert.equal(challengerView.room.deadlineAt, adminView.room.deadlineAt);
+
+const paused = await post(`/api/rooms/${code}/pause`, undefined, created.session);
+assert.equal(paused.room.phase, "bidding");
+assert.ok(paused.room.pausedAt);
+const pausedDeadline = paused.room.deadlineAt;
+await new Promise((resolve) => setTimeout(resolve, 500));
+const pausedView = await request(`/api/rooms/${code}`, {}, joined.session);
+assert.equal(pausedView.room.phase, "bidding");
+assert.equal(pausedView.room.deadlineAt, pausedDeadline);
+const resumed = await post(`/api/rooms/${code}/resume`, undefined, created.session);
+assert.equal(resumed.room.pausedAt, null);
+assert.ok(Date.parse(resumed.room.deadlineAt) > Date.parse(pausedDeadline));
 
 const adminBid = await post(`/api/rooms/${code}/bid`, undefined, created.session);
 const firstDeadline = Date.parse(adminBid.room.deadlineAt);
@@ -59,6 +72,10 @@ assert.equal(settled.room.phase, "sold");
 assert.equal(settled.room.sales.length, 1);
 assert.equal(winningTeam.squad.length, 1);
 
+const stopped = await post(`/api/rooms/${code}/stop`, undefined, created.session);
+assert.equal(stopped.room.phase, "complete");
+assert.ok(stopped.room.stoppedAt);
+
 console.log(JSON.stringify({
   roomCode: code,
   teams: settled.room.participants.map((participant) => participant.teamName),
@@ -66,5 +83,6 @@ console.log(JSON.stringify({
   winningTeam: winningTeam.teamName,
   acceptedBid: settled.room.currentBid,
   timerResetWindowMilliseconds: resetWindow,
+  administratorControls: "pause/resume/stop verified",
   result: "PASS",
 }, null, 2));
