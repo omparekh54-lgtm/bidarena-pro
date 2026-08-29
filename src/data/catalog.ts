@@ -1,6 +1,7 @@
 import type { Athlete } from "@/lib/auction/types";
+import generatedStats from "./generated/player-stats.json";
 
-type Seed = Omit<Athlete, "id" | "sport" | "basePrice" | "rating" | "accent" | "stats" | "source"> & {
+type Seed = Omit<Athlete, "id" | "sport" | "basePrice" | "gameRating" | "accent" | "identity" | "realStats" | "source"> & {
   metrics: [string, string, string, string];
 };
 
@@ -51,19 +52,24 @@ const football: Seed[] = [
 ];
 
 function buildCatalog(seeds: Seed[], sport: Athlete["sport"]): Athlete[] {
-  return seeds.map((player, index) => ({
-    ...player,
-    id: `${sport}-${index + 1}`,
-    sport,
-    basePrice: sport === "cricket" ? 50 + (index % 5) * 25 : 10 + (index % 6) * 5,
-    rating: 84 + ((seeds.length - index) % 11),
-    accent: sport === "cricket" ? "#f4b941" : "#56e0c4",
-    source: sport === "cricket" ? "CricketData.org" : "API-Football",
-    stats: player.metrics.map((value, metricIndex) => ({
-      label: ["PRIMARY", "SECONDARY", sport === "football" ? "FOOT" : "STYLE", "COUNTRY"][metricIndex],
-      value,
-    })),
-  }));
+  return seeds.map((player, index) => {
+    const id = `${sport}-${index + 1}`;
+    const syncedStats = generatedStats as Record<string, Athlete["realStats"]>;
+    return {
+      ...player,
+      id,
+      sport,
+      basePrice: sport === "cricket" ? 50 + (index % 5) * 25 : 10 + (index % 6) * 5,
+      gameRating: 84 + ((seeds.length - index) % 11),
+      accent: sport === "cricket" ? "#f4b941" : "#56e0c4",
+      source: { provider: "Curated profile", kind: "identity" },
+      identity: player.metrics.map((value, metricIndex) => ({
+        label: ["PRIMARY", "SECONDARY", sport === "football" ? "FOOT" : "STYLE", "COUNTRY"][metricIndex],
+        value,
+      })),
+      realStats: syncedStats[id] ?? [],
+    };
+  });
 }
 
 export const athleteCatalog: Athlete[] = [

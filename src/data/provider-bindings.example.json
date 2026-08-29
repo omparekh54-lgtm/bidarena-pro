@@ -1,0 +1,12 @@
+{
+  "football-1": {
+    "provider": "API-Football",
+    "playerId": 0,
+    "leagueId": 0,
+    "season": 2025
+  },
+  "cricket-1": {
+    "provider": "CricketData.org",
+    "playerId": "replace-with-provider-player-id"
+  }
+}

@@ -1,26 +1,38 @@
 # BidArena Pro
 
-Institutional-grade auction experience for cricket and football franchises. The current release is a production-deployable, single-device auction console with a cinematic reveal, cryptographically shuffled lot sequence, bid increments, purse enforcement, countdown extension, sold/unsold processing, squad capture, audit timeline, responsive UI, and server-only sports-data adapters.
+BidArena Pro is a server-authoritative multiplayer auction game for cricket and football. One administrator creates a room, shares a four-digit code, selects the sport, and starts a randomized auction for up to ten teams.
 
-## What is real and what is a game mechanic
+## Multiplayer rules
 
-- Athlete identities, nationalities, teams, and playing roles are real-world records.
-- Live provider adapters support API-Football and CricketData.org.
-- Auction ratings and base prices are explicitly game mechanics; they are not represented as official statistics.
-- Credentials are never shipped to the browser.
-- The catalog in this release is a curated validation set. The provider ingestion job is the intended route to the planned 500 athletes per sport; API free-tier quotas require incremental synchronization.
+- Create Game makes the creator the room administrator.
+- Join Game requires the four-digit room code and a unique team name.
+- The administrator selects cricket or football and controls the start.
+- Each new room receives a new cryptographically shuffled player sequence.
+- Every lot has a cinematic reveal followed by a ten-second bidding window.
+- Every accepted bid resets the shared server deadline to a full ten seconds.
+- With no opening bid, the player is unsold. Otherwise the highest bidder wins.
+- The server—not the browser—calculates bid increments, validates budget, closes lots, and assigns squads.
+- Each participant sees their own current squad, purse, the other teams, and the live bid ledger.
+- Rooms expire after 18 hours and support 1–10 teams.
 
-## Core behaviors
+## Data integrity
 
-- A fresh, secure Fisher–Yates shuffle is generated for every new auction.
-- Refreshing the same in-progress distributed room will eventually restore its stored sequence; a new room gets a new sequence.
-- Bid increments scale with price.
-- The reserve guard prevents a team from spending money required for minimum squad slots.
-- Last-second bids extend the timer.
-- Sold players update the franchise purse and squad atomically in the domain model.
-- Reduced-motion accessibility and responsive bidding controls are included.
+Identity data, performance statistics, game ratings, and auction prices are deliberately separate:
 
-## Run locally
+- `gameRating` and `basePrice` are auction game mechanics, never presented as official statistics.
+- Real performance fields remain blank until a configured provider returns them.
+- Every imported stat includes provider, competition/format scope, and retrieval time.
+- The checked-in catalog currently contains a 20-player cricket validation pool and a 20-player football validation pool. It does **not** claim to contain 500 verified players per sport yet.
+- Expanding to 500 per sport is an incremental licensed-data ingestion project; free API quotas make a verified 1,000-player sync a multi-day process.
+
+Supported adapters:
+
+- [API-Football v3](https://api-sports.io/documentation/football/v3)
+- [CricketData.org](https://cricketdata.org/)
+
+Player photography is excluded until a licensed image source is configured.
+
+## Local setup
 
 ```bash
 npm ci
@@ -28,40 +40,61 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`. Provider keys are optional for the playable catalog mode.
+Open `http://localhost:3000`.
 
-## Environment variables
+For multi-instance production deployment, configure Upstash Redis. The in-memory fallback is intended only for local development and tests.
 
 ```text
-API_FOOTBALL_KEY       server-only API-Sports key
-CRICKETDATA_API_KEY    server-only CricketData.org key
-DATABASE_URL           reserved for distributed room persistence
-REDIS_URL              reserved for real-time locks and fan-out
+UPSTASH_REDIS_REST_URL      shared room store URL
+UPSTASH_REDIS_REST_TOKEN    shared room store token
+API_FOOTBALL_KEY            server-only API-Sports key
+CRICKETDATA_API_KEY         server-only CricketData.org key
 ```
 
-Never use a `NEXT_PUBLIC_` prefix for provider keys.
+Never prefix provider or Redis credentials with `NEXT_PUBLIC_`.
+
+## Verified statistics synchronization
+
+1. Copy `src/data/provider-bindings.example.json` to `src/data/provider-bindings.json`.
+2. Replace placeholders with provider-issued player IDs and, for football, league and season IDs.
+3. Add rotated provider keys to `.env.local` or the shell environment.
+4. Run a quota-safe batch:
+
+```bash
+BIDARENA_SYNC_LIMIT=20 npm run data:sync
+```
+
+The command updates `src/data/generated/player-stats.json`. It does not generate estimates or silently match similar names. Review provider IDs before synchronizing.
 
 ## Verification
 
 ```bash
 npm run lint
+npm test
+npm run test:e2e
 npm run build
 ```
 
-`GET /api/status` reports service health, catalog counts, and whether each provider is configured. It never returns credential values.
+The end-to-end test creates a room, joins a second team, starts football, places competing bids, verifies the full ten-second reset, closes the lot, and checks the winner's squad.
 
-## Architecture path to distributed multiplayer
+`GET /api/status` reports health, catalog coverage, provider configuration, and whether the room store is durable. It never returns credential values.
 
-The browser release uses the same event vocabulary intended for the distributed version: room created, sequence committed, athlete revealed, bid accepted, timer extended, player sold/unsold, and auction closed. The next infrastructure milestone persists these events to Postgres and uses Redis/WebSockets for fan-out and command serialization.
+## Production architecture
 
-## Data provenance
+- Next.js App Router and React
+- Server-only room commands with private per-player session tokens
+- Upstash Redis persistence with per-room distributed locks
+- Atomic purse and squad updates inside the serialized room mutation
+- Short-interval state synchronization using the server clock
+- 18-hour room TTL and no-store API responses
+- Motion-based reveal and reduced-motion accessibility
 
-- [API-Football](https://www.api-football.com/)
-- [CricketData.org](https://cricketdata.org/)
-- Open-data fallback design: [StatsBomb Open Data](https://github.com/hudl/open-data), [Cricsheet](https://cricsheet.org/), and Wikidata CC0.
+Polling is used in this release to keep deployment simple and deterministic. A later high-concurrency release can replace fan-out with WebSockets while retaining the same server-authoritative command model.
 
-Player photography is intentionally excluded until a licensed image source is configured.
+## Security
+
+Provider keys previously pasted into chat should be treated as exposed: rotate them before configuring production. Secrets must remain server-only and must never be committed, logged, or returned by an API route.
 
 ## License
 
-Application source code: MIT. Third-party sports data remains subject to its provider's terms and attribution requirements.
+Application source code: MIT. Third-party sports data remains subject to provider terms, quotas, and attribution requirements.
