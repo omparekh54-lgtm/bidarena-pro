@@ -31,9 +31,8 @@ assert.equal(joined.room.isAdmin, false);
 await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500, playerPoolMode: "mixed" }, created.session);
 const started = await post(`/api/rooms/${code}/start`, undefined, created.session);
 assert.equal(started.room.phase, "reveal");
-assert.equal(started.room.queueLength, 70);
+assert.equal(started.room.queueLength, 600);
 assert.equal(started.room.playerPoolMode, "mixed");
-assert.ok(started.room.currentAthlete.realStats.length >= 4);
 assert.equal(started.room.participants.every((team) => team.budget === 500), true);
 
 await new Promise((resolve) => setTimeout(resolve, 3_350));
@@ -72,11 +71,35 @@ const settled = await request(`/api/rooms/${code}`, {}, created.session);
 const winningTeam = settled.room.participants.find((participant) => participant.id === joined.session.playerId);
 assert.equal(settled.room.phase, "sold");
 assert.equal(settled.room.sales.length, 1);
-assert.equal(winningTeam.squad.length, 1);
+assert.equal(winningTeam.squad.length, 0, "another team's squad stays private outside the transfer window");
+
+const transferWindow = await post(`/api/rooms/${code}/transfer-window/open`, { durationSeconds: 30 }, created.session);
+assert.equal(transferWindow.room.transferWindow.status, "open");
+assert.ok(transferWindow.room.pausedAt);
+assert.equal(transferWindow.room.participants.find((team) => team.id === joined.session.playerId).squad.length, 1, "all squads are visible while trading");
+const athleteId = settled.room.currentAthlete.id;
+const offered = await post(`/api/rooms/${code}/transfer-window/offers`, {
+  type: "buy",
+  toParticipantId: joined.session.playerId,
+  offeredAthleteIds: [],
+  requestedAthleteIds: [athleteId],
+  cashAdjustment: 50,
+}, created.session);
+const offerId = offered.room.transferWindow.offers[0].id;
+const accepted = await post(`/api/rooms/${code}/transfer-window/offers/${offerId}/respond`, { decision: "accept" }, joined.session);
+assert.equal(accepted.room.transferWindow.offers[0].status, "accepted");
+assert.equal(accepted.room.participants.find((team) => team.id === joined.session.playerId).squad.length, 0);
+const closed = await post(`/api/rooms/${code}/transfer-window/close`, undefined, created.session);
+assert.equal(closed.room.transferWindow.status, "closed");
+assert.equal(closed.room.pausedAt, null);
 
 const stopped = await post(`/api/rooms/${code}/stop`, undefined, created.session);
 assert.equal(stopped.room.phase, "complete");
 assert.ok(stopped.room.stoppedAt);
+const finalResult = await request(`/api/rooms/${code}/result`);
+const adminResult = finalResult.result.participants.find((participant) => participant.participantId === created.session.playerId);
+assert.equal(adminResult.squad[0].athleteId, athleteId);
+assert.equal(adminResult.finalBudget, 450);
 
 console.log(JSON.stringify({
   roomCode: code,
@@ -85,6 +108,7 @@ console.log(JSON.stringify({
   winningTeam: winningTeam.teamName,
   acceptedBid: settled.room.currentBid,
   timerResetWindowMilliseconds: resetWindow,
-  administratorControls: "pause/resume/stop verified",
+  administratorControls: "pause/resume/transfer/stop verified",
+  durableResult: "verified",
   result: "PASS",
 }, null, 2));

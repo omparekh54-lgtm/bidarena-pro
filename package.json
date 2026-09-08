@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run data:verify && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:e2e": "node scripts/run-room-e2e.mjs",
     "data:sync": "node scripts/sync-player-stats.mjs",
-    "data:backfill": "node scripts/backfill-stable-records.mjs"
+    "data:backfill": "node scripts/backfill-stable-records.mjs",
+    "data:verify": "node scripts/verify-catalog-sizes.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.3",

@@ -74,7 +74,34 @@ export type Sale = {
   soldAt: string;
 };
 
-export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "complete";
+export type TransferWindowStatus = "closed" | "open";
+export type TransferOfferType = "swap" | "sell" | "buy";
+export type TransferOfferStatus = "pending" | "accepted" | "declined" | "cancelled" | "expired";
+
+export type TransferOffer = {
+  id: string;
+  type: TransferOfferType;
+  fromParticipantId: string;
+  toParticipantId: string;
+  offeredAthleteIds: string[];
+  requestedAthleteIds: string[];
+  cashAdjustment: number;
+  status: TransferOfferStatus;
+  createdAt: string;
+  respondedAt?: string;
+};
+
+export type TransferWindow = {
+  status: TransferWindowStatus;
+  startedAt: string | null;
+  endsAt: string | null;
+  durationSeconds: number | null;
+  offers: TransferOffer[];
+  /** True only when opening the window paused an otherwise-running auction. */
+  resumeAuctionOnClose: boolean;
+};
+
+export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "between-lots" | "complete";
 
 export type AuctionRoom = {
   schemaVersion: 1;
@@ -84,6 +111,7 @@ export type AuctionRoom = {
   playerPoolMode: PlayerPoolMode | null;
   purse: number | null;
   phase: AuctionPhase;
+  cycleCount: number;
   queue: string[];
   lotIndex: number;
   currentBid: number;
@@ -96,9 +124,26 @@ export type AuctionRoom = {
   bids: BidEvent[];
   sales: Sale[];
   unsoldAthleteIds: string[];
+  transferWindow: TransferWindow;
   createdAt: string;
   updatedAt: string;
   version: number;
+};
+
+export type FinalParticipantResult = {
+  participantId: string;
+  teamName: string;
+  finalBudget: number;
+  squad: Array<SquadEntry & { athlete: Pick<Athlete, "id" | "name" | "shortName" | "role" | "country" | "team"> }>;
+};
+
+export type FinalRoomResult = {
+  code: string;
+  sport: Sport;
+  playerPoolMode: PlayerPoolMode;
+  purse: number;
+  completedAt: string;
+  participants: FinalParticipantResult[];
 };
 
 export type RoomView = Omit<AuctionRoom, "participants" | "queue"> & {

@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { AuctionError } from "./errors";
-import type { AuctionRoom } from "./types";
+import type { AuctionRoom, FinalRoomResult } from "./types";
 
 const ROOM_TTL_SECONDS = 60 * 60 * 18;
 const LOCK_TTL_MS = 5_000;
@@ -16,6 +16,7 @@ type MemoryState = {
   rooms: Map<string, AuctionRoom>;
   expiresAt: Map<string, number>;
   locks: Map<string, Promise<void>>;
+  results: Map<string, FinalRoomResult>;
 };
 
 const globalMemory = globalThis as typeof globalThis & { __bidarenaMemory?: MemoryState };
@@ -23,7 +24,24 @@ const memory = globalMemory.__bidarenaMemory ??= {
   rooms: new Map(),
   expiresAt: new Map(),
   locks: new Map(),
+  results: new Map(),
 };
+memory.results ??= new Map();
+
+function hydrateRoomDefaults(room: AuctionRoom) {
+  room.cycleCount ??= 1;
+  room.transferWindow ??= {
+    status: "closed",
+    startedAt: null,
+    endsAt: null,
+    durationSeconds: null,
+    offers: [],
+    resumeAuctionOnClose: false,
+  };
+  room.transferWindow.resumeAuctionOnClose ??= false;
+  room.transferWindow.offers ??= [];
+  return room;
+}
 
 function roomKey(code: string) {
   return `bidarena:room:${code}`;
@@ -31,6 +49,10 @@ function roomKey(code: string) {
 
 function lockKey(code: string) {
   return `bidarena:lock:${code}`;
+}
+
+function resultKey(code: string) {
+  return `bidarena:result:${code}`;
 }
 
 function cloneRoom(room: AuctionRoom) {
@@ -44,7 +66,7 @@ function getMemoryRoom(code: string) {
     return null;
   }
   const room = memory.rooms.get(code);
-  return room ? cloneRoom(room) : null;
+  return room ? hydrateRoomDefaults(cloneRoom(room)) : null;
 }
 
 function setMemoryRoom(room: AuctionRoom) {
@@ -110,7 +132,7 @@ export async function readStoredRoom(code: string) {
     ? await redis.get<AuctionRoom>(roomKey(code))
     : getMemoryRoom(code);
   if (!room) throw new AuctionError("That room code does not exist or has expired.", 404, "ROOM_NOT_FOUND");
-  return room;
+  return hydrateRoomDefaults(room);
 }
 
 export async function mutateStoredRoom<T>(code: string, operation: (room: AuctionRoom) => T | Promise<T>) {
@@ -126,7 +148,8 @@ export async function mutateStoredRoom<T>(code: string, operation: (room: Auctio
 
   const token = await acquireRedisLock(code);
   try {
-    const room = await redis.get<AuctionRoom>(roomKey(code));
+    const storedRoom = await redis.get<AuctionRoom>(roomKey(code));
+    const room = storedRoom ? hydrateRoomDefaults(storedRoom) : null;
     if (!room) throw new AuctionError("That room code does not exist or has expired.", 404, "ROOM_NOT_FOUND");
     const result = await operation(room);
     await redis.set(roomKey(code), room, { ex: ROOM_TTL_SECONDS });
@@ -134,4 +157,21 @@ export async function mutateStoredRoom<T>(code: string, operation: (room: Auctio
   } finally {
     await releaseRedisLock(code, token);
   }
+}
+
+/** Final results deliberately have no TTL so completed auctions outlive live-room expiry. */
+export async function writeFinalResult(result: FinalRoomResult) {
+  if (redis) {
+    await redis.set(resultKey(result.code), result);
+    return;
+  }
+  memory.results.set(result.code, structuredClone(result));
+}
+
+export async function readFinalResult(code: string) {
+  const result = redis
+    ? await redis.get<FinalRoomResult>(resultKey(code))
+    : memory.results.get(code);
+  if (!result) throw new AuctionError("Final results are not available for that room.", 404, "RESULT_NOT_FOUND");
+  return structuredClone(result);
 }

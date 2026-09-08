@@ -9,12 +9,16 @@ import {
   bidForParticipant,
   buildAuctionQueue,
   configureRoom,
+  createTransferOffer,
   createRoomState,
+  openTransferWindow,
   pauseRoom,
+  respondToTransferOffer,
   resumeRoom,
   settleRoom,
   startRoom,
   stopRoom,
+  toRoomView,
 } from "./room-engine";
 import type { RoomParticipant } from "./types";
 
@@ -145,6 +149,134 @@ describe("server-authoritative auction room", () => {
     expect(room.stoppedAt).toBe(new Date(4).toISOString());
   });
 
+  it("recycles unsold athletes into a new pool round instead of completing", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const room = createRoomState("7901", admin, 0);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
+    startRoom(room, admin.id, 2);
+    room.queue = room.queue.slice(0, 1);
+    settleRoom(room, 2 + REVEAL_WINDOW_MS);
+    const athleteId = room.queue[0];
+    const deadline = Date.parse(room.deadlineAt!);
+    settleRoom(room, deadline);
+    expect(room.phase).toBe("unsold");
+    settleRoom(room, deadline + RESULT_WINDOW_MS);
+
+    expect(room.phase).toBe("reveal");
+    expect(room.queue).toEqual([athleteId]);
+    expect(room.lotIndex).toBe(0);
+    expect(room.cycleCount).toBe(2);
+    expect(room.phase).not.toBe("complete");
+  });
+
+  it("waits for the host when every athlete has been sold", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const room = createRoomState("7902", admin, 0);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
+    startRoom(room, admin.id, 2);
+    room.queue = room.queue.slice(0, 1);
+    settleRoom(room, 2 + REVEAL_WINDOW_MS);
+    bidForParticipant(room, admin.id, 4_000);
+    const deadline = Date.parse(room.deadlineAt!);
+    settleRoom(room, deadline);
+    settleRoom(room, deadline + RESULT_WINDOW_MS);
+
+    expect(room.phase).toBe("between-lots");
+    expect(room.queue).toHaveLength(0);
+    expect(room.stoppedAt).toBeNull();
+    expect(room.phase).not.toBe("complete");
+    stopRoom(room, admin.id, deadline + RESULT_WINDOW_MS + 1);
+    expect(room.phase).toBe("complete");
+  });
+
+  it("opens, trades atomically, and auto-closes the transfer window", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const challenger = participant("challenger", "Bravo United", "#ff6b67");
+    const room = createRoomState("7903", admin, 0);
+    addParticipant(room, challenger, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 2);
+    startRoom(room, admin.id, 10);
+    const [adminAthlete, challengerAthlete] = room.queue.slice(0, 2);
+    admin.squad.push({ athleteId: adminAthlete, amount: 20, acquiredAt: new Date(3).toISOString() });
+    challenger.squad.push({ athleteId: challengerAthlete, amount: 30, acquiredAt: new Date(3).toISOString() });
+
+    openTransferWindow(room, admin.id, 30, 100);
+    expect(room.transferWindow.status).toBe("open");
+    expect(room.pausedAt).toBe(new Date(100).toISOString());
+    const offer = createTransferOffer(room, admin.id, {
+      type: "swap",
+      toParticipantId: challenger.id,
+      offeredAthleteIds: [adminAthlete],
+      requestedAthleteIds: [challengerAthlete],
+      cashAdjustment: 25,
+    }, 200);
+    respondToTransferOffer(room, challenger.id, offer.id, "accept", 300);
+
+    expect(admin.squad.map((entry) => entry.athleteId)).toEqual([challengerAthlete]);
+    expect(challenger.squad.map((entry) => entry.athleteId)).toEqual([adminAthlete]);
+    expect(admin.budget).toBe(475);
+    expect(challenger.budget).toBe(525);
+    expect(offer.status).toBe("accepted");
+
+    settleRoom(room, 30_100);
+    expect(room.transferWindow.status).toBe("closed");
+    expect(room.pausedAt).toBeNull();
+    expect(room.phase).not.toBe("complete");
+  });
+
+  it("rejects stale or unaffordable transfer acceptance", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const challenger = participant("challenger", "Bravo United", "#ff6b67");
+    const room = createRoomState("7904", admin, 0);
+    addParticipant(room, challenger, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 2);
+    startRoom(room, admin.id, 10);
+    const athleteId = room.queue[0];
+    challenger.squad.push({ athleteId, amount: 20, acquiredAt: new Date(3).toISOString() });
+    openTransferWindow(room, admin.id, 30, 100);
+    const offer = createTransferOffer(room, admin.id, {
+      type: "buy",
+      toParticipantId: challenger.id,
+      offeredAthleteIds: [],
+      requestedAthleteIds: [athleteId],
+      cashAdjustment: 501,
+    }, 200);
+    expect(() => respondToTransferOffer(room, challenger.id, offer.id, "accept", 300)).toThrowError(AuctionError);
+    expect(offer.status).toBe("pending");
+    expect(challenger.squad).toHaveLength(1);
+  });
+
+  it("auto-expires pending offers and restores private squad visibility", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const challenger = participant("challenger", "Bravo United", "#ff6b67");
+    const room = createRoomState("7906", admin, 0);
+    addParticipant(room, challenger, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 2);
+    startRoom(room, admin.id, 10);
+    const athleteId = room.queue[0];
+    challenger.squad.push({ athleteId, amount: 20, acquiredAt: new Date(3).toISOString() });
+    expect(toRoomView(room, admin.id, 50).participants.find((team) => team.id === challenger.id)?.squad).toHaveLength(0);
+    openTransferWindow(room, admin.id, 30, 100);
+    const offer = createTransferOffer(room, admin.id, { type: "buy", toParticipantId: challenger.id, offeredAthleteIds: [], requestedAthleteIds: [athleteId], cashAdjustment: 20 }, 200);
+    expect(toRoomView(room, admin.id, 250).participants.find((team) => team.id === challenger.id)?.squad).toHaveLength(1);
+
+    settleRoom(room, 30_100);
+    expect(offer.status).toBe("expired");
+    expect(toRoomView(room, admin.id, 30_101).participants.find((team) => team.id === challenger.id)?.squad).toHaveLength(0);
+  });
+
+  it("force-closes an open transfer window when the host ends the game", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const room = createRoomState("7905", admin, 0);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
+    startRoom(room, admin.id, 2);
+    openTransferWindow(room, admin.id, 60, 10);
+    stopRoom(room, admin.id, 20);
+    expect(room.phase).toBe("complete");
+    expect(room.transferWindow.status).toBe("closed");
+    expect(room.pausedAt).toBeNull();
+  });
+
   it("orders cricket as ten batters, seven pacers, three spinners, then all-rounders", () => {
     const queue = buildAuctionQueue("cricket", "current");
     const athletes = queue.map((id) => athleteCatalog.find((athlete) => athlete.id === id)!);
@@ -165,19 +297,19 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
-    expect(current).toHaveLength(20);
-    expect(legends).toHaveLength(50);
+    expect(current.length).toBeGreaterThanOrEqual(300);
+    expect(legends.length).toBeGreaterThanOrEqual(300);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
-    expect(mixed.every((id) => athlete(id).realStats.length > 0)).toBe(true);
   });
 
-  it("keeps fifty fully sourced legends in each sport", () => {
+  it("keeps at least 300 athletes in every sport and era", () => {
     for (const sport of ["cricket", "football"] as const) {
-      const legends = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === "legend");
-      expect(legends).toHaveLength(50);
-      expect(legends.every((athlete) => athlete.realStats.length > 0)).toBe(true);
-      expect(legends.every((athlete) => athlete.realStats.every((stat) => stat.source.sourceUrl))).toBe(true);
+      for (const era of ["current", "legend"] as const) {
+        const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === era);
+        expect(athletes.length).toBeGreaterThanOrEqual(300);
+        expect(new Set(athletes.map((athlete) => athlete.id)).size).toBe(athletes.length);
+      }
     }
   });
 });

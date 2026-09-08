@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import {
   Activity,
+  ArrowRightLeft,
   ArrowLeft,
   BadgeCheck,
   Banknote,
@@ -33,7 +34,7 @@ import {
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
-import type { Athlete, PlayerPoolMode, PlayerSession, RoomView, Sport } from "@/lib/auction/types";
+import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
 const POLL_INTERVAL_MS = 1_000;
@@ -98,9 +99,14 @@ export function AuctionArena() {
   const [sound, setSound] = useState(true);
   const [clock, setClock] = useState(0);
   const [serverOffset, setServerOffset] = useState(0);
+  const [activeView, setActiveView] = useState<"auction" | "market">("auction");
+  const [showTransferSetup, setShowTransferSetup] = useState(false);
+  const [transferMinutes, setTransferMinutes] = useState(5);
+  const [finalResult, setFinalResult] = useState<FinalRoomResult | null>(null);
   const audioRef = useRef<AudioContext | null>(null);
   const previousBidRef = useRef<string | null>(null);
   const previousPhaseRef = useRef<string | null>(null);
+  const completedRoomCode = room?.phase === "complete" ? room.code : null;
 
   const tone = useCallback((frequency: number, duration = 0.08) => {
     if (!sound || typeof window === "undefined") return;
@@ -176,6 +182,15 @@ export function AuctionArena() {
     }
     previousPhaseRef.current = room.phase;
   }, [room, tone]);
+
+  useEffect(() => {
+    if (!completedRoomCode) return;
+    let cancelled = false;
+    void apiRequest<{ result: FinalRoomResult }>(`/api/rooms/${completedRoomCode}/result`)
+      .then(({ result }) => { if (!cancelled) setFinalResult(result); })
+      .catch((resultError) => { if (!cancelled) setError(resultError instanceof Error ? resultError.message : "Final results could not be loaded."); });
+    return () => { cancelled = true; };
+  }, [completedRoomCode]);
 
   const runCommand = useCallback(async <T,>(label: string, operation: () => Promise<T>) => {
     setPending(label);
@@ -255,6 +270,12 @@ export function AuctionArena() {
     await command("stop");
   }
 
+  async function startTransferWindow() {
+    await command("transfer-window/open", { durationSeconds: Math.round(transferMinutes * 60) });
+    setActiveView("market");
+    setShowTransferSetup(false);
+  }
+
   if (!session) {
     return (
       <main className="entry-shell">
@@ -292,6 +313,10 @@ export function AuctionArena() {
     return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse, playerPoolMode) => void command("configure", { sport, purse, playerPoolMode })} onStart={() => void command("start")} />;
   }
 
+  if (room.phase === "complete") {
+    return <FinalResultsScreen room={room} result={finalResult} error={error} onLeave={leaveLocalRoom} />;
+  }
+
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId);
   const leader = room.participants.find((participant) => participant.id === room.leaderId);
   const current = room.currentAthlete;
@@ -300,9 +325,11 @@ export function AuctionArena() {
   const deadline = room.deadlineAt ? Date.parse(room.deadlineAt) : 0;
   const effectiveClock = room.pausedAt ? Date.parse(room.pausedAt) : clock + serverOffset;
   const timer = room.phase === "bidding" ? Math.max(0, Math.ceil((deadline - effectiveClock) / 1_000)) : 0;
-  const progress = room.queueLength ? Math.round(((room.lotIndex + (room.phase === "complete" ? 1 : 0)) / room.queueLength) * 100) : 0;
+  const progress = room.queueLength ? Math.round((room.lotIndex / room.queueLength) * 100) : 0;
   const selfSpent = self ? self.initialBudget - self.budget : 0;
   const roleCounts = room.poolComposition.slice(0, 4);
+  const transferDeadline = room.transferWindow.endsAt ? Date.parse(room.transferWindow.endsAt) : 0;
+  const transferSeconds = room.transferWindow.status === "open" ? Math.max(0, Math.ceil((transferDeadline - (clock + serverOffset)) / 1_000)) : 0;
 
   return (
     <main className="app-shell">
@@ -310,14 +337,20 @@ export function AuctionArena() {
         <div className="brand-lockup"><div className="brand-mark"><Gavel size={22} /></div><div><strong>BIDARENA</strong><span>LIVE MULTIPLAYER</span></div></div>
         <div className="sport-switch locked" aria-label="Selected auction format"><button className="active">{room.sport}<small>{room.playerPoolMode === "mixed" ? "CURRENT + ICONS" : room.playerPoolMode === "legends" ? "ICONS ONLY" : "CURRENT ONLY"}</small></button></div>
         <div className="room-status">
-          {room.isAdmin && room.phase !== "complete" ? <div className="admin-game-controls"><button disabled={Boolean(pending)} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button><button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction"><Square size={14} /><span>STOP</span></button></div> : null}
-          <span><Radio size={14} /> {room.pausedAt ? "ROOM PAUSED" : "LIVE ROOM"}</span><strong>{room.code}</strong><button className="icon-button" onClick={() => setSound((value) => !value)} aria-label="Toggle sound">{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
+          {room.isAdmin ? <div className="admin-game-controls">
+            {room.transferWindow.status === "closed" ? <button disabled={Boolean(pending)} onClick={() => setShowTransferSetup(true)}><ArrowRightLeft size={15} /><span>TRANSFERS</span></button> : <button disabled={Boolean(pending)} onClick={() => void command("transfer-window/close")}><ArrowRightLeft size={15} /><span>END WINDOW</span></button>}
+            <button disabled={Boolean(pending) || room.transferWindow.status === "open"} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button>
+            <button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction"><Square size={14} /><span>STOP</span></button>
+          </div> : null}
+          <span><Radio size={14} /> {room.transferWindow.status === "open" ? "TRANSFER WINDOW" : room.pausedAt ? "ROOM PAUSED" : "LIVE ROOM"}</span><strong>{room.code}</strong><button className="icon-button" onClick={() => setSound((value) => !value)} aria-label="Toggle sound">{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
         </div>
       </header>
 
-      <section className={`command-strip ${room.pausedAt ? "paused" : ""}`}><div><Activity size={15} /><span>{room.pausedAt ? "AUCTION PAUSED" : `AUCTION ${room.phase.toUpperCase()}`}</span></div><div className="progress-track"><motion.span animate={{ width: `${progress}%` }} /></div><div className="command-meta"><span>LOT {String(room.lotIndex + 1).padStart(3, "0")}</span><span>{room.participants.length} LIVE TEAMS</span></div></section>
+      <section className={`command-strip ${room.pausedAt ? "paused" : ""}`}><div><Activity size={15} /><span>{room.transferWindow.status === "open" ? "TRANSFER MARKET OPEN" : room.phase === "between-lots" ? "AWAITING HOST" : room.pausedAt ? "AUCTION PAUSED" : `AUCTION ${room.phase.toUpperCase()}`}</span></div><div className="progress-track"><motion.span animate={{ width: `${progress}%` }} /></div><div className="command-meta"><span>ROUND {room.cycleCount}</span><span>{room.phase === "between-lots" ? "POOL SOLD OUT" : `LOT ${String(room.lotIndex + 1).padStart(3, "0")}`}</span><span>{room.participants.length} LIVE TEAMS</span></div></section>
 
-      <div className="workspace">
+      {room.transferWindow.status === "open" ? <section className="transfer-banner"><div><ArrowRightLeft size={17} /><span><strong>TRANSFER WINDOW OPEN</strong>All squads are visible. Bidding resumes when the window closes.</span></div><b>{String(Math.floor(transferSeconds / 60)).padStart(2, "0")}:{String(transferSeconds % 60).padStart(2, "0")}</b><div className="view-tabs"><button className={activeView === "market" ? "active" : ""} onClick={() => setActiveView("market")}>Transfer market</button><button className={activeView === "auction" ? "active" : ""} onClick={() => setActiveView("auction")}>Auction stage</button></div></section> : null}
+
+      {room.transferWindow.status === "open" && activeView === "market" ? <TransferMarket room={room} pending={pending} onCommand={(path, body) => void command(path, body)} /> : <div className="workspace">
         <aside className="panel teams-panel">
           <div className="panel-heading"><div><span>FRANCHISES</span><strong>War room</strong></div><Users size={18} /></div>
           <div className="team-list">{room.participants.map((participant) => <div key={participant.id} className={`team-card readonly ${room.leaderId === participant.id ? "leading" : ""} ${participant.id === room.selfPlayerId ? "self-team" : ""}`} style={{ "--team": participant.color } as React.CSSProperties}><span className="team-avatar">{participant.code}</span><span className="team-copy"><strong>{participant.teamName}</strong><small>{participant.squad.length} players · {formatMoney(participant.budget, room.sport)} left</small></span><span className="bid-action">{participant.id === room.selfPlayerId ? "YOU" : room.leaderId === participant.id ? "LEADS" : "LIVE"}</span></div>)}</div>
@@ -325,9 +358,7 @@ export function AuctionArena() {
         </aside>
 
         <section className="auction-stage"><div className="stage-lights" aria-hidden="true"><i /><i /><i /><i /><i /></div><div className="stage-grid" aria-hidden="true" />
-          <AnimatePresence mode="wait">{room.phase === "complete" ? (
-            <motion.div key="complete" className="complete-state" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}><Trophy size={60} /><span>{room.stoppedAt ? "AUCTION STOPPED" : "AUCTION COMPLETE"}</span><h1>{room.stoppedAt ? "The administrator ended the game" : "Final squads are locked"}</h1><p>{room.sales.length} players sold · {room.unsoldAthleteIds.length} unsold.</p><button className="primary-button" onClick={leaveLocalRoom}><RefreshCw size={17} /> Return to dashboard</button></motion.div>
-          ) : current ? (
+          <AnimatePresence mode="wait">{current ? (
             <motion.div key={current.id} className="player-presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.96 }}>
               <motion.div className="reveal-kicker" initial={{ y: -12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }}><Sparkles size={14} /> {current.role} · {current.country}</motion.div>
               <motion.div className={`player-card ${room.phase} ${current.era === "legend" ? "legend-card" : ""}`} initial={{ rotateY: 90, scale: 0.72 }} animate={{ rotateY: 0, scale: 1 }} transition={{ type: "spring", stiffness: 90, damping: 14 }}>
@@ -338,7 +369,7 @@ export function AuctionArena() {
               {room.pausedAt ? <motion.div className="pause-banner" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}><Pause size={18} /><span><strong>GAME PAUSED</strong>The administrator controls when bidding resumes.</span></motion.div> : null}
               <AnimatePresence>{room.phase === "sold" || room.phase === "unsold" ? <motion.div className={`result-slam ${room.phase}`} initial={{ scale: 2.2, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: -2 }}><strong>{room.phase.toUpperCase()}</strong><span>{room.phase === "sold" ? `${leader?.teamName} · ${formatMoney(room.currentBid, room.sport)}` : "No bids received"}</span></motion.div> : null}</AnimatePresence>
             </motion.div>
-          ) : null}</AnimatePresence>
+          ) : room.phase === "between-lots" ? <motion.div key="between-lots" className="complete-state waiting-pool" initial={{ opacity: 0, scale: .95 }} animate={{ opacity: 1, scale: 1 }}><Clock3 size={56} /><span>POOL EXHAUSTED</span><h1>No athletes left in the pool</h1><p>Every available athlete has been sold. The room is waiting for the host to end the game.</p></motion.div> : null}</AnimatePresence>
         </section>
 
         <aside className="panel intelligence-panel"><div className="panel-heading"><div><span>LIVE INTELLIGENCE</span><strong>Auction ledger</strong></div><Clock3 size={18} /></div><div className="metric-row"><div><CircleDollarSign size={17} /><span><small>My spent</small><strong>{formatMoney(selfSpent, room.sport)}</strong></span></div><div><Banknote size={17} /><span><small>My purse</small><strong>{formatMoney(self?.budget ?? 0, room.sport)}</strong></span></div></div><div className="section-label">RECENT BIDS</div>
@@ -348,11 +379,84 @@ export function AuctionArena() {
           <div className="section-label">REAL PERFORMANCE STATS</div>{current ? <PlayerStatsPanel key={current.id} athlete={current} /> : null}
           <div className="source-note"><BadgeCheck size={16} /><span><strong>Transparent data policy</strong>The card rating and base price are game mechanics. Real statistics are displayed separately with their provider and scope.</span></div>
         </aside>
-      </div>
+      </div>}
       <footer><span><ShieldCheck size={14} /> SERVER-AUTHORITY ACTIVE</span><span>10-SECOND RESET · ADMIN PURSE · CATEGORY QUEUE</span><button onClick={leaveLocalRoom}>LEAVE ROOM</button></footer>
+      {showTransferSetup ? <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowTransferSetup(false)}><div className="transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transfer-window-title" onMouseDown={(event) => event.stopPropagation()}><ArrowRightLeft size={28} /><span>HOST CONTROL</span><h2 id="transfer-window-title">Open transfer window</h2><p>The auction timer will freeze while teams negotiate.</p><label><span>DURATION (MINUTES)</span><input type="number" min="0.5" max="60" step="0.5" value={transferMinutes} onChange={(event) => setTransferMinutes(Number(event.target.value))} /></label><div><button onClick={() => setShowTransferSetup(false)}>Cancel</button><button className="primary-button" disabled={Boolean(pending) || transferMinutes < .5 || transferMinutes > 60} onClick={() => void startTransferWindow()}>{pending ? <LoaderCircle className="spin" size={16} /> : <Play size={16} />} Start window</button></div></div></div> : null}
       {error ? <div className="floating-error" role="alert">{error}</div> : null}
     </main>
   );
+}
+
+type TransferMarketProps = {
+  room: RoomView;
+  pending: string | null;
+  onCommand: (path: string, body?: unknown) => void;
+};
+
+function TransferMarket({ room, pending, onCommand }: TransferMarketProps) {
+  const self = room.participants.find((participant) => participant.id === room.selfPlayerId)!;
+  const others = room.participants.filter((participant) => participant.id !== room.selfPlayerId);
+  const [targetId, setTargetId] = useState(others[0]?.id ?? "");
+  const [offeredIds, setOfferedIds] = useState<string[]>([]);
+  const [requestedIds, setRequestedIds] = useState<string[]>([]);
+  const [cashAdjustment, setCashAdjustment] = useState(0);
+  const effectiveTargetId = targetId || others[0]?.id || "";
+  const target = others.find((participant) => participant.id === effectiveTargetId) ?? others[0];
+  const offers = room.transferWindow.offers;
+  const sent = offers.filter((offer) => offer.fromParticipantId === self.id);
+  const received = offers.filter((offer) => offer.toParticipantId === self.id);
+  const offerType: TransferOfferType | null = offeredIds.length && requestedIds.length ? "swap" : offeredIds.length ? "sell" : requestedIds.length ? "buy" : null;
+  const toggle = (id: string, selected: string[], setter: (value: string[]) => void) => setter(selected.includes(id) ? selected.filter((item) => item !== id) : [...selected, id]);
+
+  function submitOffer(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!target || !offerType) return;
+    onCommand("transfer-window/offers", {
+      type: offerType,
+      toParticipantId: target.id,
+      offeredAthleteIds: offeredIds,
+      requestedAthleteIds: requestedIds,
+      cashAdjustment,
+    });
+    setOfferedIds([]);
+    setRequestedIds([]);
+    setCashAdjustment(0);
+  }
+
+  const teamName = (id: string) => room.participants.find((participant) => participant.id === id)?.teamName ?? "Unknown team";
+  const athleteName = (id: string) => room.participants.flatMap((participant) => participant.squad).find((entry) => entry.athleteId === id)?.athlete.shortName ?? id;
+
+  return (
+    <section className="transfer-market">
+      <div className="market-heading"><div><span>LIVE NEGOTIATION FLOOR</span><h1>Transfer Market</h1><p>Review every franchise, build a buy, sell or swap proposal, and settle cash between team purses.</p></div><ArrowRightLeft size={36} /></div>
+      <div className="market-grid">
+        <div className="squad-browser">
+          <div className="market-section-title"><span>ALL FRANCHISES</span><strong>{room.participants.length} teams</strong></div>
+          <div className="all-squads">{room.participants.map((participant) => <article key={participant.id} style={{ "--team": participant.color } as React.CSSProperties}><header><span className="team-avatar">{participant.code}</span><div><strong>{participant.teamName}</strong><small>{participant.id === self.id ? "Your squad" : `${participant.squad.length} players`}</small></div><b>{formatMoney(participant.budget, room.sport)}</b></header><div>{participant.squad.length ? participant.squad.map((entry) => <span key={entry.athleteId}><strong>{entry.athlete.shortName}</strong><small>{entry.athlete.role} · {entry.athlete.gameRating}</small></span>) : <p>No players signed yet.</p>}</div></article>)}</div>
+        </div>
+
+        <form className="offer-builder" onSubmit={submitOffer}>
+          <div className="market-section-title"><span>CREATE OFFER</span><strong>{offerType?.toUpperCase() ?? "SELECT PLAYERS"}</strong></div>
+          {others.length ? <>
+            <label className="target-select"><span>NEGOTIATE WITH</span><select value={effectiveTargetId} onChange={(event) => { setTargetId(event.target.value); setRequestedIds([]); }}>{others.map((participant) => <option key={participant.id} value={participant.id}>{participant.teamName}</option>)}</select></label>
+            <div className="trade-columns"><fieldset><legend>YOUR PLAYERS TO OFFER</legend>{self.squad.length ? self.squad.map((entry) => <label key={entry.athleteId}><input type="checkbox" checked={offeredIds.includes(entry.athleteId)} onChange={() => toggle(entry.athleteId, offeredIds, setOfferedIds)} /><span><strong>{entry.athlete.shortName}</strong><small>{entry.athlete.role}</small></span></label>) : <p>Your squad is empty.</p>}</fieldset><fieldset><legend>PLAYERS TO REQUEST</legend>{target?.squad.length ? target.squad.map((entry) => <label key={entry.athleteId}><input type="checkbox" checked={requestedIds.includes(entry.athleteId)} onChange={() => toggle(entry.athleteId, requestedIds, setRequestedIds)} /><span><strong>{entry.athlete.shortName}</strong><small>{entry.athlete.role}</small></span></label>) : <p>This squad is empty.</p>}</fieldset></div>
+            <label className="cash-input"><span>CASH ADJUSTMENT</span><small>Positive means you pay; negative means you receive.</small><div><input type="number" step="1" value={cashAdjustment} onChange={(event) => setCashAdjustment(Number(event.target.value))} /><b>{room.sport === "cricket" ? "units" : "€m"}</b></div></label>
+            <button className="primary-button offer-submit" disabled={!offerType || Boolean(pending)}>{pending === "transfer-window/offers" ? <LoaderCircle className="spin" size={16} /> : <ArrowRightLeft size={16} />} Send {offerType ?? "transfer"} offer</button>
+          </> : <div className="empty-ledger">Another team must join before transfers can be proposed.</div>}
+        </form>
+
+        <div className="offers-panel">
+          <div className="market-section-title"><span>OFFERS DESK</span><strong>{offers.filter((offer) => offer.status === "pending").length} pending</strong></div>
+          <div className="offer-group"><h3>Received</h3>{received.length ? received.map((offer) => <article key={offer.id}><header><strong>{offer.type.toUpperCase()} · {teamName(offer.fromParticipantId)}</strong><span className={`offer-status ${offer.status}`}>{offer.status}</span></header><p>{offer.offeredAthleteIds.map(athleteName).join(", ") || "Cash only"} → {offer.requestedAthleteIds.map(athleteName).join(", ") || "No player requested"}</p><small>Cash: {formatMoney(Math.abs(offer.cashAdjustment), room.sport)} {offer.cashAdjustment >= 0 ? "to you" : "to them"}</small>{offer.status === "pending" ? <div><button type="button" onClick={() => onCommand(`transfer-window/offers/${offer.id}/respond`, { decision: "decline" })}>Decline</button><button type="button" className="accept" onClick={() => onCommand(`transfer-window/offers/${offer.id}/respond`, { decision: "accept" })}>Accept</button></div> : null}</article>) : <p>No offers received.</p>}</div>
+          <div className="offer-group"><h3>Sent</h3>{sent.length ? sent.map((offer) => <article key={offer.id}><header><strong>{offer.type.toUpperCase()} · {teamName(offer.toParticipantId)}</strong><span className={`offer-status ${offer.status}`}>{offer.status}</span></header><p>{offer.offeredAthleteIds.map(athleteName).join(", ") || "No player offered"} → {offer.requestedAthleteIds.map(athleteName).join(", ") || "Cash deal"}</p>{offer.status === "pending" ? <button type="button" onClick={() => onCommand(`transfer-window/offers/${offer.id}/cancel`)}>Cancel offer</button> : null}</article>) : <p>No offers sent.</p>}</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FinalResultsScreen({ room, result, error, onLeave }: { room: RoomView; result: FinalRoomResult | null; error: string | null; onLeave: () => void }) {
+  return <main className="final-results-shell"><div className="entry-grid" aria-hidden="true" /><header><div className="entry-brand"><div className="brand-mark"><Trophy size={22} /></div><div><strong>BIDARENA</strong><span>FINAL RESULTS · ROOM {room.code}</span></div></div><button onClick={onLeave}><ArrowLeft size={15} /> Dashboard</button></header><section><div className="final-heading"><Trophy size={50} /><span>HOST-FINALIZED RESULT</span><h1>Final squads are locked.</h1><p>{result ? `${result.participants.length} franchises · ${result.participants.reduce((count, participant) => count + participant.squad.length, 0)} players` : "Loading the permanent result ledger…"}</p></div>{result ? <div className="final-team-grid">{result.participants.map((participant, index) => <article key={participant.participantId}><header><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{participant.teamName}</strong><small>{participant.squad.length} players · {formatMoney(participant.finalBudget, result.sport)} remaining</small></div></header><div>{participant.squad.length ? participant.squad.map((entry) => <span key={entry.athleteId}><div><strong>{entry.athlete.name}</strong><small>{entry.athlete.role} · {entry.athlete.country}</small></div><b>{formatMoney(entry.amount, result.sport)}</b></span>) : <p>No players acquired.</p>}</div></article>)}</div> : <LoaderCircle className="spin final-loader" size={30} />}{error ? <div className="error-banner" role="alert">{error}</div> : null}<button className="primary-button final-exit" onClick={onLeave}><RefreshCw size={17} /> Return to dashboard</button></section></main>;
 }
 
 function PlayerStatsPanel({ athlete }: { athlete: Athlete }) {
@@ -364,7 +468,7 @@ function PlayerStatsPanel({ athlete }: { athlete: Athlete }) {
   const source = scopedStats[0]?.source ?? athlete.realStats[0]?.source;
 
   if (!athlete.realStats.length) {
-    return <div className="stats-pending"><Clock3 size={15} /><span><strong>Verified data unavailable</strong>This player remains outside the auction until a sourced record is available.</span></div>;
+    return <div className="stats-pending"><Clock3 size={15} /><span><strong>Performance data pending</strong>The auction profile is active; sourced statistics will appear after the next data sync.</span></div>;
   }
 
   return (

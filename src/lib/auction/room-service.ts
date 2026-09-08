@@ -1,9 +1,9 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
-import { addParticipant, bidForParticipant, configureRoom, createRoomState, pauseRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
-import { createRoomIfAvailable, mutateStoredRoom, readStoredRoom } from "./room-store";
-import type { AuctionRoom, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport } from "./types";
+import { addParticipant, bidForParticipant, cancelTransferOffer as cancelTransferOfferInRoom, closeTransferWindow as closeTransferWindowInRoom, configureRoom, createRoomState, createTransferOffer as createTransferOfferInRoom, finalizeRoomResult, openTransferWindow as openTransferWindowInRoom, pauseRoom, respondToTransferOffer as respondToTransferOfferInRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
+import { createRoomIfAvailable, mutateStoredRoom, readFinalResult, readStoredRoom, writeFinalResult } from "./room-store";
+import type { AuctionRoom, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport, TransferOfferType } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
 
@@ -125,11 +125,70 @@ export async function resumeGame(code: string, playerId: string, token: string) 
 
 export async function stopGame(code: string, playerId: string, token: string) {
   validateRoomCode(code);
-  const result = await mutateStoredRoom(code, (room) => {
+  const result = await mutateStoredRoom(code, async (room) => {
     authenticate(room, playerId, token);
     stopRoom(room, playerId);
+    await writeFinalResult(finalizeRoomResult(room));
   });
   return toRoomView(result.room, playerId);
+}
+
+export async function openTransferWindow(code: string, playerId: string, token: string, durationSeconds: number) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    openTransferWindowInRoom(room, playerId, durationSeconds);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function closeTransferWindow(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    closeTransferWindowInRoom(room, playerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+type TransferOfferInput = {
+  type: TransferOfferType;
+  toParticipantId: string;
+  offeredAthleteIds: string[];
+  requestedAthleteIds: string[];
+  cashAdjustment: number;
+};
+
+export async function createTransferOffer(code: string, playerId: string, token: string, input: TransferOfferInput) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    createTransferOfferInRoom(room, playerId, input);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function respondToTransferOffer(code: string, playerId: string, token: string, offerId: string, decision: "accept" | "decline") {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    respondToTransferOfferInRoom(room, playerId, offerId, decision);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function cancelTransferOffer(code: string, playerId: string, token: string, offerId: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    cancelTransferOfferInRoom(room, playerId, offerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function getFinalResult(code: string) {
+  validateRoomCode(code);
+  return readFinalResult(code);
 }
 
 export async function startGame(code: string, playerId: string, token: string) {
