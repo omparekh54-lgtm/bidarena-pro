@@ -56,6 +56,7 @@ export type RoomParticipant = {
 
 export type ParticipantView = Omit<RoomParticipant, "tokenHash" | "squad"> & {
   isAdmin: boolean;
+  squadSize: number;
   squad: Array<SquadEntry & { athlete: Athlete }>;
 };
 

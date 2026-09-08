@@ -471,6 +471,7 @@ function participantToView(room: AuctionRoom, participant: RoomParticipant, self
   return {
     ...safeParticipant,
     isAdmin: participant.id === room.adminPlayerId,
+    squadSize: squad.length,
     squad: (participant.id === selfPlayerId || room.transferWindow.status === "open" ? squad : []).flatMap((entry) => {
       const athlete = athleteById.get(entry.athleteId);
       return athlete ? [{ ...entry, athlete }] : [];

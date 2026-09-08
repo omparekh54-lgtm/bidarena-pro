@@ -38,6 +38,7 @@ import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView,
 
 const SESSION_KEY = "bidarena-player-session-v1";
 const POLL_INTERVAL_MS = 1_000;
+const MINIMUM_SQUAD_SIZE = 11;
 
 class ApiClientError extends Error {
   constructor(message: string, readonly status: number) {
@@ -266,7 +267,11 @@ export function AuctionArena() {
   }
 
   async function stopAuction() {
-    if (!window.confirm("Stop this auction now? Current bids on this unfinished lot will not be charged.")) return;
+    const incompleteTeams = room?.participants.filter((participant) => participant.squadSize < MINIMUM_SQUAD_SIZE) ?? [];
+    const warning = incompleteTeams.length
+      ? `${incompleteTeams.length} team${incompleteTeams.length === 1 ? " has" : "s have"} fewer than ${MINIMUM_SQUAD_SIZE} players. As creator, you can still stop the auction manually. Stop anyway?`
+      : "End this auction now? Current bids on this unfinished lot will not be charged.";
+    if (!window.confirm(warning)) return;
     await command("stop");
   }
 
@@ -330,6 +335,7 @@ export function AuctionArena() {
   const roleCounts = room.poolComposition.slice(0, 4);
   const transferDeadline = room.transferWindow.endsAt ? Date.parse(room.transferWindow.endsAt) : 0;
   const transferSeconds = room.transferWindow.status === "open" ? Math.max(0, Math.ceil((transferDeadline - (clock + serverOffset)) / 1_000)) : 0;
+  const everyTeamHasMinimumSquad = room.participants.every((participant) => participant.squadSize >= MINIMUM_SQUAD_SIZE);
 
   return (
     <main className="app-shell">
@@ -340,7 +346,7 @@ export function AuctionArena() {
           {room.isAdmin ? <div className="admin-game-controls">
             {room.transferWindow.status === "closed" ? <button disabled={Boolean(pending)} onClick={() => setShowTransferSetup(true)}><ArrowRightLeft size={15} /><span>TRANSFERS</span></button> : <button disabled={Boolean(pending)} onClick={() => void command("transfer-window/close")}><ArrowRightLeft size={15} /><span>END WINDOW</span></button>}
             <button disabled={Boolean(pending) || room.transferWindow.status === "open"} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button>
-            <button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction"><Square size={14} /><span>STOP</span></button>
+            <button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction" title={everyTeamHasMinimumSquad ? "End auction" : "Creator override: stop before every team reaches 11 players"}><Square size={14} /><span>STOP</span></button>
           </div> : null}
           <span><Radio size={14} /> {room.transferWindow.status === "open" ? "TRANSFER WINDOW" : room.pausedAt ? "ROOM PAUSED" : "LIVE ROOM"}</span><strong>{room.code}</strong><button className="icon-button" onClick={() => setSound((value) => !value)} aria-label="Toggle sound">{sound ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
         </div>
@@ -353,7 +359,7 @@ export function AuctionArena() {
       {room.transferWindow.status === "open" && activeView === "market" ? <TransferMarket room={room} pending={pending} onCommand={(path, body) => void command(path, body)} /> : <div className="workspace">
         <aside className="panel teams-panel">
           <div className="panel-heading"><div><span>FRANCHISES</span><strong>War room</strong></div><Users size={18} /></div>
-          <div className="team-list">{room.participants.map((participant) => <div key={participant.id} className={`team-card readonly ${room.leaderId === participant.id ? "leading" : ""} ${participant.id === room.selfPlayerId ? "self-team" : ""}`} style={{ "--team": participant.color } as React.CSSProperties}><span className="team-avatar">{participant.code}</span><span className="team-copy"><strong>{participant.teamName}</strong><small>{participant.squad.length} players · {formatMoney(participant.budget, room.sport)} left</small></span><span className="bid-action">{participant.id === room.selfPlayerId ? "YOU" : room.leaderId === participant.id ? "LEADS" : "LIVE"}</span></div>)}</div>
+          <div className="team-list">{room.participants.map((participant) => <div key={participant.id} className={`team-card readonly ${room.leaderId === participant.id ? "leading" : ""} ${participant.id === room.selfPlayerId ? "self-team" : ""}`} style={{ "--team": participant.color } as React.CSSProperties}><span className="team-avatar">{participant.code}</span><span className="team-copy"><strong>{participant.teamName}</strong><small>{participant.squadSize}/{MINIMUM_SQUAD_SIZE} players · {formatMoney(participant.budget, room.sport)} left</small></span><span className="bid-action">{participant.id === room.selfPlayerId ? "YOU" : room.leaderId === participant.id ? "LEADS" : participant.squadSize >= MINIMUM_SQUAD_SIZE ? "READY" : "LIVE"}</span></div>)}</div>
           <div className="integrity-note"><ShieldCheck size={17} /><span><strong>Budget guard active</strong>Every bid is serialized and validated on the server.</span></div>
         </aside>
 
@@ -369,7 +375,7 @@ export function AuctionArena() {
               {room.pausedAt ? <motion.div className="pause-banner" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}><Pause size={18} /><span><strong>GAME PAUSED</strong>The administrator controls when bidding resumes.</span></motion.div> : null}
               <AnimatePresence>{room.phase === "sold" || room.phase === "unsold" ? <motion.div className={`result-slam ${room.phase}`} initial={{ scale: 2.2, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: -2 }}><strong>{room.phase.toUpperCase()}</strong><span>{room.phase === "sold" ? `${leader?.teamName} · ${formatMoney(room.currentBid, room.sport)}` : "No bids received"}</span></motion.div> : null}</AnimatePresence>
             </motion.div>
-          ) : room.phase === "between-lots" ? <motion.div key="between-lots" className="complete-state waiting-pool" initial={{ opacity: 0, scale: .95 }} animate={{ opacity: 1, scale: 1 }}><Clock3 size={56} /><span>POOL EXHAUSTED</span><h1>No athletes left in the pool</h1><p>Every available athlete has been sold. The room is waiting for the host to end the game.</p></motion.div> : null}</AnimatePresence>
+          ) : room.phase === "between-lots" ? <motion.div key="between-lots" className="complete-state waiting-pool" initial={{ opacity: 0, scale: .95 }} animate={{ opacity: 1, scale: 1 }}><Clock3 size={56} /><span>POOL EXHAUSTED</span><h1>No athletes left in the pool</h1><p>{everyTeamHasMinimumSquad ? "Every team has 11 players. The host can now end the game." : "Some squads are below 11 players. Use the transfer market to complete them, or the creator can stop the game manually."}</p></motion.div> : null}</AnimatePresence>
         </section>
 
         <aside className="panel intelligence-panel"><div className="panel-heading"><div><span>LIVE INTELLIGENCE</span><strong>Auction ledger</strong></div><Clock3 size={18} /></div><div className="metric-row"><div><CircleDollarSign size={17} /><span><small>My spent</small><strong>{formatMoney(selfSpent, room.sport)}</strong></span></div><div><Banknote size={17} /><span><small>My purse</small><strong>{formatMoney(self?.budget ?? 0, room.sport)}</strong></span></div></div><div className="section-label">RECENT BIDS</div>
