@@ -19,20 +19,39 @@ export default function FundsPage() {
   useEffect(() => {
     const raw = window.localStorage.getItem(SESSION_KEY);
     if (!raw) return;
+    let cancelled = false;
+    let parsed: PlayerSession;
     try {
-      const parsed = JSON.parse(raw) as PlayerSession;
-      setSession(parsed);
-      void fetch(`/api/rooms/${parsed.roomCode}`, {
-        cache: "no-store",
-        headers: { "x-bidarena-player": parsed.playerId, "x-bidarena-token": parsed.token },
-      }).then(async (response) => {
-        const payload = await response.json() as { room?: RoomView; error?: string };
-        if (!response.ok || !payload.room) throw new Error(payload.error ?? "Unable to load the live game.");
-        setRoom(payload.room);
-      }).catch((reason) => setError(reason instanceof Error ? reason.message : "Unable to load the live game."));
+      parsed = JSON.parse(raw) as PlayerSession;
     } catch {
-      setError("Your saved room session is invalid. Return to the game and rejoin.");
+      const timer = window.setTimeout(() => {
+        if (!cancelled) setError("Your saved room session is invalid. Return to the game and rejoin.");
+      }, 0);
+      return () => {
+        cancelled = true;
+        window.clearTimeout(timer);
+      };
     }
+
+    const timer = window.setTimeout(() => {
+      if (!cancelled) setSession(parsed);
+    }, 0);
+
+    void fetch(`/api/rooms/${parsed.roomCode}`, {
+      cache: "no-store",
+      headers: { "x-bidarena-player": parsed.playerId, "x-bidarena-token": parsed.token },
+    }).then(async (response) => {
+      const payload = await response.json() as { room?: RoomView; error?: string };
+      if (!response.ok || !payload.room) throw new Error(payload.error ?? "Unable to load the live game.");
+      if (!cancelled) setRoom(payload.room);
+    }).catch((reason) => {
+      if (!cancelled) setError(reason instanceof Error ? reason.message : "Unable to load the live game.");
+    });
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
