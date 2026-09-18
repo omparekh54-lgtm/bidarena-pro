@@ -38,6 +38,7 @@ import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
+const SAVED_SESSIONS_KEY = "bidarena-saved-sessions-v1";
 const POLL_INTERVAL_MS = 1_000;
 const MINIMUM_SQUAD_SIZE = 11;
 
@@ -62,9 +63,31 @@ async function apiRequest<T>(path: string, init: RequestInit = {}, session?: Pla
   return payload;
 }
 
+function readSavedSessions(): PlayerSession[] {
+  try {
+    const stored = window.localStorage.getItem(SAVED_SESSIONS_KEY);
+    return stored ? JSON.parse(stored) as PlayerSession[] : [];
+  } catch {
+    window.localStorage.removeItem(SAVED_SESSIONS_KEY);
+    return [];
+  }
+}
+
+function rememberSession(session: PlayerSession) {
+  const existing = readSavedSessions().filter((item) => !(item.roomCode === session.roomCode && item.playerId === session.playerId));
+  window.localStorage.setItem(SAVED_SESSIONS_KEY, JSON.stringify([session, ...existing].slice(0, 20)));
+}
+
+function forgetSavedSession(session: PlayerSession) {
+  const remaining = readSavedSessions().filter((item) => !(item.roomCode === session.roomCode && item.playerId === session.playerId));
+  window.localStorage.setItem(SAVED_SESSIONS_KEY, JSON.stringify(remaining));
+}
+
 function persistSession(session: PlayerSession | null) {
-  if (session) window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  else window.localStorage.removeItem(SESSION_KEY);
+  if (session) {
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    rememberSession(session);
+  } else window.localStorage.removeItem(SESSION_KEY);
 }
 
 function readSession(): PlayerSession | null {
@@ -94,6 +117,7 @@ export function AuctionArena() {
   const [teamName, setTeamName] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [session, setSession] = useState<PlayerSession | null>(null);
+  const [savedSessions, setSavedSessions] = useState<PlayerSession[]>([]);
   const [room, setRoom] = useState<RoomView | null>(null);
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -126,7 +150,9 @@ export function AuctionArena() {
 
   useEffect(() => {
     const stored = readSession();
+    const saved = readSavedSessions();
     const restore = window.setTimeout(() => {
+      setSavedSessions(saved);
       if (stored) setSession(stored);
     }, 0);
     return () => window.clearTimeout(restore);
@@ -152,6 +178,10 @@ export function AuctionArena() {
       } catch (pollError) {
         if (cancelled) return;
         if (pollError instanceof ApiClientError && (pollError.status === 401 || pollError.status === 404)) {
+          if (session) {
+            forgetSavedSession(session);
+            setSavedSessions(readSavedSessions());
+          }
           persistSession(null);
           setSession(null);
           setRoom(null);
@@ -216,6 +246,7 @@ export function AuctionArena() {
       }));
       if (payload) {
         persistSession(payload.session);
+        setSavedSessions(readSavedSessions());
         setSession(payload.session);
         setRoom(payload.room);
       }
@@ -228,6 +259,7 @@ export function AuctionArena() {
     }));
     if (payload) {
       persistSession(payload.session);
+      setSavedSessions(readSavedSessions());
       setSession(payload.session);
       setRoom(payload.room);
     }
@@ -253,11 +285,19 @@ export function AuctionArena() {
 
   function leaveLocalRoom() {
     persistSession(null);
+    setSavedSessions(readSavedSessions());
     setSession(null);
     setRoom(null);
     setTeamName("");
     setJoinCode("");
     setEntryMode("choose");
+  }
+
+  function continueSavedGame(saved: PlayerSession) {
+    persistSession(saved);
+    setSession(saved);
+    setRoom(null);
+    setError(null);
   }
 
   async function copyCode() {
@@ -296,10 +336,13 @@ export function AuctionArena() {
           <div className="entry-copy"><span><Wifi size={13} /> LIVE MULTIPLAYER</span><h1>Build your war room.</h1><p>Create a private auction or join your friends with a four-digit room code.</p></div>
 
           {entryMode === "choose" ? (
-            <div className="entry-options">
-              <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>Create a game</strong><small>Become administrator, choose the sport, invite up to 9 more teams.</small><ChevronRight size={18} /></button>
-              <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join a game</strong><small>Enter a four-digit code and register your team in the live room.</small><ChevronRight size={18} /></button>
-            </div>
+            <>
+              <div className="entry-options">
+                <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>Create a game</strong><small>Become administrator, choose the sport, invite up to 9 more teams.</small><ChevronRight size={18} /></button>
+                <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join a game</strong><small>Enter a four-digit code and register your team in the live room.</small><ChevronRight size={18} /></button>
+              </div>
+              {savedSessions.length ? <div className="saved-games"><div className="saved-games-heading"><span>CONTINUE GAME</span><strong>{savedSessions.length} saved</strong></div>{savedSessions.map((saved) => <button key={saved.roomCode + saved.playerId} onClick={() => continueSavedGame(saved)}><span><b>{saved.roomCode}</b><strong>{saved.teamName}</strong><small>Resume your saved team and current game stage.</small></span><ChevronRight size={17}/></button>)}</div> : null}
+            </>
           ) : (
             <form className="entry-form" onSubmit={submitEntry}>
               <button type="button" className="back-button" onClick={() => { setEntryMode("choose"); setError(null); }}><ArrowLeft size={15} /> Back</button>
