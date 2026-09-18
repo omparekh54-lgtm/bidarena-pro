@@ -319,8 +319,17 @@ function appendLeagueKnockout(room: AuctionRoom) {
   if (hasKnockouts) return false;
   const leagueFixtures = room.tournament.fixtures.filter((fixture) => fixture.stage === "league" || fixture.stage === "group");
   if (leagueFixtures.some((fixture) => fixture.status !== "complete")) return false;
-  const ranked = [...room.tournament.standings].sort((a, b) => b.points - a.points || b.difference - a.difference || b.scored - a.scored);
-  const top = ranked.slice(0, 4);
+  const rankRows = (rows: StandingRow[]) => [...rows].sort((a, b) => b.points - a.points || b.difference - a.difference || b.scored - a.scored);
+  let top: StandingRow[];
+  if (format === "groups-knockout") {
+    const ids = room.participants.map((participant) => participant.id);
+    const midpoint = Math.ceil(ids.length / 2);
+    const groupA = new Set(ids.slice(0, midpoint));
+    const groupB = new Set(ids.slice(midpoint));
+    top = [...rankRows(room.tournament.standings.filter((row) => groupA.has(row.participantId))).slice(0, 2), ...rankRows(room.tournament.standings.filter((row) => groupB.has(row.participantId))).slice(0, 2)];
+  } else {
+    top = rankRows(room.tournament.standings).slice(0, 4);
+  }
   if (top.length < 4) return false;
   const nextRound = Math.max(...room.tournament.fixtures.map((fixture) => fixture.round)) + 1;
   room.tournament.fixtures.push(
