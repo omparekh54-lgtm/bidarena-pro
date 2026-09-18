@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronDown, ChevronUp, CircleDot, LoaderCircle, Play, Trophy, Users } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import type { FootballFormation, RoomView, TournamentFormat, TournamentFixture } from "@/lib/auction/types";
 
 type Props = {
@@ -129,22 +129,25 @@ function FootballSetup({ room, fixture, onCommand, pending }: { room: RoomView; 
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId)!;
   const existing = fixture.footballLineups?.[self.id];
   const [formation,setFormation] = useState<FootballFormation>(existing?.formation ?? "4-3-3");
-  const [assignments,setAssignments] = useState<Record<string,string>>(existing?.slotAssignments ?? {});
+  const initialFormation = existing?.formation ?? "4-3-3";
+  const [assignments,setAssignments] = useState<Record<string,string>>(() => {
+    if (existing?.slotAssignments) return existing.slotAssignments;
+    return Object.fromEntries(FORMATIONS[initialFormation].map((slot,index) => [slot, self.squad[index]?.athleteId ?? ""]));
+  });
   const slots = FORMATIONS[formation];
 
-  useEffect(() => {
-    setAssignments((current) => {
-      const next: Record<string,string> = {};
-      slots.forEach((slot,index) => { next[slot] = current[slot] ?? self.squad[index]?.athleteId ?? ""; });
-      return next;
-    });
-  }, [formation]);
+  const changeFormation = (nextFormation: FootballFormation) => {
+    setFormation(nextFormation);
+    setAssignments((current) => Object.fromEntries(
+      FORMATIONS[nextFormation].map((slot,index) => [slot, current[slot] ?? self.squad[index]?.athleteId ?? ""]),
+    ));
+  };
 
   const selected = Object.values(assignments).filter(Boolean);
   const valid = selected.length === 11 && new Set(selected).size === 11;
 
   return <div className="sport-setup">
-    <div className="setup-toolbar"><label><span>FORMATION</span><select value={formation} onChange={(event) => setFormation(event.target.value as FootballFormation)}>{Object.keys(FORMATIONS).map((value) => <option key={value}>{value}</option>)}</select></label><div><strong>{new Set(selected).size}/11</strong><small>unique starters</small></div></div>
+    <div className="setup-toolbar"><label><span>FORMATION</span><select value={formation} onChange={(event) => changeFormation(event.target.value as FootballFormation)}>{Object.keys(FORMATIONS).map((value) => <option key={value}>{value}</option>)}</select></label><div><strong>{new Set(selected).size}/11</strong><small>unique starters</small></div></div>
     <div className="football-pitch">
       {slots.map((slot) => <label key={slot}><span>{slot}</span><select value={assignments[slot] ?? ""} onChange={(event) => setAssignments((current) => ({...current,[slot]:event.target.value}))}><option value="">Select player</option>{self.squad.map((entry) => <option key={entry.athleteId} value={entry.athleteId}>{entry.athlete.shortName} · {entry.athlete.role}</option>)}</select></label>)}
     </div>
@@ -159,11 +162,6 @@ function CricketSetup({ room, fixture, onCommand, pending }: { room: RoomView; f
   const [batting,setBatting] = useState<string[]>(existing?.battingOrder ?? xi);
   const [bowling,setBowling] = useState<string[]>(existing?.bowlingPlan ?? Array.from({length:room.tournament.cricketOvers},(_,index) => xi[index % Math.max(1,Math.min(5,xi.length))] ?? ""));
 
-  useEffect(() => {
-    setBatting((current) => [...current.filter((id) => xi.includes(id)), ...xi.filter((id) => !current.includes(id))].slice(0,11));
-    setBowling((current) => Array.from({length:room.tournament.cricketOvers},(_,index) => current[index] && xi.includes(current[index]) ? current[index] : xi[index % Math.max(1,Math.min(5,xi.length))] ?? ""));
-  }, [xi, room.tournament.cricketOvers]);
-
   const myCall = fixture.toss?.calls[self.id];
   const tossWinner = fixture.toss?.winnerParticipantId;
   const move = (index:number,delta:number) => setBatting((current) => {
@@ -171,7 +169,15 @@ function CricketSetup({ room, fixture, onCommand, pending }: { room: RoomView; f
     [next[index],next[target]]=[next[target],next[index]]; return next;
   });
 
-  const toggleXi=(id:string) => setXi((current) => current.includes(id) ? current.filter((candidate) => candidate!==id) : current.length<11 ? [...current,id] : current);
+  const toggleXi = (id: string) => {
+    const nextXi = xi.includes(id) ? xi.filter((candidate) => candidate !== id) : xi.length < 11 ? [...xi, id] : xi;
+    setXi(nextXi);
+    setBatting((current) => [...current.filter((playerId) => nextXi.includes(playerId)), ...nextXi.filter((playerId) => !current.includes(playerId))].slice(0, 11));
+    setBowling((current) => Array.from(
+      { length: room.tournament.cricketOvers },
+      (_, index) => current[index] && nextXi.includes(current[index]) ? current[index] : nextXi[index % Math.max(1, Math.min(5, nextXi.length))] ?? "",
+    ));
+  };
 
   return <div className="sport-setup cricket-setup">
     <section className="toss-panel"><span>1 · TOSS</span>
