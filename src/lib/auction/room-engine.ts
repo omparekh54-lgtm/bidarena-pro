@@ -92,6 +92,29 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
       offers: [],
       resumeAuctionOnClose: false,
     },
+    tournament: {
+      status: "setup",
+      format: null,
+      cricketOvers: 20,
+      currentRound: 1,
+      fixtures: [],
+      standings: [admin].map((participant) => ({
+        participantId: participant.id,
+        played: 0,
+        won: 0,
+        drawn: 0,
+        lost: 0,
+        points: 0,
+        scored: 0,
+        conceded: 0,
+        difference: 0,
+      })),
+    },
+    sessionResume: {
+      endedAt: null,
+      requestedAt: null,
+      votes: [],
+    },
     createdAt,
     updatedAt: createdAt,
     version: 1,
@@ -175,12 +198,30 @@ export function stopRoom(room: AuctionRoom, adminPlayerId: string, now = Date.no
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can stop the auction.", 403, "ADMIN_ONLY");
   assertAuction(room.phase !== "lobby" && room.phase !== "complete", "This auction has already ended.", 409, "AUCTION_ENDED");
   closeTransferWindowInternal(room, now, false);
-  room.phase = "complete";
+  room.phase = "tournament-setup";
   room.deadlineAt = null;
   room.transitionAt = null;
   room.pausedAt = null;
   room.stoppedAt = toIso(now);
   room.leaderId = null;
+  room.tournament = {
+    status: "setup",
+    format: null,
+    cricketOvers: 20,
+    currentRound: 1,
+    fixtures: [],
+    standings: room.participants.map((participant) => ({
+      participantId: participant.id,
+      played: 0,
+      won: 0,
+      drawn: 0,
+      lost: 0,
+      points: 0,
+      scored: 0,
+      conceded: 0,
+      difference: 0,
+    })),
+  };
   touch(room, now);
 }
 
@@ -523,4 +564,31 @@ export function finalizeRoomResult(room: AuctionRoom): FinalRoomResult {
       }),
     })),
   };
+}
+
+
+export function endSession(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
+  assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can end the session.", 403, "ADMIN_ONLY");
+  assertAuction(room.phase !== "complete", "This game has already finished.", 409, "GAME_COMPLETE");
+  if (!room.pausedAt) pauseClock(room, now);
+  room.sessionResume.endedAt = toIso(now);
+  room.sessionResume.requestedAt = null;
+  room.sessionResume.votes = [];
+  touch(room, now);
+}
+
+export function requestSessionResume(room: AuctionRoom, participantId: string, now = Date.now()) {
+  assertAuction(room.sessionResume.endedAt, "This game is not waiting for a multi-day resume vote.", 409, "SESSION_NOT_ENDED");
+  assertAuction(room.participants.some((participant) => participant.id === participantId), "You are not part of this room.", 403, "PLAYER_NOT_FOUND");
+  room.sessionResume.requestedAt ??= toIso(now);
+  if (!room.sessionResume.votes.includes(participantId)) room.sessionResume.votes.push(participantId);
+  const required = Math.ceil(room.participants.length * 0.75);
+  if (room.sessionResume.votes.length >= required) {
+    resumeClock(room, now);
+    room.sessionResume.endedAt = null;
+    room.sessionResume.requestedAt = null;
+    room.sessionResume.votes = [];
+  }
+  touch(room, now);
+  return required;
 }

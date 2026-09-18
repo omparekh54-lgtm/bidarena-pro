@@ -33,10 +33,12 @@ import {
 } from "lucide-react";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { TournamentArena } from "@/components/tournament-arena";
 import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
+const SAVED_SESSIONS_KEY = "bidarena-saved-sessions-v1";
 const POLL_INTERVAL_MS = 1_000;
 const MINIMUM_SQUAD_SIZE = 11;
 
@@ -61,9 +63,31 @@ async function apiRequest<T>(path: string, init: RequestInit = {}, session?: Pla
   return payload;
 }
 
+function readSavedSessions(): PlayerSession[] {
+  try {
+    const stored = window.localStorage.getItem(SAVED_SESSIONS_KEY);
+    return stored ? JSON.parse(stored) as PlayerSession[] : [];
+  } catch {
+    window.localStorage.removeItem(SAVED_SESSIONS_KEY);
+    return [];
+  }
+}
+
+function rememberSession(session: PlayerSession) {
+  const existing = readSavedSessions().filter((item) => !(item.roomCode === session.roomCode && item.playerId === session.playerId));
+  window.localStorage.setItem(SAVED_SESSIONS_KEY, JSON.stringify([session, ...existing].slice(0, 20)));
+}
+
+function forgetSavedSession(session: PlayerSession) {
+  const remaining = readSavedSessions().filter((item) => !(item.roomCode === session.roomCode && item.playerId === session.playerId));
+  window.localStorage.setItem(SAVED_SESSIONS_KEY, JSON.stringify(remaining));
+}
+
 function persistSession(session: PlayerSession | null) {
-  if (session) window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  else window.localStorage.removeItem(SESSION_KEY);
+  if (session) {
+    window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    rememberSession(session);
+  } else window.localStorage.removeItem(SESSION_KEY);
 }
 
 function readSession(): PlayerSession | null {
@@ -93,6 +117,7 @@ export function AuctionArena() {
   const [teamName, setTeamName] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [session, setSession] = useState<PlayerSession | null>(null);
+  const [savedSessions, setSavedSessions] = useState<PlayerSession[]>([]);
   const [room, setRoom] = useState<RoomView | null>(null);
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -125,7 +150,9 @@ export function AuctionArena() {
 
   useEffect(() => {
     const stored = readSession();
+    const saved = readSavedSessions();
     const restore = window.setTimeout(() => {
+      setSavedSessions(saved);
       if (stored) setSession(stored);
     }, 0);
     return () => window.clearTimeout(restore);
@@ -151,6 +178,10 @@ export function AuctionArena() {
       } catch (pollError) {
         if (cancelled) return;
         if (pollError instanceof ApiClientError && (pollError.status === 401 || pollError.status === 404)) {
+          if (session) {
+            forgetSavedSession(session);
+            setSavedSessions(readSavedSessions());
+          }
           persistSession(null);
           setSession(null);
           setRoom(null);
@@ -215,6 +246,7 @@ export function AuctionArena() {
       }));
       if (payload) {
         persistSession(payload.session);
+        setSavedSessions(readSavedSessions());
         setSession(payload.session);
         setRoom(payload.room);
       }
@@ -227,6 +259,7 @@ export function AuctionArena() {
     }));
     if (payload) {
       persistSession(payload.session);
+      setSavedSessions(readSavedSessions());
       setSession(payload.session);
       setRoom(payload.room);
     }
@@ -252,11 +285,19 @@ export function AuctionArena() {
 
   function leaveLocalRoom() {
     persistSession(null);
+    setSavedSessions(readSavedSessions());
     setSession(null);
     setRoom(null);
     setTeamName("");
     setJoinCode("");
     setEntryMode("choose");
+  }
+
+  function continueSavedGame(saved: PlayerSession) {
+    persistSession(saved);
+    setSession(saved);
+    setRoom(null);
+    setError(null);
   }
 
   async function copyCode() {
@@ -266,11 +307,16 @@ export function AuctionArena() {
     window.setTimeout(() => setCopied(false), 1400);
   }
 
+  async function endLongSession() {
+    if (!window.confirm("Save this game and end the current session? The game will remain saved and will resume once at least 75% of teams vote to continue.")) return;
+    await command("session/end");
+  }
+
   async function stopAuction() {
     const incompleteTeams = room?.participants.filter((participant) => participant.squadSize < MINIMUM_SQUAD_SIZE) ?? [];
     const warning = incompleteTeams.length
       ? `${incompleteTeams.length} team${incompleteTeams.length === 1 ? " has" : "s have"} fewer than ${MINIMUM_SQUAD_SIZE} players. As creator, you can still stop the auction manually. Stop anyway?`
-      : "End this auction now? Current bids on this unfinished lot will not be charged.";
+      : "End the auction and continue to Tournament Setup? Current bids on this unfinished lot will not be charged.";
     if (!window.confirm(warning)) return;
     await command("stop");
   }
@@ -290,10 +336,13 @@ export function AuctionArena() {
           <div className="entry-copy"><span><Wifi size={13} /> LIVE MULTIPLAYER</span><h1>Build your war room.</h1><p>Create a private auction or join your friends with a four-digit room code.</p></div>
 
           {entryMode === "choose" ? (
-            <div className="entry-options">
-              <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>Create a game</strong><small>Become administrator, choose the sport, invite up to 9 more teams.</small><ChevronRight size={18} /></button>
-              <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join a game</strong><small>Enter a four-digit code and register your team in the live room.</small><ChevronRight size={18} /></button>
-            </div>
+            <>
+              <div className="entry-options">
+                <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>Create a game</strong><small>Become administrator, choose the sport, invite up to 9 more teams.</small><ChevronRight size={18} /></button>
+                <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join a game</strong><small>Enter a four-digit code and register your team in the live room.</small><ChevronRight size={18} /></button>
+              </div>
+              {savedSessions.length ? <div className="saved-games"><div className="saved-games-heading"><span>CONTINUE GAME</span><strong>{savedSessions.length} saved</strong></div>{savedSessions.map((saved) => <button key={saved.roomCode + saved.playerId} onClick={() => continueSavedGame(saved)}><span><b>{saved.roomCode}</b><strong>{saved.teamName}</strong><small>Resume your saved team and current game stage.</small></span><ChevronRight size={17}/></button>)}</div> : null}
+            </>
           ) : (
             <form className="entry-form" onSubmit={submitEntry}>
               <button type="button" className="back-button" onClick={() => { setEntryMode("choose"); setError(null); }}><ArrowLeft size={15} /> Back</button>
@@ -314,8 +363,19 @@ export function AuctionArena() {
     return <main className="loading-shell"><LoaderCircle className="spin" size={34} /><strong>Reconnecting to room {session.roomCode}</strong><span>Restoring the latest auction ledger…</span>{error ? <button onClick={leaveLocalRoom}>Leave room</button> : null}</main>;
   }
 
+  if (room.sessionResume.endedAt) {
+    const requiredVotes = Math.ceil(room.participants.length * 0.75);
+    const hasVoted = room.sessionResume.votes.includes(room.selfPlayerId);
+    const votePercent = Math.min(100, (room.sessionResume.votes.length / requiredVotes) * 100);
+    return <main className="resume-session-shell"><div className="entry-grid" aria-hidden="true" /><section className="resume-session-card"><div className="entry-brand"><div className="brand-mark"><Play size={22} /></div><div><strong>BIDARENA</strong><span>SAVED MULTI-DAY GAME</span></div></div><span className="tournament-kicker">ROOM {room.code}</span><h1>Continue your saved game?</h1><p>This game is safely saved at its current stage. It resumes automatically when at least 75% of the teams agree.</p><div className="resume-vote-meter"><strong>{room.sessionResume.votes.length} / {requiredVotes}</strong><span>votes required to continue</span><div><i style={{ width: votePercent + "%" }} /></div></div><div className="resume-team-list">{room.participants.map((participant) => <span key={participant.id}><b>{participant.code}</b><strong>{participant.teamName}</strong>{room.sessionResume.votes.includes(participant.id) ? <Check size={15} /> : <Clock3 size={15} />}</span>)}</div><button className="primary-button" disabled={hasVoted || Boolean(pending)} onClick={() => void command("session/resume-vote")}>{hasVoted ? <Check size={17} /> : <Play size={17} />}{hasVoted ? "Vote submitted" : "Vote to continue"}</button><button className="resume-leave" onClick={leaveLocalRoom}>Leave for now</button>{error ? <div className="error-banner">{error}</div> : null}</section></main>;
+  }
+
   if (room.phase === "lobby") {
     return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse, playerPoolMode) => void command("configure", { sport, purse, playerPoolMode })} onStart={() => void command("start")} />;
+  }
+
+  if (room.phase === "tournament-setup" || room.phase === "tournament" || (room.phase === "complete" && room.tournament.status === "complete")) {
+    return <TournamentArena room={room} pending={pending} error={error} onCommand={command} onLeave={leaveLocalRoom} />;
   }
 
   if (room.phase === "complete") {
@@ -344,6 +404,7 @@ export function AuctionArena() {
         <div className="sport-switch locked" aria-label="Selected auction format"><button className="active">{room.sport}<small>{room.playerPoolMode === "mixed" ? "CURRENT + ICONS" : room.playerPoolMode === "legends" ? "ICONS ONLY" : "CURRENT ONLY"}</small></button></div>
         <div className="room-status">
           {room.isAdmin ? <div className="admin-game-controls">
+            <button disabled={Boolean(pending)} onClick={() => void endLongSession()}><Clock3 size={15} /><span>SAVE & END</span></button>
             {room.transferWindow.status === "closed" ? <button disabled={Boolean(pending)} onClick={() => setShowTransferSetup(true)}><ArrowRightLeft size={15} /><span>TRANSFERS</span></button> : <button disabled={Boolean(pending)} onClick={() => void command("transfer-window/close")}><ArrowRightLeft size={15} /><span>END WINDOW</span></button>}
             <button disabled={Boolean(pending) || room.transferWindow.status === "open"} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button>
             <button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction" title={everyTeamHasMinimumSquad ? "End auction" : "Creator override: stop before every team reaches 11 players"}><Square size={14} /><span>STOP</span></button>

@@ -102,7 +102,83 @@ export type TransferWindow = {
   resumeAuctionOnClose: boolean;
 };
 
-export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "between-lots" | "complete";
+export type TournamentFormat = "league" | "league-knockout" | "knockout" | "groups-knockout";
+export type TournamentStatus = "setup" | "active" | "complete";
+export type MatchStatus = "scheduled" | "ready" | "complete";
+
+export type FootballFormation = "4-3-3" | "4-4-2" | "4-2-3-1" | "3-5-2" | "3-4-3" | "5-3-2" | "4-1-4-1";
+export type FootballLineup = {
+  formation: FootballFormation;
+  starterIds: string[];
+  slotAssignments: Record<string, string>;
+  substituteIds: string[];
+};
+
+export type CricketLineup = {
+  playingXi: string[];
+  battingOrder: string[];
+  bowlingPlan: string[];
+};
+
+export type TossState = {
+  calls: Record<string, "heads" | "tails">;
+  coin?: "heads" | "tails";
+  winnerParticipantId?: string;
+  decision?: "bat" | "bowl";
+};
+
+export type TournamentResult = {
+  homeScore: number;
+  awayScore: number;
+  summary: string;
+  homeDetail?: string;
+  awayDetail?: string;
+};
+
+export type TournamentFixture = {
+  id: string;
+  round: number;
+  stage: "league" | "group" | "quarterfinal" | "semifinal" | "final" | "knockout";
+  homeParticipantId: string;
+  awayParticipantId: string;
+  status: MatchStatus;
+  footballLineups?: Record<string, FootballLineup>;
+  cricketLineups?: Record<string, CricketLineup>;
+  toss?: TossState;
+  result?: TournamentResult;
+};
+
+export type StandingRow = {
+  participantId: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  points: number;
+  scored: number;
+  conceded: number;
+  difference: number;
+};
+
+export type TournamentState = {
+  status: TournamentStatus;
+  format: TournamentFormat | null;
+  cricketOvers: 10 | 20 | 50;
+  currentRound: number;
+  fixtures: TournamentFixture[];
+  standings: StandingRow[];
+  championParticipantId?: string;
+  startedAt?: string;
+  completedAt?: string;
+};
+
+export type SessionResumeState = {
+  endedAt: string | null;
+  requestedAt: string | null;
+  votes: string[];
+};
+
+export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "between-lots" | "tournament-setup" | "tournament" | "complete";
 
 export type AuctionRoom = {
   schemaVersion: 1;
@@ -126,6 +202,8 @@ export type AuctionRoom = {
   sales: Sale[];
   unsoldAthleteIds: string[];
   transferWindow: TransferWindow;
+  tournament: TournamentState;
+  sessionResume: SessionResumeState;
   createdAt: string;
   updatedAt: string;
   version: number;

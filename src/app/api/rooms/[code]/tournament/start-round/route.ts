@@ -1,0 +1,10 @@
+import { apiHandler, json, requestSession } from "@/lib/api";
+import { startTournamentRound } from "@/lib/auction/room-service";
+type Context = { params: Promise<{ code: string }> };
+export async function POST(request: Request, { params }: Context) {
+  return apiHandler(async () => {
+    const { code } = await params;
+    const session = requestSession(request);
+    return json({ room: await startTournamentRound(code, session.playerId, session.token) });
+  });
+}
