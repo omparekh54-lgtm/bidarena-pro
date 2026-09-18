@@ -259,8 +259,9 @@ function updateTable(room: AuctionRoom, fixture: TournamentFixture) {
 
 function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
   if (room.sport === "football") {
-    const homeLineup = fixture.footballLineups?.[fixture.homeParticipantId]!;
-    const awayLineup = fixture.footballLineups?.[fixture.awayParticipantId]!;
+    const homeLineup = fixture.footballLineups?.[fixture.homeParticipantId];
+    const awayLineup = fixture.footballLineups?.[fixture.awayParticipantId];
+    assertAuction(homeLineup && awayLineup, "Both football lineups must be submitted before simulation.", 409, "LINEUPS_NOT_READY");
     const homeRating = rating(homeLineup.starterIds);
     const awayRating = rating(awayLineup.starterIds);
     let homeScore = footballScore(homeRating, awayRating);
@@ -276,8 +277,9 @@ function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
       awayDetail: `${awayLineup.formation} · XI avg ${awayRating.toFixed(1)}`,
     };
   } else {
-    const homeLineup = fixture.cricketLineups?.[fixture.homeParticipantId]!;
-    const awayLineup = fixture.cricketLineups?.[fixture.awayParticipantId]!;
+    const homeLineup = fixture.cricketLineups?.[fixture.homeParticipantId];
+    const awayLineup = fixture.cricketLineups?.[fixture.awayParticipantId];
+    assertAuction(homeLineup && awayLineup, "Both cricket lineups must be submitted before simulation.", 409, "LINEUPS_NOT_READY");
     const homeRating = rating(homeLineup.playingXi);
     const awayRating = rating(awayLineup.playingXi);
     const tossWinner = fixture.toss!.winnerParticipantId!;
