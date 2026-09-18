@@ -1,4 +1,5 @@
 name: BidArena Build Check
+# Validation workflow for tournament-mode releases.
 
 on:
   push:
