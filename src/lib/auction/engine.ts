@@ -1,4 +1,5 @@
-import type { Athlete, RoomParticipant } from "./types";
+import { athletesForPool } from "@/data/catalog";
+import type { Athlete, PlayerPoolMode, RoomParticipant, Sport } from "./types";
 
 export function secureShuffle<T>(items: readonly T[]): T[] {
   const result = [...items];
@@ -19,8 +20,19 @@ export function nextBidAmount(current: number, base: number) {
   return amount + 50;
 }
 
-export function canBid(participant: Pick<RoomParticipant, "budget" | "squad">, amount: number, minimumSlots = 2) {
-  const reserve = Math.max(0, minimumSlots - participant.squad.length - 1) * 20;
+export function minimumBasePriceForPool(sport: Sport, mode: PlayerPoolMode = "current") {
+  const prices = athletesForPool(sport, mode).map((athlete) => athlete.basePrice);
+  return prices.length ? Math.min(...prices) : 0;
+}
+
+export function canBid(
+  participant: Pick<RoomParticipant, "budget" | "squad">,
+  amount: number,
+  minimumSquadSize = 11,
+  reservePerRemainingPlayer = 0,
+) {
+  const remainingSlotsAfterPurchase = Math.max(0, minimumSquadSize - participant.squad.length - 1);
+  const reserve = remainingSlotsAfterPurchase * Math.max(0, reservePerRemainingPlayer);
   return participant.budget - amount >= reserve;
 }
 
