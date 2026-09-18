@@ -160,7 +160,7 @@ describe("full-game reliability stress", () => {
     }, 3_303);
 
     expect(() => respondToTransferOffer(room, other.id, offer.id, "accept", 3_304)).toThrow();
-    expect(leader.budget).toBe(100);
+    expect(leader.budget).toBe(500);
     expect(offer.status).toBe("pending");
   });
 
