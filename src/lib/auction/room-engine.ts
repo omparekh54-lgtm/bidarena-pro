@@ -1,5 +1,5 @@
 import { athleteCatalog, athletesForPool } from "@/data/catalog";
-import { canBid, nextBidAmount, secureShuffle } from "./engine";
+import { canBid, minimumBasePriceForPool, nextBidAmount, secureShuffle } from "./engine";
 import { assertAuction } from "./errors";
 import type { Athlete, AuctionRoom, FinalRoomResult, ParticipantView, PlayerPoolMode, RoomParticipant, RoomView, Sport, TransferOffer, TransferOfferType } from "./types";
 
@@ -504,7 +504,13 @@ export function bidForParticipant(room: AuctionRoom, participantId: string, now 
   assertAuction(athlete, "The current athlete could not be resolved.", 500, "ATHLETE_MISSING");
 
   const amount = room.leaderId ? nextBidAmount(room.currentBid, athlete.basePrice) : athlete.basePrice;
-  assertAuction(canBid(participant, amount), "Your team does not have enough available budget for this bid.", 409, "INSUFFICIENT_BUDGET");
+  const reservePerPlayer = minimumBasePriceForPool(room.sport!, room.playerPoolMode ?? "current");
+  assertAuction(
+    canBid(participant, amount, 11, reservePerPlayer),
+    "This bid would leave your team without enough reserve to complete an 11-player squad.",
+    409,
+    "INSUFFICIENT_BUDGET",
+  );
 
   room.currentBid = amount;
   room.leaderId = participantId;

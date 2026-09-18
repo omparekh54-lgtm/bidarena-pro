@@ -13,6 +13,7 @@ import {
   settleRoom,
   startRoom,
 } from "./room-engine";
+import { minimumBasePriceForPool } from "./engine";
 import { setupTournament, startTournamentRound } from "./tournament-engine";
 import type { RoomParticipant, Sport, TournamentFormat } from "./types";
 
@@ -51,6 +52,28 @@ function giveTournamentSquads(room: ReturnType<typeof createRoomState>, sport: S
 }
 
 describe("full-game reliability stress", () => {
+  it("keeps reserve floors aligned with every auction pool", () => {
+    expect(minimumBasePriceForPool("football", "current")).toBe(10);
+    expect(minimumBasePriceForPool("football", "mixed")).toBe(10);
+    expect(minimumBasePriceForPool("football", "legends")).toBe(30);
+    expect(minimumBasePriceForPool("cricket", "current")).toBe(50);
+    expect(minimumBasePriceForPool("cricket", "mixed")).toBe(50);
+    expect(minimumBasePriceForPool("cricket", "legends")).toBe(150);
+  });
+
+  it("blocks bids that would make an 11-player cricket squad financially impossible", () => {
+    const { room, admin } = tenTeamRoom("cricket");
+    startRoom(room, admin.id, 100);
+    settleRoom(room, 3_300);
+    const bidder = room.participants[0];
+    bidder.budget = 549;
+    bidder.initialBudget = 549;
+
+    expect(() => bidForParticipant(room, bidder.id, 3_301)).toThrow();
+    expect(bidder.squad).toHaveLength(0);
+    expect(room.leaderId).toBeNull();
+  });
+
   it("processes the entire 300-player auction without ever auto-completing", () => {
     const { room, admin } = tenTeamRoom("football");
     startRoom(room, admin.id, 100);
@@ -120,8 +143,8 @@ describe("full-game reliability stress", () => {
     settleRoom(room, 3_300);
     const leader = room.participants[0];
     const other = room.participants[1];
-    leader.budget = 100;
-    other.budget = 100;
+    leader.budget = 500;
+    other.budget = 500;
     bidForParticipant(room, leader.id, 3_301);
     const committed = room.currentBid;
 
@@ -137,7 +160,7 @@ describe("full-game reliability stress", () => {
     }, 3_303);
 
     expect(() => respondToTransferOffer(room, other.id, offer.id, "accept", 3_304)).toThrow();
-    expect(leader.budget).toBe(100);
+    expect(leader.budget).toBe(500);
     expect(offer.status).toBe("pending");
   });
 
