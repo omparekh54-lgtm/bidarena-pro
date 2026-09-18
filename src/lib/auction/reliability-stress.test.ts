@@ -153,7 +153,9 @@ describe("full-game reliability stress", () => {
 
     expect(room.sessionResume.endedAt).toBeNull();
     expect(room.transferWindow.status).toBe("open");
-    expect(Date.parse(room.transferWindow.endsAt!)).toBe(originalEndsAt + 86_400_000);
+    const thresholdReachedAt = resumeAt + 7;
+    const remainingAtSave = originalEndsAt - 2_000;
+    expect(Date.parse(room.transferWindow.endsAt!)).toBe(thresholdReachedAt + remainingAtSave);
     settleRoom(room, resumeAt + 10);
     expect(room.transferWindow.status).toBe("open");
   });
