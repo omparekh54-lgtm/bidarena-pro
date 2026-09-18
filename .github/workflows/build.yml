@@ -1,4 +1,5 @@
 name: BidArena Build Check
+# CI verification trigger after tournament-mode fixes.
 
 on:
   push:
