@@ -35,6 +35,9 @@ function blankStandings(room: AuctionRoom): StandingRow[] {
     scored: 0,
     conceded: 0,
     difference: 0,
+    oversFor: 0,
+    oversAgainst: 0,
+    nrr: 0,
   }));
 }
 
