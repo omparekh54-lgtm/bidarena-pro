@@ -169,7 +169,7 @@ describe("full-game reliability stress", () => {
         setupTournament(room, admin.id, format, sport === "cricket" ? 20 : 20, 100);
 
         let guard = 0;
-        while (room.phase !== "complete" && guard < 20) {
+        while ((room.phase as string) !== "complete" && guard < 20) {
           startTournamentRound(room, admin.id, 200 + guard);
           guard += 1;
         }
