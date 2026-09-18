@@ -225,17 +225,112 @@ function rand(maxExclusive: number) {
   return crypto.getRandomValues(new Uint32Array(1))[0] % maxExclusive;
 }
 
-function footballScore(teamRating: number, opponentRating: number) {
-  const edge = Math.max(-1.2, Math.min(1.2, (teamRating - opponentRating) / 8));
-  const chances = 1.3 + edge + rand(180) / 100;
-  return Math.max(0, Math.min(6, Math.floor(chances)));
+function roleCompatibility(slot: string, athleteId: string) {
+  const role = (athleteById.get(athleteId)?.role ?? "").toLowerCase();
+  const key = slot.replace(/\d+/g, "").toLowerCase();
+  if (key === "gk") return role.includes("goalkeeper") ? 1 : 0.45;
+  if (["cb"].includes(key)) return /centre-back|center-back|defender/.test(role) ? 1 : /back/.test(role) ? 0.82 : 0.68;
+  if (["lb","rb","lwb","rwb"].includes(key)) return /left-back|right-back|wing-back|full-back|defender/.test(role) ? 1 : /back|winger/.test(role) ? 0.82 : 0.68;
+  if (["cdm","cm","cam","lm","rm"].includes(key)) return /midfield|midfielder|winger/.test(role) ? 1 : 0.78;
+  if (["lw","rw"].includes(key)) return /winger|forward|midfield/.test(role) ? 1 : 0.76;
+  if (key === "st") return /striker|forward|centre-forward|center-forward/.test(role) ? 1 : /winger/.test(role) ? 0.86 : 0.7;
+  return 0.8;
 }
 
-function cricketInnings(teamRating: number, opponentRating: number, overs: number) {
-  const basePerOver = 6.4 + (teamRating - opponentRating) / 18;
-  const runs = Math.max(45, Math.round(overs * (basePerOver + (rand(260) - 80) / 100)));
-  const wickets = Math.min(10, Math.max(2, 3 + rand(7) + (opponentRating > teamRating ? 1 : 0)));
-  return { runs, wickets };
+function footballLineupRating(lineup: FootballLineup) {
+  const assignments = Object.entries(lineup.slotAssignments);
+  if (!assignments.length) return rating(lineup.starterIds);
+  const values = assignments.map(([slot, athleteId]) => (athleteById.get(athleteId)?.gameRating ?? 70) * roleCompatibility(slot, athleteId));
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function footballScore(teamRating: number, opponentRating: number) {
+  const edge = Math.max(-1.3, Math.min(1.3, (teamRating - opponentRating) / 7.5));
+  const chances = 1.25 + edge + rand(190) / 100;
+  return Math.max(0, Math.min(7, Math.floor(chances)));
+}
+
+function bowlerPool(lineup: CricketLineup) {
+  const preferred = lineup.playingXi.filter((id) => /bowler|all-rounder/.test((athleteById.get(id)?.role ?? "").toLowerCase()));
+  return (preferred.length >= 2 ? preferred : lineup.playingXi).sort((a, b) => (athleteById.get(b)?.gameRating ?? 70) - (athleteById.get(a)?.gameRating ?? 70));
+}
+
+function simulateCricketInnings(batting: CricketLineup, bowling: CricketLineup, overs: number, target?: number) {
+  let runs = 0;
+  let wickets = 0;
+  let balls = 0;
+  for (let over = 0; over < overs && wickets < 10; over += 1) {
+    const bowlerId = bowling.bowlingPlan[over] ?? bowlerPool(bowling)[over % Math.max(1, bowlerPool(bowling).length)];
+    const bowlerRating = athleteById.get(bowlerId)?.gameRating ?? 70;
+    for (let ball = 0; ball < 6 && wickets < 10; ball += 1) {
+      const batterId = batting.battingOrder[Math.min(10, wickets + (balls % 2))] ?? batting.playingXi[0];
+      const batterRating = athleteById.get(batterId)?.gameRating ?? 70;
+      const edge = Math.max(-18, Math.min(18, batterRating - bowlerRating));
+      const wicketChance = Math.max(4, Math.min(22, 11 - edge / 4));
+      if (rand(100) < wicketChance) {
+        wickets += 1;
+      } else {
+        const roll = rand(100);
+        const adjusted = roll + edge / 2;
+        runs += adjusted > 92 ? 6 : adjusted > 82 ? 4 : adjusted > 62 ? 2 : adjusted > 35 ? 1 : 0;
+      }
+      balls += 1;
+      if (target && runs >= target) break;
+    }
+    if (target && runs >= target) break;
+  }
+  return { runs, wickets, oversUsed: balls / 6, allOut: wickets >= 10 };
+}
+
+function autoFootballLineup(room: AuctionRoom, participantId: string): FootballLineup {
+  const participant = room.participants.find((candidate) => candidate.id === participantId)!;
+  const chosen = [...participant.squad]
+    .sort((a, b) => (athleteById.get(b.athleteId)?.gameRating ?? 70) - (athleteById.get(a.athleteId)?.gameRating ?? 70))
+    .slice(0, 11)
+    .map((entry) => entry.athleteId);
+  assertAuction(chosen.length === 11, `${participant.teamName} needs 11 players before a tournament round can start.`, 422, "SQUAD_TOO_SMALL");
+  const slots = ["GK","LB","CB1","CB2","RB","CM1","CM2","CM3","LW","ST","RW"];
+  return {
+    formation: "4-3-3",
+    starterIds: chosen,
+    slotAssignments: Object.fromEntries(slots.map((slot, index) => [slot, chosen[index]])),
+    substituteIds: participant.squad.map((entry) => entry.athleteId).filter((id) => !chosen.includes(id)).slice(0, 7),
+  };
+}
+
+function autoCricketLineup(room: AuctionRoom, participantId: string): CricketLineup {
+  const participant = room.participants.find((candidate) => candidate.id === participantId)!;
+  const playingXi = [...participant.squad]
+    .sort((a, b) => (athleteById.get(b.athleteId)?.gameRating ?? 70) - (athleteById.get(a.athleteId)?.gameRating ?? 70))
+    .slice(0, 11)
+    .map((entry) => entry.athleteId);
+  assertAuction(playingXi.length === 11, `${participant.teamName} needs 11 players before a tournament round can start.`, 422, "SQUAD_TOO_SMALL");
+  const battingOrder = [...playingXi].sort((a, b) => (athleteById.get(b)?.gameRating ?? 70) - (athleteById.get(a)?.gameRating ?? 70));
+  const provisional: CricketLineup = { playingXi, battingOrder, bowlingPlan: [] };
+  const bowlers = bowlerPool(provisional).slice(0, Math.min(5, playingXi.length));
+  const bowlingPlan = Array.from({ length: room.tournament.cricketOvers }, (_, index) => bowlers[index % bowlers.length]);
+  return { playingXi, battingOrder, bowlingPlan };
+}
+
+function forceFixtureReady(room: AuctionRoom, fixture: TournamentFixture) {
+  if (room.sport === "football") {
+    fixture.footballLineups ??= {};
+    fixture.footballLineups[fixture.homeParticipantId] ??= autoFootballLineup(room, fixture.homeParticipantId);
+    fixture.footballLineups[fixture.awayParticipantId] ??= autoFootballLineup(room, fixture.awayParticipantId);
+  } else {
+    fixture.cricketLineups ??= {};
+    fixture.cricketLineups[fixture.homeParticipantId] ??= autoCricketLineup(room, fixture.homeParticipantId);
+    fixture.cricketLineups[fixture.awayParticipantId] ??= autoCricketLineup(room, fixture.awayParticipantId);
+    fixture.toss ??= { calls: {} };
+    if (!fixture.toss.winnerParticipantId) {
+      fixture.toss.coin = rand(2) === 0 ? "heads" : "tails";
+      fixture.toss.calls[fixture.homeParticipantId] ??= "heads";
+      fixture.toss.calls[fixture.awayParticipantId] ??= "tails";
+      fixture.toss.winnerParticipantId = fixture.toss.calls[fixture.homeParticipantId] === fixture.toss.coin ? fixture.homeParticipantId : fixture.awayParticipantId;
+    }
+    fixture.toss.decision ??= "bat";
+  }
+  fixture.status = "ready";
 }
 
 function updateTable(room: AuctionRoom, fixture: TournamentFixture) {
@@ -258,6 +353,17 @@ function updateTable(room: AuctionRoom, fixture: TournamentFixture) {
   }
   home.difference = home.scored - home.conceded;
   away.difference = away.scored - away.conceded;
+  if (room.sport === "cricket") {
+    const quota = room.tournament.cricketOvers;
+    const homeForOvers = fixture.result.homeAllOut ? quota : (fixture.result.homeOvers ?? quota);
+    const awayForOvers = fixture.result.awayAllOut ? quota : (fixture.result.awayOvers ?? quota);
+    home.oversFor += homeForOvers;
+    home.oversAgainst += awayForOvers;
+    away.oversFor += awayForOvers;
+    away.oversAgainst += homeForOvers;
+    home.nrr = home.oversFor > 0 && home.oversAgainst > 0 ? (home.scored / home.oversFor) - (home.conceded / home.oversAgainst) : 0;
+    away.nrr = away.oversFor > 0 && away.oversAgainst > 0 ? (away.scored / away.oversFor) - (away.conceded / away.oversAgainst) : 0;
+  }
 }
 
 function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
@@ -265,8 +371,8 @@ function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
     const homeLineup = fixture.footballLineups?.[fixture.homeParticipantId];
     const awayLineup = fixture.footballLineups?.[fixture.awayParticipantId];
     assertAuction(homeLineup && awayLineup, "Both football lineups must be submitted before simulation.", 409, "LINEUPS_NOT_READY");
-    const homeRating = rating(homeLineup.starterIds);
-    const awayRating = rating(awayLineup.starterIds);
+    const homeRating = footballLineupRating(homeLineup);
+    const awayRating = footballLineupRating(awayLineup);
     let homeScore = footballScore(homeRating, awayRating);
     let awayScore = footballScore(awayRating, homeRating);
     if (fixture.stage !== "league" && fixture.stage !== "group" && homeScore === awayScore) {
@@ -283,17 +389,20 @@ function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
     const homeLineup = fixture.cricketLineups?.[fixture.homeParticipantId];
     const awayLineup = fixture.cricketLineups?.[fixture.awayParticipantId];
     assertAuction(homeLineup && awayLineup, "Both cricket lineups must be submitted before simulation.", 409, "LINEUPS_NOT_READY");
-    const homeRating = rating(homeLineup.playingXi);
-    const awayRating = rating(awayLineup.playingXi);
-    const tossWinner = fixture.toss!.winnerParticipantId!;
-    const decision = fixture.toss!.decision!;
+    const tossWinner = fixture.toss?.winnerParticipantId;
+    const decision = fixture.toss?.decision;
+    assertAuction(tossWinner && decision, "The toss must be completed before simulation.", 409, "TOSS_NOT_READY");
     const firstBat = decision === "bat" ? tossWinner : (tossWinner === fixture.homeParticipantId ? fixture.awayParticipantId : fixture.homeParticipantId);
     const secondBat = firstBat === fixture.homeParticipantId ? fixture.awayParticipantId : fixture.homeParticipantId;
-    const firstRating = firstBat === fixture.homeParticipantId ? homeRating : awayRating;
-    const secondRating = secondBat === fixture.homeParticipantId ? homeRating : awayRating;
-    const first = cricketInnings(firstRating, secondRating, room.tournament.cricketOvers);
-    let second = cricketInnings(secondRating, firstRating, room.tournament.cricketOvers);
-    if (second.runs === first.runs) second = { ...second, runs: second.runs + (rand(2) === 0 ? 1 : -1) };
+    const firstBatting = firstBat === fixture.homeParticipantId ? homeLineup : awayLineup;
+    const firstBowling = firstBat === fixture.homeParticipantId ? awayLineup : homeLineup;
+    const secondBatting = secondBat === fixture.homeParticipantId ? homeLineup : awayLineup;
+    const secondBowling = secondBat === fixture.homeParticipantId ? awayLineup : homeLineup;
+    const first = simulateCricketInnings(firstBatting, firstBowling, room.tournament.cricketOvers);
+    let second = simulateCricketInnings(secondBatting, secondBowling, room.tournament.cricketOvers, first.runs + 1);
+    if (second.runs === first.runs && fixture.stage !== "league" && fixture.stage !== "group") {
+      second = { ...second, runs: second.runs + 1 };
+    }
     const homeInnings = firstBat === fixture.homeParticipantId ? first : second;
     const awayInnings = firstBat === fixture.awayParticipantId ? first : second;
     const homeScore = homeInnings.runs;
@@ -309,8 +418,12 @@ function simulateFixture(room: AuctionRoom, fixture: TournamentFixture) {
       homeScore,
       awayScore,
       summary,
-      homeDetail: `${homeInnings.runs}/${homeInnings.wickets} (${room.tournament.cricketOvers} ov)`,
-      awayDetail: `${awayInnings.runs}/${awayInnings.wickets} (${room.tournament.cricketOvers} ov)`,
+      homeDetail: `${homeInnings.runs}/${homeInnings.wickets} (${homeInnings.oversUsed.toFixed(1)} ov)`,
+      awayDetail: `${awayInnings.runs}/${awayInnings.wickets} (${awayInnings.oversUsed.toFixed(1)} ov)`,
+      homeOvers: homeInnings.oversUsed,
+      awayOvers: awayInnings.oversUsed,
+      homeAllOut: homeInnings.allOut,
+      awayAllOut: awayInnings.allOut,
     };
   }
   fixture.status = "complete";
@@ -324,7 +437,7 @@ function appendLeagueKnockout(room: AuctionRoom) {
   if (hasKnockouts) return false;
   const leagueFixtures = room.tournament.fixtures.filter((fixture) => fixture.stage === "league" || fixture.stage === "group");
   if (leagueFixtures.some((fixture) => fixture.status !== "complete")) return false;
-  const rankRows = (rows: StandingRow[]) => [...rows].sort((a, b) => b.points - a.points || b.difference - a.difference || b.scored - a.scored);
+  const rankRows = (rows: StandingRow[]) => [...rows].sort((a, b) => b.points - a.points || (room.sport === "cricket" ? b.nrr - a.nrr : b.difference - a.difference) || b.scored - a.scored);
   let top: StandingRow[];
   if (format === "groups-knockout") {
     const ids = room.participants.map((participant) => participant.id);
@@ -406,8 +519,10 @@ export function startTournamentRound(room: AuctionRoom, adminPlayerId: string, n
   assertAuction(room.phase === "tournament" && room.tournament.status === "active", "The tournament is not active.", 409, "TOURNAMENT_INACTIVE");
   const fixtures = room.tournament.fixtures.filter((fixture) => fixture.round === room.tournament.currentRound);
   assertAuction(fixtures.length > 0, "There are no fixtures in this round.", 409, "ROUND_EMPTY");
-  assertAuction(fixtures.every((fixture) => fixture.status === "ready"), "Every match in the round must be ready before starting.", 409, "ROUND_NOT_READY");
-  fixtures.forEach((fixture) => simulateFixture(room, fixture));
+  fixtures.forEach((fixture) => {
+    if (fixture.status !== "ready") forceFixtureReady(room, fixture);
+    simulateFixture(room, fixture);
+  });
 
   if (appendLeagueKnockout(room)) {
     touch(room, now);
@@ -417,7 +532,7 @@ export function startTournamentRound(room: AuctionRoom, adminPlayerId: string, n
   const remaining = room.tournament.fixtures.some((fixture) => fixture.status !== "complete");
   if (!remaining) {
     if (room.tournament.format === "league") {
-      const winner = [...room.tournament.standings].sort((a, b) => b.points - a.points || b.difference - a.difference || b.scored - a.scored)[0];
+      const winner = [...room.tournament.standings].sort((a, b) => b.points - a.points || (room.sport === "cricket" ? b.nrr - a.nrr : b.difference - a.difference) || b.scored - a.scored)[0];
       room.tournament.status = "complete";
       room.tournament.championParticipantId = winner?.participantId;
       room.tournament.completedAt = iso(now);
