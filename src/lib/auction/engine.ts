@@ -1,4 +1,3 @@
-import { athletesForPool } from "@/data/catalog";
 import type { Athlete, PlayerPoolMode, RoomParticipant, Sport } from "./types";
 
 export function secureShuffle<T>(items: readonly T[]): T[] {
@@ -21,8 +20,8 @@ export function nextBidAmount(current: number, base: number) {
 }
 
 export function minimumBasePriceForPool(sport: Sport, mode: PlayerPoolMode = "current") {
-  const prices = athletesForPool(sport, mode).map((athlete) => athlete.basePrice);
-  return prices.length ? Math.min(...prices) : 0;
+  if (sport === "cricket") return mode === "legends" ? 150 : 50;
+  return mode === "legends" ? 30 : 10;
 }
 
 export function canBid(
