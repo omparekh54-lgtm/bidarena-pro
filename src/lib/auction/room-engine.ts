@@ -108,6 +108,12 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
         scored: 0,
         conceded: 0,
         difference: 0,
+    oversFor: 0,
+    oversAgainst: 0,
+    nrr: 0,
+      oversFor: 0,
+      oversAgainst: 0,
+      nrr: 0,
       })),
     },
     sessionResume: {
@@ -220,6 +226,12 @@ export function stopRoom(room: AuctionRoom, adminPlayerId: string, now = Date.no
       scored: 0,
       conceded: 0,
       difference: 0,
+    oversFor: 0,
+    oversAgainst: 0,
+    nrr: 0,
+      oversFor: 0,
+      oversAgainst: 0,
+      nrr: 0,
     })),
   };
   touch(room, now);
