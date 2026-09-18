@@ -22,6 +22,8 @@ button { font: inherit; }
 .icon-button { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); color: #a9b2c2; background: rgba(255,255,255,.03); border-radius: 8px; cursor: pointer; }
 .admin-game-controls { display: flex; gap: 6px; }
 .admin-game-controls button { display: flex; align-items: center; gap: 5px; min-height: 31px; padding: 0 9px; border: 1px solid rgba(86,224,196,.25); border-radius: 7px; color: var(--lime); background: rgba(86,224,196,.06); font: 700 8px var(--font-geist-mono); letter-spacing: .06em; cursor: pointer; }
+.admin-game-controls button.tournament-control { border-color: rgba(244,185,65,.42); color: #f4cf75; background: rgba(244,185,65,.10); }
+.admin-game-controls button.tournament-control:hover:not(:disabled) { border-color: rgba(244,185,65,.72); background: rgba(244,185,65,.16); box-shadow: 0 0 22px rgba(244,185,65,.10); }
 .admin-game-controls button.stop-control { border-color: rgba(255,91,89,.3); color: #ff8582; background: rgba(255,91,89,.07); }
 .admin-game-controls button:disabled { opacity: .45; cursor: wait; }
 .command-strip { height: 42px; display: grid; grid-template-columns: 245px 1fr 245px; gap: 20px; align-items: center; padding: 0 28px; background: #090c12; border-bottom: 1px solid var(--line); color: #8791a2; font: 600 9px var(--font-geist-mono); letter-spacing: .08em; }
