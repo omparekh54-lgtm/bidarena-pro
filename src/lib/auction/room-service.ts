@@ -1,9 +1,10 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
-import { addParticipant, bidForParticipant, cancelTransferOffer as cancelTransferOfferInRoom, closeTransferWindow as closeTransferWindowInRoom, configureRoom, createRoomState, createTransferOffer as createTransferOfferInRoom, finalizeRoomResult, openTransferWindow as openTransferWindowInRoom, pauseRoom, respondToTransferOffer as respondToTransferOfferInRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
+import { addParticipant, bidForParticipant, cancelTransferOffer as cancelTransferOfferInRoom, closeTransferWindow as closeTransferWindowInRoom, configureRoom, createRoomState, createTransferOffer as createTransferOfferInRoom, endSession as endSessionInRoom, finalizeRoomResult, openTransferWindow as openTransferWindowInRoom, pauseRoom, requestSessionResume as requestSessionResumeInRoom, respondToTransferOffer as respondToTransferOfferInRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
 import { createRoomIfAvailable, mutateStoredRoom, readFinalResult, readStoredRoom, writeFinalResult } from "./room-store";
-import type { AuctionRoom, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport, TransferOfferType } from "./types";
+import { callToss as callTossInRoom, chooseTossDecision as chooseTossDecisionInRoom, setupTournament as setupTournamentInRoom, startTournamentRound as startTournamentRoundInRoom, submitCricketLineup as submitCricketLineupInRoom, submitFootballLineup as submitFootballLineupInRoom } from "./tournament-engine";
+import type { AuctionRoom, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
 
@@ -125,10 +126,9 @@ export async function resumeGame(code: string, playerId: string, token: string) 
 
 export async function stopGame(code: string, playerId: string, token: string) {
   validateRoomCode(code);
-  const result = await mutateStoredRoom(code, async (room) => {
+  const result = await mutateStoredRoom(code, (room) => {
     authenticate(room, playerId, token);
     stopRoom(room, playerId);
-    await writeFinalResult(finalizeRoomResult(room));
   });
   return toRoomView(result.room, playerId);
 }
@@ -227,4 +227,80 @@ export function playerCatalogSummary() {
       football: { current: byMode("football", "current"), legends: byMode("football", "legend") },
     },
   };
+}
+
+
+export async function endGameSession(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    endSessionInRoom(room, playerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function voteToResumeGame(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    requestSessionResumeInRoom(room, playerId);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function configureTournament(code: string, playerId: string, token: string, format: TournamentFormat, cricketOvers: 10 | 20 | 50) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    setupTournamentInRoom(room, playerId, format, cricketOvers);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function submitFootballTournamentLineup(code: string, playerId: string, token: string, fixtureId: string, lineup: FootballLineup) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    submitFootballLineupInRoom(room, playerId, fixtureId, lineup);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function submitCricketTournamentLineup(code: string, playerId: string, token: string, fixtureId: string, lineup: CricketLineup) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    submitCricketLineupInRoom(room, playerId, fixtureId, lineup);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function callTournamentToss(code: string, playerId: string, token: string, fixtureId: string, call: "heads" | "tails") {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    callTossInRoom(room, playerId, fixtureId, call);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function chooseTournamentTossDecision(code: string, playerId: string, token: string, fixtureId: string, decision: "bat" | "bowl") {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, playerId, token);
+    chooseTossDecisionInRoom(room, playerId, fixtureId, decision);
+  });
+  return toRoomView(result.room, playerId);
+}
+
+export async function startTournamentRound(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, async (room) => {
+    authenticate(room, playerId, token);
+    startTournamentRoundInRoom(room, playerId);
+    if (room.phase === "complete" && room.sport && room.purse) {
+      await writeFinalResult(finalizeRoomResult(room));
+    }
+  });
+  return toRoomView(result.room, playerId);
 }
