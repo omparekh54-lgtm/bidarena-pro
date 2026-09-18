@@ -145,7 +145,8 @@ describe("server-authoritative auction room", () => {
     startRoom(room, admin.id, 2);
     expect(() => stopRoom(room, "attacker", 3)).toThrowError(AuctionError);
     stopRoom(room, admin.id, 4);
-    expect(room.phase).toBe("complete");
+    expect(room.phase).toBe("tournament-setup");
+    expect(room.tournament.status).toBe("setup");
     expect(room.stoppedAt).toBe(new Date(4).toISOString());
   });
 
@@ -186,7 +187,8 @@ describe("server-authoritative auction room", () => {
     expect(room.stoppedAt).toBeNull();
     expect(room.phase).not.toBe("complete");
     stopRoom(room, admin.id, deadline + RESULT_WINDOW_MS + 1);
-    expect(room.phase).toBe("complete");
+    expect(room.phase).toBe("tournament-setup");
+    expect(room.tournament.status).toBe("setup");
   });
 
   it("opens, trades atomically, and auto-closes the transfer window", () => {
@@ -272,7 +274,7 @@ describe("server-authoritative auction room", () => {
     startRoom(room, admin.id, 2);
     openTransferWindow(room, admin.id, 60, 10);
     stopRoom(room, admin.id, 20);
-    expect(room.phase).toBe("complete");
+    expect(room.phase).toBe("tournament-setup");
     expect(room.transferWindow.status).toBe("closed");
     expect(room.pausedAt).toBeNull();
   });
