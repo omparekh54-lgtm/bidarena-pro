@@ -114,6 +114,19 @@ describe("full-game reliability stress", () => {
     expect(room.phase).not.toBe("complete");
   });
 
+  it("blocks bids that would make an 11-player squad financially impossible", () => {
+    const { room, admin } = tenTeamRoom("cricket");
+    startRoom(room, admin.id, 100);
+    settleRoom(room, 3_300);
+    const bidder = room.participants[0];
+    bidder.budget = 550;
+    bidder.initialBudget = 550;
+
+    expect(() => bidForParticipant(room, bidder.id, 3_301)).toThrow();
+    expect(bidder.squad).toHaveLength(0);
+    expect(room.leaderId).toBeNull();
+  });
+
   it("does not let a transfer make the current auction leader unable to pay", () => {
     const { room, admin } = tenTeamRoom("football");
     startRoom(room, admin.id, 100);
