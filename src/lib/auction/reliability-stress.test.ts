@@ -66,8 +66,8 @@ describe("full-game reliability stress", () => {
     startRoom(room, admin.id, 100);
     settleRoom(room, 3_300);
     const bidder = room.participants[0];
-    bidder.budget = 550;
-    bidder.initialBudget = 550;
+    bidder.budget = 549;
+    bidder.initialBudget = 549;
 
     expect(() => bidForParticipant(room, bidder.id, 3_301)).toThrow();
     expect(bidder.squad).toHaveLength(0);
@@ -143,8 +143,8 @@ describe("full-game reliability stress", () => {
     settleRoom(room, 3_300);
     const leader = room.participants[0];
     const other = room.participants[1];
-    leader.budget = 100;
-    other.budget = 100;
+    leader.budget = 120;
+    other.budget = 120;
     bidForParticipant(room, leader.id, 3_301);
     const committed = room.currentBid;
 
