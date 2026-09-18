@@ -53,7 +53,7 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
       <main className="tournament-shell">
         <header className="tournament-topbar">
           <div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · {room.sport?.toUpperCase()}</small></span></div>
-          <button onClick={onLeave}>Leave room</button>
+          <div className="tournament-header-actions">{room.isAdmin ? <button onClick={() => void onCommand("session/end")}>Save & End</button> : null}<button onClick={onLeave}>Leave room</button></div>
         </header>
         <section className="tournament-setup-card">
           <span className="tournament-kicker">AUCTION COMPLETE</span>
@@ -90,15 +90,15 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
     <main className="tournament-shell">
       <header className="tournament-topbar">
         <div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>{room.tournament.format?.replaceAll("-"," ").toUpperCase()} · ROUND {room.tournament.currentRound}</small></span></div>
-        <div className="tournament-round-status"><CircleDot size={14}/>{roundFixtures.filter((fixture) => fixture.status === "ready").length}/{roundFixtures.length} MATCHES READY</div>
+        <div className="tournament-header-actions"><div className="tournament-round-status"><CircleDot size={14}/>{roundFixtures.filter((fixture) => fixture.status === "ready").length}/{roundFixtures.length} MATCHES READY</div>{room.isAdmin ? <button onClick={() => void onCommand("session/end")}>Save & End</button> : null}</div>
       </header>
 
       <section className="tournament-dashboard">
         <aside className="tournament-side">
           <div className="tournament-section-title"><span>STANDINGS</span><Users size={14}/></div>
           <div className="standings-table">
-            {[...room.tournament.standings].sort((a,b) => b.points-a.points || b.difference-a.difference).map((row,index) => (
-              <div key={row.participantId}><b>{index+1}</b><strong>{teamName(room,row.participantId)}</strong><span>{row.played}P</span><span>{row.points} pts</span></div>
+            {[...room.tournament.standings].sort((a,b) => b.points-a.points || (room.sport === "cricket" ? b.nrr-a.nrr : b.difference-a.difference)).map((row,index) => (
+              <div key={row.participantId}><b>{index+1}</b><strong>{teamName(room,row.participantId)}</strong><span>{room.sport === "cricket" ? `NRR ${row.nrr.toFixed(2)}` : `${row.played}P`}</span><span>{row.points} pts</span></div>
             ))}
           </div>
           <div className="tournament-section-title fixtures-title"><span>ROUND {room.tournament.currentRound} FIXTURES</span></div>
@@ -108,7 +108,7 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
               <small>{fixture.result ? fixture.result.summary : fixture.status === "ready" ? "READY" : "TEAM SETUP"}</small>
             </article>
           ))}</div>
-          {room.isAdmin ? <button className="primary-button round-start" disabled={!allReady || Boolean(pending)} onClick={() => void onCommand("tournament/start-round")}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} Start round</button> : null}
+          {room.isAdmin ? <button className="primary-button round-start" disabled={Boolean(pending)} onClick={() => void onCommand("tournament/start-round")}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} {allReady ? "Start round" : "Auto-fill missing teams & start"}</button> : null}
         </aside>
 
         <section className="match-control">
