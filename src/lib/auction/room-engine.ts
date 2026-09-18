@@ -596,7 +596,7 @@ export function requestSessionResume(room: AuctionRoom, participantId: string, n
   if (!room.sessionResume.votes.includes(participantId)) room.sessionResume.votes.push(participantId);
   const required = Math.ceil(room.participants.length * 0.75);
   if (room.sessionResume.votes.length >= required) {
-    resumeClock(room, now);
+    if (room.transferWindow.status === "closed") resumeClock(room, now);
     room.sessionResume.endedAt = null;
     room.sessionResume.requestedAt = null;
     room.sessionResume.votes = [];
