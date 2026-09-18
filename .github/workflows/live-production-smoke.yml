@@ -1,0 +1,22 @@
+name: Live Production Smoke
+
+on:
+  push:
+    branches: [test/live-production-smoke]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run live room E2E
+        env:
+          BIDARENA_E2E_ORIGIN: https://bidarena-pro-live.vercel.app
+        run: node scripts/room-e2e.mjs
