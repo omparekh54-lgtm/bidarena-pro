@@ -30,8 +30,9 @@ memory.results ??= new Map();
 
 function hydrateRoomDefaults(room: AuctionRoom) {
   room.cycleCount ??= 1;
-  room.sessionResume ??= { endedAt: null, requestedAt: null, votes: [] };
+  room.sessionResume ??= { endedAt: null, requestedAt: null, votes: [], claims: [] };
   room.sessionResume.votes ??= [];
+  room.sessionResume.claims ??= [];
   room.tournament ??= {
     status: "setup",
     format: null,
