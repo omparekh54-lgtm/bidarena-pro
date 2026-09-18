@@ -133,6 +133,10 @@ export type TournamentResult = {
   summary: string;
   homeDetail?: string;
   awayDetail?: string;
+  homeOvers?: number;
+  awayOvers?: number;
+  homeAllOut?: boolean;
+  awayAllOut?: boolean;
 };
 
 export type TournamentFixture = {
@@ -158,6 +162,9 @@ export type StandingRow = {
   scored: number;
   conceded: number;
   difference: number;
+  oversFor: number;
+  oversAgainst: number;
+  nrr: number;
 };
 
 export type TournamentState = {

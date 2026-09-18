@@ -48,6 +48,9 @@ function hydrateRoomDefaults(room: AuctionRoom) {
       scored: 0,
       conceded: 0,
       difference: 0,
+      oversFor: 0,
+      oversAgainst: 0,
+      nrr: 0,
     })),
   };
   room.transferWindow ??= {

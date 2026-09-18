@@ -108,6 +108,9 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
         scored: 0,
         conceded: 0,
         difference: 0,
+      oversFor: 0,
+      oversAgainst: 0,
+      nrr: 0,
       })),
     },
     sessionResume: {
@@ -220,6 +223,9 @@ export function stopRoom(room: AuctionRoom, adminPlayerId: string, now = Date.no
       scored: 0,
       conceded: 0,
       difference: 0,
+      oversFor: 0,
+      oversAgainst: 0,
+      nrr: 0,
     })),
   };
   touch(room, now);
@@ -584,7 +590,7 @@ export function requestSessionResume(room: AuctionRoom, participantId: string, n
   if (!room.sessionResume.votes.includes(participantId)) room.sessionResume.votes.push(participantId);
   const required = Math.ceil(room.participants.length * 0.75);
   if (room.sessionResume.votes.length >= required) {
-    resumeClock(room, now);
+    if (room.transferWindow.status === "closed") resumeClock(room, now);
     room.sessionResume.endedAt = null;
     room.sessionResume.requestedAt = null;
     room.sessionResume.votes = [];
