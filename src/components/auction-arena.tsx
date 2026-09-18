@@ -34,7 +34,7 @@ import {
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TournamentArena } from "@/components/tournament-arena";
-import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
+import { canBid, formatMoney, minimumBasePriceForPool, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
@@ -465,7 +465,8 @@ export function AuctionArena() {
   const leader = room.participants.find((participant) => participant.id === room.leaderId);
   const current = room.currentAthlete;
   const proposedBid = current ? (room.leaderId ? nextBidAmount(room.currentBid, current.basePrice) : current.basePrice) : 0;
-  const canSelfBid = Boolean(self && !room.pausedAt && room.phase === "bidding" && room.leaderId !== self.id && canBid(self, proposedBid));
+  const reservePerPlayer = room.sport ? minimumBasePriceForPool(room.sport, room.playerPoolMode ?? "current") : 0;
+  const canSelfBid = Boolean(self && !room.pausedAt && room.phase === "bidding" && room.leaderId !== self.id && canBid(self, proposedBid, MINIMUM_SQUAD_SIZE, reservePerPlayer));
   const deadline = room.deadlineAt ? Date.parse(room.deadlineAt) : 0;
   const effectiveClock = room.pausedAt ? Date.parse(room.pausedAt) : clock + serverOffset;
   const timer = room.phase === "bidding" ? Math.max(0, Math.ceil((deadline - effectiveClock) / 1_000)) : 0;
