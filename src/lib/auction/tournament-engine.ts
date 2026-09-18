@@ -68,14 +68,15 @@ function roundRobin(participantIds: string[]) {
 
 function initialKnockout(participantIds: string[]) {
   const ids = [...participantIds];
+  const targetBracketSize = 2 ** Math.floor(Math.log2(ids.length));
+  const preliminaryMatches = ids.length === targetBracketSize ? ids.length / 2 : ids.length - targetBracketSize;
   const fixtures: TournamentFixture[] = [];
-  let round = 1;
-  while (ids.length >= 2) {
-    const home = ids.shift()!;
-    const away = ids.shift()!;
+  for (let index = 0; index < preliminaryMatches; index += 1) {
+    const home = ids[index * 2];
+    const away = ids[index * 2 + 1];
     fixtures.push({
-      id: fixtureId(round, home, away),
-      round,
+      id: fixtureId(1, home, away),
+      round: 1,
       stage: "knockout",
       homeParticipantId: home,
       awayParticipantId: away,
@@ -100,8 +101,7 @@ export function setupTournament(room: AuctionRoom, adminPlayerId: string, format
     const midpoint = Math.ceil(ids.length / 2);
     const groupA = roundRobin(ids.slice(0, midpoint)).map((fixture) => ({ ...fixture, stage: "group" as const }));
     const groupB = roundRobin(ids.slice(midpoint)).map((fixture) => ({ ...fixture, stage: "group" as const }));
-    const maxRoundA = Math.max(0, ...groupA.map((fixture) => fixture.round));
-    fixtures = [...groupA, ...groupB.map((fixture) => ({ ...fixture, round: fixture.round + maxRoundA }))];
+    fixtures = [...groupA, ...groupB];
   }
 
   room.tournament = {
@@ -356,7 +356,11 @@ function progressKnockout(room: AuctionRoom) {
   if (!roundFixtures.length || roundFixtures.some((fixture) => fixture.status !== "complete")) return;
   const knockoutRound = roundFixtures.every((fixture) => fixture.stage !== "league" && fixture.stage !== "group");
   if (!knockoutRound) return;
-  const winners = roundFixtures.map((fixture) => fixture.result!.homeScore > fixture.result!.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId);
+  let winners = roundFixtures.map((fixture) => fixture.result!.homeScore > fixture.result!.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId);
+  if (room.tournament.format === "knockout" && room.tournament.currentRound === 1) {
+    const played = new Set(roundFixtures.flatMap((fixture) => [fixture.homeParticipantId, fixture.awayParticipantId]));
+    winners = [...winners, ...room.participants.map((participant) => participant.id).filter((id) => !played.has(id))];
+  }
   if (winners.length === 1) {
     room.tournament.status = "complete";
     room.tournament.championParticipantId = winners[0];
