@@ -361,3 +361,27 @@ footer button { border: 0; color: #7d8798; background: transparent; font: inheri
 .tournament-header-actions{display:flex;align-items:center;gap:10px}
 .tournament-header-actions>button{border:1px solid var(--line);border-radius:7px;padding:8px 11px;background:rgba(255,255,255,.025);color:#9aa5b5;cursor:pointer;font:700 8px var(--font-geist-mono)}
 .tournament-header-actions>button:hover{border-color:rgba(86,224,196,.35);color:var(--lime)}
+
+.continue-game-panel{display:grid;gap:18px}
+.continue-empty{margin:0;color:#7f8a99;font-size:13px}
+.continue-code-form{display:grid;gap:12px;padding-top:8px;border-top:1px solid var(--line)}
+.continue-code-form label{display:grid;gap:8px}
+.continue-code-form label>span,.resume-team-picker>span,.recovery-waiting>span,.device-approval-list>span{font:700 9px var(--font-geist-mono);letter-spacing:.14em;color:#7f8a99}
+.resume-team-picker{display:grid;gap:14px}
+.resume-team-picker h2,.recovery-waiting h2{margin:0}
+.resume-team-picker>p,.recovery-waiting p{margin:0;color:#8e99a8;line-height:1.55}
+.resume-team-picker>div{display:grid;gap:8px}
+.resume-team-picker>div>button{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:9px;padding:12px;color:inherit;cursor:pointer}
+.resume-team-picker>div>button:disabled{opacity:.48;cursor:not-allowed}
+.resume-team-picker>div>button b{font:800 10px var(--font-geist-mono);color:var(--lime)}
+.resume-team-picker>div>button strong{font-size:13px}
+.resume-team-picker>div>button small{grid-column:2/3;color:#7d8795;font-size:10px}
+.recovery-waiting{display:grid;justify-items:center;text-align:center;gap:12px;padding:24px 10px}
+.recovery-waiting>strong{font:800 11px var(--font-geist-mono);letter-spacing:.12em;color:var(--lime)}
+.device-approval-list{display:grid;gap:8px;margin:14px 0;padding:12px;border:1px solid rgba(86,224,196,.18);border-radius:10px;background:rgba(86,224,196,.035)}
+.device-approval-list>div{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.device-approval-list>div:first-of-type{border-top:0}
+.device-approval-list strong{font-size:12px}
+.device-approval-list small{grid-column:1;color:#7f8a99}
+.device-approval-list button{grid-column:2;grid-row:1/3;border:1px solid rgba(86,224,196,.28);background:rgba(86,224,196,.08);color:var(--lime);border-radius:7px;padding:8px 10px;font:700 9px var(--font-geist-mono);cursor:pointer}
+@media(max-width:640px){.resume-team-picker>div>button{grid-template-columns:38px 1fr auto}.device-approval-list>div{grid-template-columns:1fr}.device-approval-list button{grid-column:1;grid-row:auto;justify-self:start}}
