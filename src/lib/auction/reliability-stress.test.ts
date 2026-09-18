@@ -143,8 +143,8 @@ describe("full-game reliability stress", () => {
     settleRoom(room, 3_300);
     const leader = room.participants[0];
     const other = room.participants[1];
-    leader.budget = 120;
-    other.budget = 120;
+    leader.budget = 500;
+    other.budget = 500;
     bidForParticipant(room, leader.id, 3_301);
     const committed = room.currentBid;
 
