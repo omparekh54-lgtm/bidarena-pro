@@ -87,3 +87,5 @@ console.log(JSON.stringify({
   concurrentResumeVotesAccepted: votes.filter((r) => r.ok).length,
   finalPhase: stop.body.room.phase,
 }, null, 2));
+
+// rerun against latest production deployment
