@@ -1,0 +1,17 @@
+name: Live Concurrency Stress
+on:
+  push:
+    branches: [test/live-concurrency-stress]
+permissions:
+  contents: read
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run production concurrency stress
+        run: node scripts/live-concurrency-stress.mjs
