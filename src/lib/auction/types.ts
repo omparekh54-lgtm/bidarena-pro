@@ -179,10 +179,39 @@ export type TournamentState = {
   completedAt?: string;
 };
 
+export type ResumeClaim = {
+  id: string;
+  participantId: string;
+  requestedAt: string;
+  approvedAt?: string;
+  tokenHash: string;
+};
+
+export type ResumeClaimView = Omit<ResumeClaim, "tokenHash">;
+
 export type SessionResumeState = {
   endedAt: string | null;
   requestedAt: string | null;
   votes: string[];
+  claims: ResumeClaim[];
+};
+
+export type SessionResumeView = Omit<SessionResumeState, "claims"> & {
+  claims: ResumeClaimView[];
+};
+
+export type ResumeGameInfo = {
+  code: string;
+  sport: Sport | null;
+  phase: AuctionPhase;
+  tournamentRound: number;
+  endedAt: string;
+  participants: Array<{
+    id: string;
+    teamName: string;
+    code: string;
+    isAdmin: boolean;
+  }>;
 };
 
 export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "between-lots" | "tournament-setup" | "tournament" | "complete";
@@ -232,7 +261,8 @@ export type FinalRoomResult = {
   participants: FinalParticipantResult[];
 };
 
-export type RoomView = Omit<AuctionRoom, "participants" | "queue"> & {
+export type RoomView = Omit<AuctionRoom, "participants" | "queue" | "sessionResume"> & {
+  sessionResume: SessionResumeView;
   serverTime: string;
   isAdmin: boolean;
   selfPlayerId: string;
