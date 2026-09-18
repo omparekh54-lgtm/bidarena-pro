@@ -2,7 +2,7 @@ import { Redis } from "@upstash/redis";
 import { AuctionError } from "./errors";
 import type { AuctionRoom, FinalRoomResult } from "./types";
 
-const ROOM_TTL_SECONDS = 60 * 60 * 18;
+const ROOM_TTL_SECONDS = 60 * 60 * 24 * 30;
 const LOCK_TTL_MS = 5_000;
 const redisUrl = process.env.UPSTASH_REDIS_REST_URL
   ?? process.env.KV_REST_API_URL
@@ -30,6 +30,26 @@ memory.results ??= new Map();
 
 function hydrateRoomDefaults(room: AuctionRoom) {
   room.cycleCount ??= 1;
+  room.sessionResume ??= { endedAt: null, requestedAt: null, votes: [] };
+  room.sessionResume.votes ??= [];
+  room.tournament ??= {
+    status: "setup",
+    format: null,
+    cricketOvers: 20,
+    currentRound: 1,
+    fixtures: [],
+    standings: room.participants.map((participant) => ({
+      participantId: participant.id,
+      played: 0,
+      won: 0,
+      drawn: 0,
+      lost: 0,
+      points: 0,
+      scored: 0,
+      conceded: 0,
+      difference: 0,
+    })),
+  };
   room.transferWindow ??= {
     status: "closed",
     startedAt: null,
