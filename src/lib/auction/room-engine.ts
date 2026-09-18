@@ -603,7 +603,6 @@ export function requestSessionResume(room: AuctionRoom, participantId: string, n
     room.sessionResume.endedAt = null;
     room.sessionResume.requestedAt = null;
     room.sessionResume.votes = [];
-  room.sessionResume.claims = [];
   }
   touch(room, now);
   return required;
