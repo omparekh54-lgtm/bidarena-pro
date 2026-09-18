@@ -345,7 +345,9 @@ function acceptTransferOffer(room: AuctionRoom, offer: TransferOffer, now: numbe
   const to = participantWithAthletes(room, offer.toParticipantId, offer.requestedAthleteIds, "One of these players has since been traded.");
   const fromBudget = from.budget - offer.cashAdjustment;
   const toBudget = to.budget + offer.cashAdjustment;
-  assertAuction(fromBudget >= 0 && toBudget >= 0, "This transfer would leave one team with a negative budget.", 409, "INSUFFICIENT_TRANSFER_BUDGET");
+  const fromCommittedBid = room.leaderId === from.id && room.phase === "bidding" ? room.currentBid : 0;
+  const toCommittedBid = room.leaderId === to.id && room.phase === "bidding" ? room.currentBid : 0;
+  assertAuction(fromBudget >= fromCommittedBid && toBudget >= toCommittedBid, "This transfer would leave one team unable to honor its active auction bid.", 409, "INSUFFICIENT_TRANSFER_BUDGET");
 
   const offered = from.squad.filter((entry) => offer.offeredAthleteIds.includes(entry.athleteId));
   const requested = to.squad.filter((entry) => offer.requestedAthleteIds.includes(entry.athleteId));
@@ -565,7 +567,7 @@ export function finalizeRoomResult(room: AuctionRoom): FinalRoomResult {
     sport: room.sport,
     playerPoolMode: room.playerPoolMode ?? "current",
     purse: room.purse,
-    completedAt: room.stoppedAt ?? room.updatedAt,
+    completedAt: room.tournament.completedAt ?? room.updatedAt,
     participants: room.participants.map((participant) => ({
       participantId: participant.id,
       teamName: participant.teamName,
@@ -599,7 +601,12 @@ export function requestSessionResume(room: AuctionRoom, participantId: string, n
   if (!room.sessionResume.votes.includes(participantId)) room.sessionResume.votes.push(participantId);
   const required = Math.ceil(room.participants.length * 0.75);
   if (room.sessionResume.votes.length >= required) {
-    if (room.transferWindow.status === "closed") resumeClock(room, now);
+    if (room.transferWindow.status === "open" && room.transferWindow.endsAt && room.sessionResume.endedAt) {
+      const savedDuration = Math.max(0, now - Date.parse(room.sessionResume.endedAt));
+      room.transferWindow.endsAt = toIso(Date.parse(room.transferWindow.endsAt) + savedDuration);
+    } else {
+      resumeClock(room, now);
+    }
     room.sessionResume.endedAt = null;
     room.sessionResume.requestedAt = null;
     room.sessionResume.votes = [];
