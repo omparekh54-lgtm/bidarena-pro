@@ -117,6 +117,7 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
       endedAt: null,
       requestedAt: null,
       votes: [],
+      claims: [],
     },
     createdAt,
     updatedAt: createdAt,
@@ -580,6 +581,7 @@ export function endSession(room: AuctionRoom, adminPlayerId: string, now = Date.
   room.sessionResume.endedAt = toIso(now);
   room.sessionResume.requestedAt = null;
   room.sessionResume.votes = [];
+  room.sessionResume.claims = [];
   touch(room, now);
 }
 
@@ -594,6 +596,7 @@ export function requestSessionResume(room: AuctionRoom, participantId: string, n
     room.sessionResume.endedAt = null;
     room.sessionResume.requestedAt = null;
     room.sessionResume.votes = [];
+  room.sessionResume.claims = [];
   }
   touch(room, now);
   return required;
