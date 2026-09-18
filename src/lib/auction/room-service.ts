@@ -4,7 +4,7 @@ import { AuctionError, assertAuction } from "./errors";
 import { addParticipant, bidForParticipant, cancelTransferOffer as cancelTransferOfferInRoom, closeTransferWindow as closeTransferWindowInRoom, configureRoom, createRoomState, createTransferOffer as createTransferOfferInRoom, endSession as endSessionInRoom, finalizeRoomResult, openTransferWindow as openTransferWindowInRoom, pauseRoom, requestSessionResume as requestSessionResumeInRoom, respondToTransferOffer as respondToTransferOfferInRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
 import { createRoomIfAvailable, mutateStoredRoom, readFinalResult, readStoredRoom, writeFinalResult } from "./room-store";
 import { callToss as callTossInRoom, chooseTossDecision as chooseTossDecisionInRoom, setupTournament as setupTournamentInRoom, startTournamentRound as startTournamentRoundInRoom, submitCricketLineup as submitCricketLineupInRoom, submitFootballLineup as submitFootballLineupInRoom } from "./tournament-engine";
-import type { AuctionRoom, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
+import type { AuctionRoom, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
 
@@ -303,4 +303,82 @@ export async function startTournamentRound(code: string, playerId: string, token
     }
   });
   return toRoomView(result.room, playerId);
+}
+
+
+export async function getResumeGameInfo(code: string): Promise<ResumeGameInfo> {
+  validateRoomCode(code);
+  const room = await readStoredRoom(code);
+  assertAuction(room.sessionResume.endedAt, "That game is not currently saved for continuation.", 409, "GAME_NOT_SAVED");
+  return {
+    code: room.code,
+    sport: room.sport,
+    phase: room.phase,
+    tournamentRound: room.tournament.currentRound,
+    endedAt: room.sessionResume.endedAt,
+    participants: room.participants.map((participant) => ({
+      id: participant.id,
+      teamName: participant.teamName,
+      code: participant.code,
+      isAdmin: participant.id === room.adminPlayerId,
+    })),
+  };
+}
+
+export async function requestResumeTeamClaim(code: string, participantId: string) {
+  validateRoomCode(code);
+  const claimToken = sessionToken();
+  const result = await mutateStoredRoom(code, (room) => {
+    assertAuction(room.sessionResume.endedAt, "That game is not currently saved for continuation.", 409, "GAME_NOT_SAVED");
+    const participant = room.participants.find((candidate) => candidate.id === participantId);
+    assertAuction(participant, "That team is not part of this saved game.", 404, "TEAM_NOT_FOUND");
+    assertAuction(participant.id !== room.adminPlayerId, "The host team must continue from its recognized device.", 409, "HOST_DEVICE_REQUIRED");
+    const existing = room.sessionResume.claims.find((claim) => claim.participantId === participantId && !claim.approvedAt);
+    assertAuction(!existing, "A device approval request is already waiting for this team.", 409, "CLAIM_ALREADY_PENDING");
+    const claim = {
+      id: crypto.randomUUID(),
+      participantId,
+      requestedAt: new Date().toISOString(),
+      tokenHash: tokenHash(claimToken),
+    };
+    room.sessionResume.claims.push(claim);
+    room.updatedAt = new Date().toISOString();
+    room.version += 1;
+    return claim;
+  });
+  return { claimId: result.result.id, claimToken, teamName: result.room.participants.find((p) => p.id === participantId)!.teamName };
+}
+
+export async function getResumeTeamClaimStatus(code: string, claimId: string, claimToken: string) {
+  validateRoomCode(code);
+  const room = await readStoredRoom(code);
+  const claim = room.sessionResume.claims.find((candidate) => candidate.id === claimId);
+  assertAuction(claim, "That continuation request does not exist.", 404, "CLAIM_NOT_FOUND");
+  assertAuction(tokenHash(claimToken) === claim.tokenHash, "That continuation request is invalid.", 401, "INVALID_CLAIM");
+  const participant = room.participants.find((candidate) => candidate.id === claim.participantId)!;
+  if (!claim.approvedAt) return { approved: false as const, teamName: participant.teamName };
+  return {
+    approved: true as const,
+    session: toSession(code, participant, claimToken),
+    teamName: participant.teamName,
+  };
+}
+
+export async function approveResumeTeamClaim(code: string, adminPlayerId: string, adminToken: string, claimId: string) {
+  validateRoomCode(code);
+  const result = await mutateStoredRoom(code, (room) => {
+    authenticate(room, adminPlayerId, adminToken);
+    assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can approve a returning device.", 403, "ADMIN_ONLY");
+    assertAuction(room.sessionResume.endedAt, "This game is not waiting to continue.", 409, "SESSION_NOT_ENDED");
+    const claim = room.sessionResume.claims.find((candidate) => candidate.id === claimId);
+    assertAuction(claim, "That continuation request does not exist.", 404, "CLAIM_NOT_FOUND");
+    assertAuction(!claim.approvedAt, "That continuation request has already been approved.", 409, "CLAIM_ALREADY_APPROVED");
+    const participant = room.participants.find((candidate) => candidate.id === claim.participantId);
+    assertAuction(participant, "The requested team no longer exists.", 404, "TEAM_NOT_FOUND");
+    participant.tokenHash = claim.tokenHash;
+    claim.approvedAt = new Date().toISOString();
+    room.updatedAt = new Date().toISOString();
+    room.version += 1;
+  });
+  return toRoomView(result.room, adminPlayerId);
 }

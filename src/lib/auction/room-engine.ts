@@ -117,6 +117,7 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
       endedAt: null,
       requestedAt: null,
       votes: [],
+      claims: [],
     },
     createdAt,
     updatedAt: createdAt,
@@ -527,7 +528,7 @@ function participantToView(room: AuctionRoom, participant: RoomParticipant, self
 }
 
 export function toRoomView(room: AuctionRoom, selfPlayerId: string, now = Date.now()): RoomView {
-  const { participants, queue, ...safeRoom } = room;
+  const { participants, queue, sessionResume, ...safeRoom } = room;
   const composition = new Map<string, number>();
   for (const athleteId of queue) {
     const role = athleteById.get(athleteId)?.role;
@@ -545,6 +546,13 @@ export function toRoomView(room: AuctionRoom, selfPlayerId: string, now = Date.n
     transferWindow: {
       ...room.transferWindow,
       offers: room.transferWindow.offers.filter((offer) => offer.fromParticipantId === selfPlayerId || offer.toParticipantId === selfPlayerId),
+    },
+    sessionResume: {
+      ...sessionResume,
+      claims: sessionResume.claims.map(({ tokenHash, ...claim }) => {
+        void tokenHash;
+        return claim;
+      }),
     },
     participants: participants.map((participant) => participantToView(room, participant, selfPlayerId)),
   };
@@ -580,6 +588,7 @@ export function endSession(room: AuctionRoom, adminPlayerId: string, now = Date.
   room.sessionResume.endedAt = toIso(now);
   room.sessionResume.requestedAt = null;
   room.sessionResume.votes = [];
+  room.sessionResume.claims = [];
   touch(room, now);
 }
 

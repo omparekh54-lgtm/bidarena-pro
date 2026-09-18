@@ -35,7 +35,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TournamentArena } from "@/components/tournament-arena";
 import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
-import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
+import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
 const SAVED_SESSIONS_KEY = "bidarena-saved-sessions-v1";
@@ -113,9 +113,11 @@ function purseToDisplayAmount(sport: Sport, storedAmount: number) {
 }
 
 export function AuctionArena() {
-  const [entryMode, setEntryMode] = useState<"choose" | "create" | "join">("choose");
+  const [entryMode, setEntryMode] = useState<"choose" | "create" | "join" | "continue">("choose");
   const [teamName, setTeamName] = useState("");
   const [joinCode, setJoinCode] = useState("");
+  const [resumeGame, setResumeGame] = useState<ResumeGameInfo | null>(null);
+  const [resumeClaim, setResumeClaim] = useState<{ roomCode: string; claimId: string; claimToken: string; teamName: string } | null>(null);
   const [session, setSession] = useState<PlayerSession | null>(null);
   const [savedSessions, setSavedSessions] = useState<PlayerSession[]>([]);
   const [room, setRoom] = useState<RoomView | null>(null);
@@ -162,6 +164,25 @@ export function AuctionArena() {
     const tick = window.setInterval(() => setClock(Date.now()), 200);
     return () => window.clearInterval(tick);
   }, []);
+
+  useEffect(() => {
+    if (!resumeClaim || session) return;
+    let cancelled = false;
+    const poll = window.setInterval(() => {
+      void apiRequest<{ approved: boolean; session?: PlayerSession }>(`/api/rooms/${resumeClaim.roomCode}/resume-claim/${resumeClaim.claimId}/status`, {
+        method: "POST",
+        body: JSON.stringify({ claimToken: resumeClaim.claimToken }),
+      }).then((payload) => {
+        if (cancelled || !payload.approved || !payload.session) return;
+        persistSession(payload.session);
+        setSavedSessions(readSavedSessions());
+        setSession(payload.session);
+        setResumeClaim(null);
+        setResumeGame(null);
+      }).catch(() => {});
+    }, 1200);
+    return () => { cancelled = true; window.clearInterval(poll); };
+  }, [resumeClaim, session]);
 
   useEffect(() => {
     if (!session) return;
@@ -237,6 +258,29 @@ export function AuctionArena() {
     }
   }, []);
 
+  async function findSavedGame(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const payload = await runCommand("find-saved-game", () => apiRequest<{ game: ResumeGameInfo }>(`/api/rooms/${joinCode}/resume-info`));
+    if (payload) setResumeGame(payload.game);
+  }
+
+  async function requestTeamRecovery(participantId: string) {
+    if (!resumeGame) return;
+    const payload = await runCommand("resume-claim", () => apiRequest<{ claimId: string; claimToken: string; teamName: string }>(`/api/rooms/${resumeGame.code}/resume-claim`, {
+      method: "POST",
+      body: JSON.stringify({ participantId }),
+    }));
+    if (payload) setResumeClaim({ roomCode: resumeGame.code, ...payload });
+  }
+
+  async function approveTeamRecovery(claimId: string) {
+    if (!session) return;
+    const payload = await runCommand("approve-resume-claim", () => apiRequest<{ room: RoomView }>(`/api/rooms/${session.roomCode}/resume-claim/${claimId}/approve`, {
+      method: "POST",
+    }, session));
+    if (payload) setRoom(payload.room);
+  }
+
   async function submitEntry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (entryMode === "create") {
@@ -291,6 +335,8 @@ export function AuctionArena() {
     setTeamName("");
     setJoinCode("");
     setEntryMode("choose");
+    setResumeGame(null);
+    setResumeClaim(null);
   }
 
   function continueSavedGame(saved: PlayerSession) {
@@ -338,11 +384,44 @@ export function AuctionArena() {
           {entryMode === "choose" ? (
             <>
               <div className="entry-options">
-                <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>Create a game</strong><small>Become administrator, choose the sport, invite up to 9 more teams.</small><ChevronRight size={18} /></button>
-                <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join a game</strong><small>Enter a four-digit code and register your team in the live room.</small><ChevronRight size={18} /></button>
+                <button onClick={() => setEntryMode("create")}><span><Plus size={22} /></span><strong>New game</strong><small>Create a private auction and become administrator.</small><ChevronRight size={18} /></button>
+                <button onClick={() => setEntryMode("continue")}><span><RefreshCw size={22} /></span><strong>Continue game</strong><small>Open a saved game from this device or enter its four-digit room code.</small><ChevronRight size={18} /></button>
+                <button onClick={() => setEntryMode("join")}><span><LogIn size={22} /></span><strong>Join new game</strong><small>Join a game that has not started yet.</small><ChevronRight size={18} /></button>
               </div>
-              {savedSessions.length ? <div className="saved-games"><div className="saved-games-heading"><span>CONTINUE GAME</span><strong>{savedSessions.length} saved</strong></div>{savedSessions.map((saved) => <button key={saved.roomCode + saved.playerId} onClick={() => continueSavedGame(saved)}><span><b>{saved.roomCode}</b><strong>{saved.teamName}</strong><small>Resume your saved team and current game stage.</small></span><ChevronRight size={17}/></button>)}</div> : null}
             </>
+          ) : entryMode === "continue" ? (
+            <div className="continue-game-panel">
+              <button type="button" className="back-button" onClick={() => { setEntryMode("choose"); setResumeGame(null); setResumeClaim(null); setError(null); }}><ArrowLeft size={15}/> Back</button>
+              {resumeClaim ? (
+                <div className="recovery-waiting">
+                  <LoaderCircle className="spin" size={28}/>
+                  <span>DEVICE APPROVAL REQUESTED</span>
+                  <h2>{resumeClaim.teamName}</h2>
+                  <p>The host will see this request in the Resume Lobby. Keep this page open; this device will continue automatically after approval.</p>
+                  <strong>ROOM {resumeClaim.roomCode}</strong>
+                </div>
+              ) : resumeGame ? (
+                <div className="resume-team-picker">
+                  <span>SAVED GAME · ROOM {resumeGame.code}</span>
+                  <h2>Choose your team</h2>
+                  <p>{resumeGame.sport?.toUpperCase() ?? "GAME"} · {resumeGame.participants.length} teams · saved {new Date(resumeGame.endedAt).toLocaleDateString()}</p>
+                  <div>{resumeGame.participants.map((participant) => (
+                    <button key={participant.id} disabled={participant.isAdmin || Boolean(pending)} onClick={() => void requestTeamRecovery(participant.id)}>
+                      <b>{participant.code}</b><strong>{participant.teamName}</strong><small>{participant.isAdmin ? "HOST · continue from the host's recognized device" : "Request this team on this device"}</small><ChevronRight size={16}/>
+                    </button>
+                  ))}</div>
+                  <button className="resume-leave" onClick={() => setResumeGame(null)}>Use another code</button>
+                </div>
+              ) : (
+                <>
+                  {savedSessions.length ? <div className="saved-games"><div className="saved-games-heading"><span>GAMES ON THIS DEVICE</span><strong>{savedSessions.length} saved</strong></div>{savedSessions.map((saved) => <button key={saved.roomCode + saved.playerId} onClick={() => continueSavedGame(saved)}><span><b>{saved.roomCode}</b><strong>{saved.teamName}</strong><small>Continue as this team on this device.</small></span><ChevronRight size={17}/></button>)}</div> : <p className="continue-empty">No saved games are recognized on this device yet.</p>}
+                  <form className="continue-code-form" onSubmit={findSavedGame}>
+                    <label><span>ENTER ANOTHER GAME CODE</span><input className="room-code-input" inputMode="numeric" value={joinCode} onChange={(event) => setJoinCode(formatRoomCode(event.target.value))} placeholder="0000" pattern="[0-9]{4}" required /></label>
+                    <button className="primary-button" disabled={joinCode.length !== 4 || Boolean(pending)}>{pending === "find-saved-game" ? <LoaderCircle className="spin" size={17}/> : <RefreshCw size={17}/>} Find saved game</button>
+                  </form>
+                </>
+              )}
+            </div>
           ) : (
             <form className="entry-form" onSubmit={submitEntry}>
               <button type="button" className="back-button" onClick={() => { setEntryMode("choose"); setError(null); }}><ArrowLeft size={15} /> Back</button>
@@ -367,7 +446,7 @@ export function AuctionArena() {
     const requiredVotes = Math.ceil(room.participants.length * 0.75);
     const hasVoted = room.sessionResume.votes.includes(room.selfPlayerId);
     const votePercent = Math.min(100, (room.sessionResume.votes.length / requiredVotes) * 100);
-    return <main className="resume-session-shell"><div className="entry-grid" aria-hidden="true" /><section className="resume-session-card"><div className="entry-brand"><div className="brand-mark"><Play size={22} /></div><div><strong>BIDARENA</strong><span>SAVED MULTI-DAY GAME</span></div></div><span className="tournament-kicker">ROOM {room.code}</span><h1>Continue your saved game?</h1><p>This game is safely saved at its current stage. It resumes automatically when at least 75% of the teams agree.</p><div className="resume-vote-meter"><strong>{room.sessionResume.votes.length} / {requiredVotes}</strong><span>votes required to continue</span><div><i style={{ width: votePercent + "%" }} /></div></div><div className="resume-team-list">{room.participants.map((participant) => <span key={participant.id}><b>{participant.code}</b><strong>{participant.teamName}</strong>{room.sessionResume.votes.includes(participant.id) ? <Check size={15} /> : <Clock3 size={15} />}</span>)}</div><button className="primary-button" disabled={hasVoted || Boolean(pending)} onClick={() => void command("session/resume-vote")}>{hasVoted ? <Check size={17} /> : <Play size={17} />}{hasVoted ? "Vote submitted" : "Vote to continue"}</button><button className="resume-leave" onClick={leaveLocalRoom}>Leave for now</button>{error ? <div className="error-banner">{error}</div> : null}</section></main>;
+    return <main className="resume-session-shell"><div className="entry-grid" aria-hidden="true" /><section className="resume-session-card"><div className="entry-brand"><div className="brand-mark"><Play size={22} /></div><div><strong>BIDARENA</strong><span>SAVED MULTI-DAY GAME</span></div></div><span className="tournament-kicker">ROOM {room.code}</span><h1>Continue your saved game?</h1><p>This game is safely saved at its current stage. It resumes automatically when at least 75% of the teams agree.</p><div className="resume-vote-meter"><strong>{room.sessionResume.votes.length} / {requiredVotes}</strong><span>votes required to continue</span><div><i style={{ width: votePercent + "%" }} /></div></div><div className="resume-team-list">{room.participants.map((participant) => <span key={participant.id}><b>{participant.code}</b><strong>{participant.teamName}</strong>{room.sessionResume.votes.includes(participant.id) ? <Check size={15} /> : <Clock3 size={15} />}</span>)}</div>{room.isAdmin && room.sessionResume.claims.some((claim) => !claim.approvedAt) ? <div className="device-approval-list"><span>NEW DEVICE REQUESTS</span>{room.sessionResume.claims.filter((claim) => !claim.approvedAt).map((claim) => { const team = room.participants.find((participant) => participant.id === claim.participantId); return <div key={claim.id}><strong>{team?.teamName ?? "Team"}</strong><small>Wants to continue on another device</small><button disabled={Boolean(pending)} onClick={() => void approveTeamRecovery(claim.id)}>Approve device</button></div>; })}</div> : null}<button className="primary-button" disabled={hasVoted || Boolean(pending)} onClick={() => void command("session/resume-vote")}>{hasVoted ? <Check size={17} /> : <Play size={17} />}{hasVoted ? "Vote submitted" : "Vote to continue"}</button><button className="resume-leave" onClick={leaveLocalRoom}>Leave for now</button>{error ? <div className="error-banner">{error}</div> : null}</section></main>;
   }
 
   if (room.phase === "lobby") {
