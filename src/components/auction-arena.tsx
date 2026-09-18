@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { TournamentArena } from "@/components/tournament-arena";
 import { canBid, formatMoney, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
@@ -266,11 +267,16 @@ export function AuctionArena() {
     window.setTimeout(() => setCopied(false), 1400);
   }
 
+  async function endLongSession() {
+    if (!window.confirm("Save this game and end the current session? The game will remain saved and will resume once at least 75% of teams vote to continue.")) return;
+    await command("session/end");
+  }
+
   async function stopAuction() {
     const incompleteTeams = room?.participants.filter((participant) => participant.squadSize < MINIMUM_SQUAD_SIZE) ?? [];
     const warning = incompleteTeams.length
       ? `${incompleteTeams.length} team${incompleteTeams.length === 1 ? " has" : "s have"} fewer than ${MINIMUM_SQUAD_SIZE} players. As creator, you can still stop the auction manually. Stop anyway?`
-      : "End this auction now? Current bids on this unfinished lot will not be charged.";
+      : "End the auction and continue to Tournament Setup? Current bids on this unfinished lot will not be charged.";
     if (!window.confirm(warning)) return;
     await command("stop");
   }
@@ -314,8 +320,19 @@ export function AuctionArena() {
     return <main className="loading-shell"><LoaderCircle className="spin" size={34} /><strong>Reconnecting to room {session.roomCode}</strong><span>Restoring the latest auction ledger…</span>{error ? <button onClick={leaveLocalRoom}>Leave room</button> : null}</main>;
   }
 
+  if (room.sessionResume.endedAt) {
+    const requiredVotes = Math.ceil(room.participants.length * 0.75);
+    const hasVoted = room.sessionResume.votes.includes(room.selfPlayerId);
+    const votePercent = Math.min(100, (room.sessionResume.votes.length / requiredVotes) * 100);
+    return <main className="resume-session-shell"><div className="entry-grid" aria-hidden="true" /><section className="resume-session-card"><div className="entry-brand"><div className="brand-mark"><Play size={22} /></div><div><strong>BIDARENA</strong><span>SAVED MULTI-DAY GAME</span></div></div><span className="tournament-kicker">ROOM {room.code}</span><h1>Continue your saved game?</h1><p>This game is safely saved at its current stage. It resumes automatically when at least 75% of the teams agree.</p><div className="resume-vote-meter"><strong>{room.sessionResume.votes.length} / {requiredVotes}</strong><span>votes required to continue</span><div><i style={{ width: votePercent + "%" }} /></div></div><div className="resume-team-list">{room.participants.map((participant) => <span key={participant.id}><b>{participant.code}</b><strong>{participant.teamName}</strong>{room.sessionResume.votes.includes(participant.id) ? <Check size={15} /> : <Clock3 size={15} />}</span>)}</div><button className="primary-button" disabled={hasVoted || Boolean(pending)} onClick={() => void command("session/resume-vote")}>{hasVoted ? <Check size={17} /> : <Play size={17} />}{hasVoted ? "Vote submitted" : "Vote to continue"}</button><button className="resume-leave" onClick={leaveLocalRoom}>Leave for now</button>{error ? <div className="error-banner">{error}</div> : null}</section></main>;
+  }
+
   if (room.phase === "lobby") {
     return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse, playerPoolMode) => void command("configure", { sport, purse, playerPoolMode })} onStart={() => void command("start")} />;
+  }
+
+  if (room.phase === "tournament-setup" || room.phase === "tournament" || (room.phase === "complete" && room.tournament.status === "complete")) {
+    return <TournamentArena room={room} pending={pending} error={error} onCommand={command} onLeave={leaveLocalRoom} />;
   }
 
   if (room.phase === "complete") {
@@ -344,6 +361,7 @@ export function AuctionArena() {
         <div className="sport-switch locked" aria-label="Selected auction format"><button className="active">{room.sport}<small>{room.playerPoolMode === "mixed" ? "CURRENT + ICONS" : room.playerPoolMode === "legends" ? "ICONS ONLY" : "CURRENT ONLY"}</small></button></div>
         <div className="room-status">
           {room.isAdmin ? <div className="admin-game-controls">
+            <button disabled={Boolean(pending)} onClick={() => void endLongSession()}><Clock3 size={15} /><span>SAVE & END</span></button>
             {room.transferWindow.status === "closed" ? <button disabled={Boolean(pending)} onClick={() => setShowTransferSetup(true)}><ArrowRightLeft size={15} /><span>TRANSFERS</span></button> : <button disabled={Boolean(pending)} onClick={() => void command("transfer-window/close")}><ArrowRightLeft size={15} /><span>END WINDOW</span></button>}
             <button disabled={Boolean(pending) || room.transferWindow.status === "open"} onClick={() => void command(room.pausedAt ? "resume" : "pause")} aria-label={room.pausedAt ? "Resume auction" : "Pause auction"}>{room.pausedAt ? <Play size={15} /> : <Pause size={15} />}<span>{room.pausedAt ? "RESUME" : "PAUSE"}</span></button>
             <button className="stop-control" disabled={Boolean(pending)} onClick={() => void stopAuction()} aria-label="Stop auction" title={everyTeamHasMinimumSquad ? "End auction" : "Creator override: stop before every team reaches 11 players"}><Square size={14} /><span>STOP</span></button>
