@@ -93,13 +93,20 @@ const closed = await post(`/api/rooms/${code}/transfer-window/close`, undefined,
 assert.equal(closed.room.transferWindow.status, "closed");
 assert.equal(closed.room.pausedAt, null);
 
+const endedSession = await post(`/api/rooms/${code}/session/end`, undefined, created.session);
+assert.ok(endedSession.room.sessionResume.endedAt);
+const firstVote = await post(`/api/rooms/${code}/session/resume-vote`, undefined, created.session);
+assert.ok(firstVote.room.sessionResume.endedAt, "2-team room should still need the second vote");
+const secondVote = await post(`/api/rooms/${code}/session/resume-vote`, undefined, joined.session);
+assert.equal(secondVote.room.sessionResume.endedAt, null, "75% threshold should resume after 2 of 2 teams vote");
+
 const stopped = await post(`/api/rooms/${code}/stop`, undefined, created.session);
-assert.equal(stopped.room.phase, "complete");
+assert.equal(stopped.room.phase, "tournament-setup");
 assert.ok(stopped.room.stoppedAt);
-const finalResult = await request(`/api/rooms/${code}/result`);
-const adminResult = finalResult.result.participants.find((participant) => participant.participantId === created.session.playerId);
-assert.equal(adminResult.squad[0].athleteId, athleteId);
-assert.equal(adminResult.finalBudget, 450);
+const tournament = await post(`/api/rooms/${code}/tournament/setup`, { format: "league", cricketOvers: 20 }, created.session);
+assert.equal(tournament.room.phase, "tournament");
+assert.equal(tournament.room.tournament.status, "active");
+assert.equal(tournament.room.tournament.fixtures.length, 1);
 
 console.log(JSON.stringify({
   roomCode: code,
@@ -108,7 +115,7 @@ console.log(JSON.stringify({
   winningTeam: winningTeam.teamName,
   acceptedBid: settled.room.currentBid,
   timerResetWindowMilliseconds: resetWindow,
-  administratorControls: "pause/resume/transfer/stop verified",
-  durableResult: "verified",
+  administratorControls: "pause/resume/transfer/save-end/75%-resume/stop verified",
+  tournamentHandoff: "verified",
   result: "PASS",
 }, null, 2));
