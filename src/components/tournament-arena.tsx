@@ -38,6 +38,16 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
   const selfFixture = roundFixtures.find((fixture) => fixture.homeParticipantId === self.id || fixture.awayParticipantId === self.id);
   const allReady = roundFixtures.length > 0 && roundFixtures.every((fixture) => fixture.status === "ready");
 
+  if (room.tournament.status === "complete") {
+    const champion = room.participants.find((participant) => participant.id === room.tournament.championParticipantId);
+    return (
+      <main className="tournament-shell">
+        <header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · COMPLETE</small></span></div><button onClick={onLeave}>Dashboard</button></header>
+        <section className="tournament-champion"><Trophy size={58}/><span>BID ARENA PRO CHAMPIONS</span><h1>{champion?.teamName ?? "Champion"}</h1><h2>{room.sport === "football" ? "Football Champion" : "Cricket Champion"}</h2><p>The full tournament, auction squads, transfers, fixtures and results remain attached to this saved room.</p><button className="primary-button" onClick={onLeave}>Return to dashboard</button></section>
+      </main>
+    );
+  }
+
   if (room.phase === "tournament-setup") {
     return (
       <main className="tournament-shell">
