@@ -322,22 +322,32 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
-    expect(current.length).toBe(20);
-    expect(legends.length).toBe(50);
+    expect(current.length).toBe(100);
+    expect(legends.length).toBe(100);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
   });
 
   it("contains only curated real-player seeds with no generated catalog fillers", () => {
     const expectedCounts = {
-      "cricket-current": 34,
-      "cricket-legend": 50,
-      "football-current": 20,
-      "football-legend": 50,
+      "cricket-current": 100,
+      "cricket-legend": 100,
+      "football-current": 100,
+      "football-legend": 100,
     } as const;
+    const normalizeName = (value: string) => value
+      .normalize("NFD")
+      .replace(/[\\u0300-\\u036f]/g, "")
+      .replace(/[^a-z0-9]+/gi, " ")
+      .trim()
+      .toLowerCase();
 
-    expect(athleteCatalog).toHaveLength(154);
+    expect(athleteCatalog).toHaveLength(400);
     expect(athleteCatalog.every((athlete) => !athlete.id.startsWith("catalog-"))).toBe(true);
+    expect(new Set(athleteCatalog.map((athlete) => normalizeName(athlete.name))).size).toBe(400);
+    expect(athleteCatalog.every((athlete) => !/\\b(catalog|generated|fictional|placeholder|filler|fake)\\b/i.test(
+      [athlete.id, athlete.name, athlete.shortName, athlete.team, athlete.role, athlete.secondaryRole ?? ""].join(" "),
+    ))).toBe(true);
     for (const [key, expected] of Object.entries(expectedCounts)) {
       const [sport, era] = key.split("-") as ["cricket" | "football", "current" | "legend"];
       const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === era);
