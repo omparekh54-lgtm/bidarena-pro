@@ -293,10 +293,18 @@ export async function chooseTournamentTossDecision(code: string, playerId: strin
   return toRoomView(result.room, playerId);
 }
 
-export async function startTournamentRound(code: string, playerId: string, token: string) {
+export async function startTournamentRound(code: string, playerId: string, token: string, expectedRound?: number) {
   validateRoomCode(code);
   const result = await mutateStoredRoom(code, async (room) => {
     authenticate(room, playerId, token);
+    if (expectedRound !== undefined) {
+      assertAuction(
+        room.tournament.currentRound === expectedRound,
+        "That tournament round has already advanced. Refreshing the latest game state.",
+        409,
+        "STALE_TOURNAMENT_ROUND",
+      );
+    }
     startTournamentRoundInRoom(room, playerId);
     if (room.phase === "complete" && room.sport && room.purse) {
       await writeFinalResult(finalizeRoomResult(room));

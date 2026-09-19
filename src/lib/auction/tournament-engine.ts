@@ -96,6 +96,9 @@ export function setupTournament(room: AuctionRoom, adminPlayerId: string, format
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can configure the tournament.", 403, "ADMIN_ONLY");
   assertAuction(room.phase === "tournament-setup", "Tournament setup is not available right now.", 409, "TOURNAMENT_SETUP_UNAVAILABLE");
   assertAuction(room.participants.length >= 2, "At least two teams are required for a tournament.", 422, "TOURNAMENT_TEAMS_REQUIRED");
+  if (format === "league-knockout" || format === "groups-knockout") {
+    assertAuction(room.participants.length >= 4, "This tournament format requires at least four teams.", 422, "TOURNAMENT_FORMAT_TEAMS_REQUIRED");
+  }
 
   const ids = room.participants.map((participant) => participant.id);
   let fixtures = format === "knockout" ? initialKnockout(ids) : roundRobin(ids);
@@ -519,7 +522,9 @@ export function startTournamentRound(room: AuctionRoom, adminPlayerId: string, n
   assertAuction(room.phase === "tournament" && room.tournament.status === "active", "The tournament is not active.", 409, "TOURNAMENT_INACTIVE");
   const fixtures = room.tournament.fixtures.filter((fixture) => fixture.round === room.tournament.currentRound);
   assertAuction(fixtures.length > 0, "There are no fixtures in this round.", 409, "ROUND_EMPTY");
-  fixtures.forEach((fixture) => {
+  const pendingFixtures = fixtures.filter((fixture) => fixture.status !== "complete");
+  assertAuction(pendingFixtures.length > 0, "This tournament round is already complete.", 409, "ROUND_ALREADY_COMPLETE");
+  pendingFixtures.forEach((fixture) => {
     if (fixture.status !== "ready") forceFixtureReady(room, fixture);
     simulateFixture(room, fixture);
   });

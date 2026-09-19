@@ -8,10 +8,12 @@ import {
   createTransferOffer,
   endSession,
   openTransferWindow,
+  pauseRoom,
   requestSessionResume,
   respondToTransferOffer,
   settleRoom,
   startRoom,
+  stopRoom,
 } from "./room-engine";
 import { minimumBasePriceForPool } from "./engine";
 import { setupTournament, startTournamentRound } from "./tournament-engine";
@@ -205,4 +207,132 @@ describe("full-game reliability stress", () => {
       });
     }
   }
+
+  it("rejects auction-only admin controls after the tournament handoff", () => {
+    const { room, admin } = tenTeamRoom("football");
+    giveTournamentSquads(room, "football");
+    room.phase = "tournament-setup";
+    setupTournament(room, admin.id, "league", 20, 100);
+
+    expect(room.phase).toBe("tournament");
+    expect(() => openTransferWindow(room, admin.id, 60, 101)).toThrow();
+    expect(() => pauseRoom(room, admin.id, 101)).toThrow();
+    expect(() => stopRoom(room, admin.id, 101)).toThrow();
+    expect(room.phase).toBe("tournament");
+  });
+
+  it("rejects transfers that would leave a team unable to finance eleven players", () => {
+    const { room, admin } = tenTeamRoom("football");
+    startRoom(room, admin.id, 100);
+    const seller = room.participants[1];
+    const buyer = room.participants[0];
+    const pool = room.queue.slice(0, 22);
+
+    buyer.squad = pool.slice(0, 10).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 1).toISOString() }));
+    seller.squad = pool.slice(10, 21).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 20).toISOString() }));
+    seller.budget = 0;
+
+    openTransferWindow(room, admin.id, 60, 1_000);
+    const offer = createTransferOffer(room, buyer.id, {
+      type: "buy",
+      toParticipantId: seller.id,
+      offeredAthleteIds: [],
+      requestedAthleteIds: [seller.squad[0].athleteId],
+      cashAdjustment: 0,
+    }, 1_001);
+
+    expect(() => respondToTransferOffer(room, seller.id, offer.id, "accept", 1_002)).toThrow();
+    expect(offer.status).toBe("pending");
+    expect(seller.squad).toHaveLength(11);
+  });
+
+  it("prevents one team from buying the final player supply needed by incomplete squads", () => {
+    const { room, admin } = tenTeamRoom("football");
+    startRoom(room, admin.id, 100);
+    settleRoom(room, 3_300);
+
+    const bidder = room.participants[0];
+    bidder.squad = room.queue.slice(1, 12).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 1).toISOString() }));
+    bidder.budget = 1_000_000;
+
+    const currentId = room.queue[room.lotIndex];
+    const currentPool = athleteCatalog.filter((athlete) => athlete.sport === "football" && athlete.era === "current");
+    const soldIds = currentPool.map((athlete) => athlete.id).filter((id) => id !== currentId).slice(0, currentPool.length - 11);
+    room.sales = soldIds.map((athleteId, index) => ({
+      athleteId,
+      participantId: bidder.id,
+      amount: 10,
+      soldAt: new Date(index + 1).toISOString(),
+    }));
+
+    expect(() => bidForParticipant(room, bidder.id, 3_301)).toThrow();
+    expect(room.leaderId).toBeNull();
+    expect(room.phase).toBe("bidding");
+  });
+
+  for (const sport of ["football", "cricket"] as const) {
+    for (let teamCount = 2; teamCount <= 10; teamCount += 1) {
+      for (const format of ["league", "knockout"] as TournamentFormat[]) {
+        it(`completes a ${teamCount}-team ${sport} ${format} tournament`, () => {
+          const admin = participant("p0");
+          const room = createRoomState(`7${teamCount}01`.slice(-4), admin, 0);
+          for (let i = 1; i < teamCount; i += 1) addParticipant(room, participant(`p${i}`), i);
+          configureRoom(room, admin.id, sport, 10000, "current", 20);
+          giveTournamentSquads(room, sport);
+          room.phase = "tournament-setup";
+          setupTournament(room, admin.id, format, 20, 100);
+
+          let guard = 0;
+          while ((room.phase as string) !== "complete" && guard < 20) {
+            startTournamentRound(room, admin.id, 200 + guard);
+            guard += 1;
+          }
+
+          expect(guard).toBeLessThan(20);
+          expect(room.phase).toBe("complete");
+          expect(room.tournament.championParticipantId).toBeTruthy();
+        });
+      }
+    }
+  }
+
+  for (const sport of ["football", "cricket"] as const) {
+    for (let teamCount = 4; teamCount <= 10; teamCount += 1) {
+      for (const format of ["league-knockout", "groups-knockout"] as TournamentFormat[]) {
+        it(`completes a ${teamCount}-team ${sport} ${format} tournament`, () => {
+          const admin = participant("p0");
+          const room = createRoomState(`8${teamCount}01`.slice(-4), admin, 0);
+          for (let i = 1; i < teamCount; i += 1) addParticipant(room, participant(`p${i}`), i);
+          configureRoom(room, admin.id, sport, 10000, "current", 20);
+          giveTournamentSquads(room, sport);
+          room.phase = "tournament-setup";
+          setupTournament(room, admin.id, format, 20, 100);
+
+          let guard = 0;
+          while ((room.phase as string) !== "complete" && guard < 30) {
+            startTournamentRound(room, admin.id, 200 + guard);
+            guard += 1;
+          }
+
+          expect(guard).toBeLessThan(30);
+          expect(room.phase).toBe("complete");
+          expect(room.tournament.championParticipantId).toBeTruthy();
+        });
+      }
+    }
+  }
+
+  it("rejects knockout formats that require four teams before creating broken fixtures", () => {
+    const admin = participant("p0");
+    const room = createRoomState("8801", admin, 0);
+    addParticipant(room, participant("p1"), 1);
+    addParticipant(room, participant("p2"), 2);
+    configureRoom(room, admin.id, "football", 10000, "current", 20);
+    room.phase = "tournament-setup";
+
+    expect(() => setupTournament(room, admin.id, "league-knockout", 20, 100)).toThrow();
+    expect(() => setupTournament(room, admin.id, "groups-knockout", 20, 100)).toThrow();
+    expect(room.phase).toBe("tournament-setup");
+  });
+
 });
