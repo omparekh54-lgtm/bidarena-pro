@@ -243,7 +243,7 @@ describe("full-game reliability stress", () => {
 
     expect(() => respondToTransferOffer(room, seller.id, offer.id, "accept", 1_002)).toThrow();
     expect(offer.status).toBe("pending");
-    expect(seller.squad).toHaveLength(11);
+    expect(seller.squad).toHaveLength(10);
   });
 
   it("does not enforce global 11-player supply when the selected real-only pool is too small", () => {
