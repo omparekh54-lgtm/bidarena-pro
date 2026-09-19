@@ -1,0 +1,17 @@
+name: Final Live Production Stress
+on:
+  push:
+    branches: [test/final-live-stress]
+permissions:
+  contents: read
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run live production stress
+        run: node scripts/live-final-stress.mjs
