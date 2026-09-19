@@ -337,4 +337,16 @@ describe("server-authoritative auction room", () => {
       }
     }
   });
+
+  it("allows exactly twelve teams and rejects a thirteenth", () => {
+    const admin = participant("admin", "Team 1", "#111");
+    const room = createRoomState("7912", admin, 0);
+    for (let i = 2; i <= 12; i += 1) {
+      addParticipant(room, participant(`p${i}`, `Team ${i}`, `#${i}`), i);
+    }
+    expect(room.participants).toHaveLength(12);
+    expect(() => addParticipant(room, participant("p13", "Team 13", "#131313"), 13)).toThrowError(AuctionError);
+    expect(room.participants).toHaveLength(12);
+  });
+
 });

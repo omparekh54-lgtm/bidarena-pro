@@ -666,7 +666,7 @@ function Lobby({ room, copied, pending, error, onCopy, onLeave, onConfigure, onS
         <motion.section className="lobby-main" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
           <div className="lobby-eyebrow"><Wifi size={13} /> PRIVATE ROOM ACTIVE</div><h1>{room.isAdmin ? "Your auction room is ready." : "You joined the war room."}</h1><p>{room.isAdmin ? "Share the code, choose the sport and start when every team is ready." : "The administrator will choose the sport and start the auction."}</p>
           <div className="invite-code"><span>INVITATION CODE</span><strong>{room.code}</strong><button onClick={onCopy}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? "Copied" : "Copy code"}</button></div>
-          <div className="lobby-section-heading"><span>CONNECTED TEAMS</span><strong>{room.participants.length}/10</strong></div>
+          <div className="lobby-section-heading"><span>CONNECTED TEAMS</span><strong>{room.participants.length}/12</strong></div>
           <div className="lobby-team-grid">{room.participants.map((participant) => <div key={participant.id} style={{ "--team": participant.color } as React.CSSProperties}><span className="team-avatar">{participant.code}</span><span><strong>{participant.teamName}</strong><small>{participant.isAdmin ? "Administrator" : "Bidder"}{participant.id === self?.id ? " · You" : ""}</small></span>{participant.isAdmin ? <Crown size={17} /> : <Radio size={15} />}</div>)}</div>
         </motion.section>
         <motion.aside className="lobby-control" initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }}>

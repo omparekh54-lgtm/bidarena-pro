@@ -17,7 +17,7 @@ BidArena Pro is a server-authoritative multiplayer auction game for cricket and 
 - The server—not the browser—calculates bid increments, validates budget, closes lots, and assigns squads.
 - Each participant sees their own current squad, purse, the other teams, and the live bid ledger.
 - The personal squad appears directly below Recent Bids in the intelligence sidebar.
-- Rooms expire after 18 hours and support 1–10 teams.
+- Rooms expire after 18 hours and support 1–12 teams.
 
 ## Data integrity
 

@@ -6,7 +6,7 @@ import { appendChatMessage, createRoomIfAvailable, mutateStoredRoom, readChatAtt
 import { callToss as callTossInRoom, chooseTossDecision as chooseTossDecisionInRoom, setupTournament as setupTournamentInRoom, startTournamentRound as startTournamentRoundInRoom, submitCricketLineup as submitCricketLineupInRoom, submitFootballLineup as submitFootballLineupInRoom } from "./tournament-engine";
 import type { AuctionRoom, ChatAttachmentPayload, ChatMessage, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
 
-const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
+const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9", "#14b8a6", "#f43f5e"];
 
 function validateRoomCode(code: string) {
   assertAuction(/^\d{4}$/.test(code), "Enter the four-digit room code.", 422, "INVALID_ROOM_CODE");

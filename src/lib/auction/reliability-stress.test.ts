@@ -335,4 +335,31 @@ describe("full-game reliability stress", () => {
     expect(room.phase).toBe("tournament-setup");
   });
 
+
+  for (const sport of ["football", "cricket"] as const) {
+    for (const format of ["league", "league-knockout", "knockout", "groups-knockout"] as TournamentFormat[]) {
+      it(`completes a 12-team ${sport} ${format} tournament without deadlock`, () => {
+        const admin = participant("p0");
+        const room = createRoomState("9212", admin, 0);
+        for (let i = 1; i < 12; i += 1) addParticipant(room, participant(`p${i}`), i);
+        configureRoom(room, admin.id, sport, 10000, "current", 20);
+        giveTournamentSquads(room, sport);
+        room.phase = "tournament-setup";
+        setupTournament(room, admin.id, format, 20, 100);
+
+        let guard = 0;
+        while ((room.phase as string) !== "complete" && guard < 40) {
+          startTournamentRound(room, admin.id, 200 + guard);
+          guard += 1;
+        }
+
+        expect(guard).toBeLessThan(40);
+        expect(room.participants).toHaveLength(12);
+        expect(room.phase).toBe("complete");
+        expect(room.tournament.status).toBe("complete");
+        expect(room.tournament.championParticipantId).toBeTruthy();
+      });
+    }
+  }
+
 });
