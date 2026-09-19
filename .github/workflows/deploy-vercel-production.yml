@@ -50,6 +50,7 @@ jobs:
         shell: bash
         run: |
           node <<'NODE'
+          (async () => {
           const fs = require("fs");
 
           const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
@@ -135,4 +136,8 @@ jobs:
 
           console.error("Deployment timed out waiting for READY state");
           process.exit(1);
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
           NODE
