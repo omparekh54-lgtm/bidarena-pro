@@ -1,0 +1,20 @@
+name: Vercel Token REST Diagnostic
+on:
+  push:
+    branches: [test/vercel-token-rest]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check token against exact Vercel project
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          test -n "$VERCEL_TOKEN" || (echo "SECRET_MISSING" && exit 1)
+          status=$(curl -sS -o response.json -w "%{http_code}"             -H "Authorization: Bearer $VERCEL_TOKEN"             "https://api.vercel.com/v9/projects/prj_GYX0ENRuIhAooepKT37RszO3xhwZ?teamId=team_6SL2MJ0RqbyM1rn3BaK1fcEo")
+          echo "HTTP_STATUS=$status"
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('response.json','utf8')); console.log(JSON.stringify({id:x.id,name:x.name,error:x.error?.code,message:x.error?.message}))"
+          test "$status" = "200"
