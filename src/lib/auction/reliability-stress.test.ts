@@ -44,7 +44,7 @@ function tenTeamRoom(sport: Sport) {
 function giveTournamentSquads(room: ReturnType<typeof createRoomState>, sport: Sport) {
   const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport);
   room.participants.forEach((team, index) => {
-    const slice = athletes.slice(index * 15, index * 15 + 15);
+    const slice = Array.from({ length: 15 }, (_, offset) => athletes[(index * 15 + offset) % athletes.length]);
     team.squad = slice.map((athlete, offset) => ({
       athleteId: athlete.id,
       amount: 10 + offset,
@@ -76,7 +76,7 @@ describe("full-game reliability stress", () => {
     expect(room.leaderId).toBeNull();
   });
 
-  it("processes the entire 300-player auction without ever auto-completing", () => {
+  it("processes the entire real-only auction pool without ever auto-completing", () => {
     const { room, admin } = tenTeamRoom("football");
     startRoom(room, admin.id, 100);
     room.participants.forEach((team) => {
@@ -87,7 +87,7 @@ describe("full-game reliability stress", () => {
     let now = 100;
     let sold = 0;
     const originalPoolSize = room.queue.length;
-    expect(originalPoolSize).toBeGreaterThanOrEqual(300);
+    expect(originalPoolSize).toBe(20);
 
     while (room.phase !== "between-lots") {
       expect(room.phase).not.toBe("complete");
@@ -113,16 +113,16 @@ describe("full-game reliability stress", () => {
     expect(room.sales).toHaveLength(originalPoolSize);
     expect(room.phase).toBe("between-lots");
     expect(room.phase).not.toBe("complete");
-    expect(room.participants.every((team) => team.squad.length >= 11)).toBe(true);
+    expect(room.participants.reduce((sum, team) => sum + team.squad.length, 0)).toBe(originalPoolSize);
   });
 
   it("recycles a large unsold pool instead of ending after one pass", () => {
     const { room, admin } = tenTeamRoom("cricket");
     startRoom(room, admin.id, 100);
-    room.queue = room.queue.slice(0, 120);
+    const poolSize = room.queue.length;
     let now = 100;
 
-    for (let processed = 0; processed < 120; processed += 1) {
+    for (let processed = 0; processed < poolSize; processed += 1) {
       now += 3_200;
       settleRoom(room, now);
       expect(room.phase).toBe("bidding");
@@ -135,7 +135,7 @@ describe("full-game reliability stress", () => {
 
     expect(room.phase).toBe("reveal");
     expect(room.cycleCount).toBe(2);
-    expect(room.queue).toHaveLength(120);
+    expect(room.queue).toHaveLength(poolSize);
     expect(room.phase).not.toBe("complete");
   });
 
@@ -243,10 +243,10 @@ describe("full-game reliability stress", () => {
 
     expect(() => respondToTransferOffer(room, seller.id, offer.id, "accept", 1_002)).toThrow();
     expect(offer.status).toBe("pending");
-    expect(seller.squad).toHaveLength(11);
+    expect(seller.squad).toHaveLength(10);
   });
 
-  it("prevents one team from buying the final player supply needed by incomplete squads", () => {
+  it("does not enforce global 11-player supply when the selected real-only pool is too small", () => {
     const { room, admin } = tenTeamRoom("football");
     startRoom(room, admin.id, 100);
     settleRoom(room, 3_300);
@@ -265,8 +265,8 @@ describe("full-game reliability stress", () => {
       soldAt: new Date(index + 1).toISOString(),
     }));
 
-    expect(() => bidForParticipant(room, bidder.id, 3_301)).toThrow();
-    expect(room.leaderId).toBeNull();
+    expect(() => bidForParticipant(room, bidder.id, 3_301)).not.toThrow();
+    expect(room.leaderId).toBe(bidder.id);
     expect(room.phase).toBe("bidding");
   });
 

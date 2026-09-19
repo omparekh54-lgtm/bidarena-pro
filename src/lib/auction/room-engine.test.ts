@@ -322,19 +322,27 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
-    expect(current.length).toBeGreaterThanOrEqual(300);
-    expect(legends.length).toBeGreaterThanOrEqual(300);
+    expect(current.length).toBe(20);
+    expect(legends.length).toBe(50);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
   });
 
-  it("keeps at least 300 athletes in every sport and era", () => {
-    for (const sport of ["cricket", "football"] as const) {
-      for (const era of ["current", "legend"] as const) {
-        const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === era);
-        expect(athletes.length).toBeGreaterThanOrEqual(300);
-        expect(new Set(athletes.map((athlete) => athlete.id)).size).toBe(athletes.length);
-      }
+  it("contains only curated real-player seeds with no generated catalog fillers", () => {
+    const expectedCounts = {
+      "cricket-current": 34,
+      "cricket-legend": 50,
+      "football-current": 20,
+      "football-legend": 50,
+    } as const;
+
+    expect(athleteCatalog).toHaveLength(154);
+    expect(athleteCatalog.every((athlete) => !athlete.id.startsWith("catalog-"))).toBe(true);
+    for (const [key, expected] of Object.entries(expectedCounts)) {
+      const [sport, era] = key.split("-") as ["cricket" | "football", "current" | "legend"];
+      const athletes = athleteCatalog.filter((athlete) => athlete.sport === sport && athlete.era === era);
+      expect(athletes).toHaveLength(expected);
+      expect(new Set(athletes.map((athlete) => athlete.id)).size).toBe(athletes.length);
     }
   });
 

@@ -29,6 +29,11 @@ function remainingUnallocatedPlayers(room: AuctionRoom, additionalSales = 0) {
   return Math.max(0, poolSize - soldCount);
 }
 
+function poolCanSupplyMinimumSquads(room: AuctionRoom) {
+  if (!room.sport) return false;
+  return athletesForPool(room.sport, room.playerPoolMode ?? "current").length >= room.participants.length * 11;
+}
+
 function toIso(timestamp: number) {
   return new Date(timestamp).toISOString();
 }
@@ -384,12 +389,14 @@ function acceptTransferOffer(room: AuctionRoom, offer: TransferOffer, now: numbe
     [from.id, fromProjectedSize],
     [to.id, toProjectedSize],
   ]);
-  assertAuction(
-    remainingUnallocatedPlayers(room) >= projectedMissingSquadSlots(room, projectedSizes),
-    "This transfer would leave too few unallocated players for every team to complete an 11-player squad.",
-    409,
-    "INSUFFICIENT_PLAYER_SUPPLY",
-  );
+  if (poolCanSupplyMinimumSquads(room)) {
+    assertAuction(
+      remainingUnallocatedPlayers(room) >= projectedMissingSquadSlots(room, projectedSizes),
+      "This transfer would leave too few unallocated players for every team to complete an 11-player squad.",
+      409,
+      "INSUFFICIENT_PLAYER_SUPPLY",
+    );
+  }
 
   const offered = from.squad.filter((entry) => offer.offeredAthleteIds.includes(entry.athleteId));
   const requested = to.squad.filter((entry) => offer.requestedAthleteIds.includes(entry.athleteId));
@@ -555,12 +562,14 @@ export function bidForParticipant(room: AuctionRoom, participantId: string, now 
   );
 
   const projectedSizes = new Map<string, number>([[participant.id, participant.squad.length + 1]]);
-  assertAuction(
-    remainingUnallocatedPlayers(room, 1) >= projectedMissingSquadSlots(room, projectedSizes),
-    "This purchase would leave too few players for every team to complete an 11-player squad.",
-    409,
-    "INSUFFICIENT_PLAYER_SUPPLY",
-  );
+  if (poolCanSupplyMinimumSquads(room)) {
+    assertAuction(
+      remainingUnallocatedPlayers(room, 1) >= projectedMissingSquadSlots(room, projectedSizes),
+      "This purchase would leave too few players for every team to complete an 11-player squad.",
+      409,
+      "INSUFFICIENT_PLAYER_SUPPLY",
+    );
+  }
 
   room.currentBid = amount;
   room.leaderId = participantId;
