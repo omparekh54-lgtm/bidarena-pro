@@ -40,7 +40,7 @@ jobs:
         run: npm run lint
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@59.16.0
+        run: npm install --global vercel@latest
 
       - name: Verify Vercel token
         shell: bash
@@ -48,4 +48,4 @@ jobs:
           test -n "${{ secrets.VERCEL_TOKEN }}" || (echo "VERCEL_TOKEN secret is missing" && exit 1)
 
       - name: Deploy production
-        run: vercel deploy --prod --yes --team "$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_TOKEN }}"
+        run: vercel deploy --prod --yes --scope omparekh54-4085s-projects --token="${{ secrets.VERCEL_TOKEN }}"
