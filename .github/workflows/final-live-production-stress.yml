@@ -9,9 +9,100 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Run live production stress
-        run: node scripts/live-final-stress.mjs
+      - name: Exercise live production
+        shell: bash
+        env:
+          BASE_URL: https://bidarena-pro-live.vercel.app
+        run: |
+          node <<'NODE'
+          (async () => {
+            const base = process.env.BASE_URL;
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+            async function request(path, {method="GET", body, session}={}) {
+              const res = await fetch(base + path, {
+                method,
+                headers: {
+                  ...(body ? {"content-type":"application/json"} : {}),
+                  ...(session ? {"x-bidarena-player":session.playerId,"x-bidarena-token":session.token} : {})
+                },
+                body: body ? JSON.stringify(body) : undefined
+              });
+              const json = await res.json().catch(()=>({}));
+              return {res,json};
+            }
+            function assert(cond,msg){ if(!cond) throw new Error(msg); }
+
+            const created = await request("/api/rooms",{method:"POST",body:{teamName:"Stress Host"}});
+            assert(created.res.status===201, "room create failed "+created.res.status+" "+JSON.stringify(created.json));
+            const host=created.json.session, code=host.roomCode;
+            console.log("ROOM="+code);
+
+            const joins = await Promise.all(Array.from({length:12},(_,i)=>request(`/api/rooms/${code}/join`,{
+              method:"POST", body:{teamName:`Stress Team ${i+1}`}
+            })));
+            const accepted=joins.filter(x=>x.res.status===201);
+            const rejected=joins.filter(x=>x.res.status!==201);
+            assert(accepted.length===9, `expected 9 accepted joins, got ${accepted.length}`);
+            assert(rejected.length===3, `expected 3 rejected joins, got ${rejected.length}`);
+            const sessions=[host,...accepted.map(x=>x.json.session)];
+
+            let x=await request(`/api/rooms/${code}/configure`,{method:"POST",body:{sport:"football",purse:10000,playerPoolMode:"current"},session:host});
+            assert(x.res.ok,"configure failed");
+            x=await request(`/api/rooms/${code}/start`,{method:"POST",session:host});
+            assert(x.res.ok && x.json.room.phase==="reveal","start failed");
+
+            const illegalStop=await request(`/api/rooms/${code}/stop`,{method:"POST",session:sessions[1]});
+            assert(illegalStop.res.status===403,"non-admin stop was not rejected");
+
+            await sleep(3500);
+            x=await request(`/api/rooms/${code}`,{session:host});
+            assert(x.res.ok && x.json.room.phase==="bidding","did not enter bidding");
+
+            const bids=await Promise.all(sessions.slice(0,9).map(s=>request(`/api/rooms/${code}/bid`,{method:"POST",session:s})));
+            const bidAccepted=bids.filter(x=>x.res.ok);
+            assert(bidAccepted.length>=2,`too few concurrent bids accepted: ${bidAccepted.length}`);
+            x=await request(`/api/rooms/${code}`,{session:host});
+            assert(x.json.room.phase==="bidding","auction ended during concurrent bids");
+            assert(x.json.room.phase!=="complete","game completed unexpectedly");
+
+            const chat=await request(`/api/rooms/${code}/chat`,{
+              method:"POST",session:sessions[2],
+              body:{text:"final stress chat",attachments:[{name:"stress.txt",mimeType:"text/plain",size:6,base64:Buffer.from("stress").toString("base64")}]}
+            });
+            assert(chat.res.ok,"chat send failed "+chat.res.status+" "+JSON.stringify(chat.json));
+            const chatRead=await request(`/api/rooms/${code}/chat`,{session:sessions[3]});
+            assert(chatRead.res.ok && chatRead.json.messages.some(m=>m.text==="final stress chat"),"chat history failed");
+
+            const open=await request(`/api/rooms/${code}/transfer-window/open`,{
+              method:"POST",session:host,body:{durationSeconds:30}
+            });
+            assert(open.res.ok && open.json.room.transferWindow.status==="open","transfer open failed");
+            const blocked=await request(`/api/rooms/${code}/bid`,{method:"POST",session:sessions[4]});
+            assert(blocked.res.status===409,"bid was not blocked during transfer window");
+            const close=await request(`/api/rooms/${code}/transfer-window/close`,{method:"POST",session:host});
+            assert(close.res.ok && close.json.room.transferWindow.status==="closed","transfer close failed");
+            assert(close.json.room.phase!=="complete","game completed after transfer close");
+
+            const paused=await request(`/api/rooms/${code}/pause`,{method:"POST",session:host});
+            assert(paused.res.ok && paused.json.room.pausedAt,"pause failed");
+            await sleep(1500);
+            const still=await request(`/api/rooms/${code}`,{session:sessions[5]});
+            assert(still.res.ok && still.json.room.phase==="bidding" && still.json.room.pausedAt,"paused game advanced unexpectedly");
+            const resumed=await request(`/api/rooms/${code}/resume`,{method:"POST",session:host});
+            assert(resumed.res.ok && !resumed.json.room.pausedAt,"resume failed");
+
+            const handoff=await request(`/api/rooms/${code}/stop`,{method:"POST",session:host});
+            assert(handoff.res.ok && handoff.json.room.phase==="tournament-setup","admin tournament handoff failed");
+            const illegalTransfer=await request(`/api/rooms/${code}/transfer-window/open`,{
+              method:"POST",session:host,body:{durationSeconds:30}
+            });
+            assert(illegalTransfer.res.status===409,"transfer opened after auction handoff");
+
+            console.log(JSON.stringify({
+              ok:true,code,participants:10,
+              acceptedConcurrentBids:bidAccepted.length,
+              rejectedOverflowJoins:rejected.length,
+              finalPhase:handoff.json.room.phase
+            }));
+          })().catch(err=>{ console.error(err); process.exit(1); });
+          NODE
