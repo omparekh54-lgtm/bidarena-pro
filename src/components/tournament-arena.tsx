@@ -32,11 +32,13 @@ function fixtureLabel(room: RoomView, fixture: TournamentFixture) {
 
 export function TournamentArena({ room, pending, error, onCommand, onLeave }: Props) {
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId)!;
-  const [format, setFormat] = useState<TournamentFormat>("league-knockout");
+  const [format, setFormat] = useState<TournamentFormat>(() => room.participants.length >= 4 ? "league-knockout" : "league");
   const [overs, setOvers] = useState<10 | 20 | 50>(20);
   const roundFixtures = room.tournament.fixtures.filter((fixture) => fixture.round === room.tournament.currentRound);
   const selfFixture = roundFixtures.find((fixture) => fixture.homeParticipantId === self.id || fixture.awayParticipantId === self.id);
   const allReady = roundFixtures.length > 0 && roundFixtures.every((fixture) => fixture.status === "ready");
+  const formatNeedsFourTeams = format === "league-knockout" || format === "groups-knockout";
+  const formatAllowed = !formatNeedsFourTeams || room.participants.length >= 4;
 
   if (room.tournament.status === "complete") {
     const champion = room.participants.find((participant) => participant.id === room.tournament.championParticipantId);
@@ -66,9 +68,9 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
               ["knockout","Straight knockout"],
               ["groups-knockout","Groups + knockouts"],
             ] as Array<[TournamentFormat,string]>).map(([value,label]) => (
-              <button key={value} className={format === value ? "active" : ""} onClick={() => setFormat(value)} disabled={!room.isAdmin}>
+              <button key={value} className={format === value ? "active" : ""} onClick={() => setFormat(value)} disabled={!room.isAdmin || ((value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4)}>
                 <strong>{label}</strong>
-                <small>{value === "league" ? "Every team plays every team." : value === "league-knockout" ? "League table, top 4, semifinals and final." : value === "knockout" ? "One loss and you are out." : "Split groups followed by knockout rounds."}</small>
+                <small>{(value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4 ? "Requires at least 4 teams." : value === "league" ? "Every team plays every team." : value === "league-knockout" ? "League table, top 4, semifinals and final." : value === "knockout" ? "One loss and you are out." : "Split groups followed by knockout rounds."}</small>
               </button>
             ))}
           </div>
@@ -76,7 +78,7 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
             <div className="overs-control"><span>MATCH FORMAT</span>{([10,20,50] as const).map((value) => <button key={value} className={overs === value ? "active" : ""} onClick={() => setOvers(value)} disabled={!room.isAdmin}>{value === 10 ? "T10" : value === 20 ? "T20" : "ODI"}</button>)}</div>
           ) : null}
           {room.isAdmin ? (
-            <button className="primary-button tournament-start" disabled={Boolean(pending)} onClick={() => void onCommand("tournament/setup", { format, cricketOvers: overs })}>
+            <button className="primary-button tournament-start" disabled={Boolean(pending) || !formatAllowed} onClick={() => void onCommand("tournament/setup", { format, cricketOvers: overs })}>
               {pending === "tournament/setup" ? <LoaderCircle className="spin" size={17}/> : <Play size={17}/>} Generate fixtures
             </button>
           ) : <div className="waiting-state"><LoaderCircle className="spin" size={18}/><span><strong>Waiting for administrator</strong>The host is choosing the tournament format.</span></div>}
