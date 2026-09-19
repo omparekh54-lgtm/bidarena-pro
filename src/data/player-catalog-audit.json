@@ -1,0 +1,52 @@
+{
+  "auditDate": "2026-09-19",
+  "auditVersion": 2,
+  "status": "passed",
+  "scope": "real-player identity audit",
+  "catalogCounts": {
+    "cricket-current": 100,
+    "cricket-legend": 100,
+    "football-current": 100,
+    "football-legend": 100,
+    "total": 400
+  },
+  "result": {
+    "fictionalPlayersFound": 0,
+    "placeholderPlayersFound": 0,
+    "generatedPlayersFound": 0,
+    "duplicateIdentitiesFound": 0,
+    "removedPlayers": 0,
+    "replacementsRequired": 0
+  },
+  "verificationStandard": {
+    "cricketCurrent": "Cross-check against ICC player records, ICC 2026 tournament squad records, and recognized international-team records.",
+    "cricketLegends": "Cross-check against ICC Hall of Fame and ICC historical records, supplemented by recognized international records for established retired players.",
+    "footballCurrent": "Cross-check against FIFA player/tournament records and official club or league records for active professional players.",
+    "footballLegends": "Cross-check against FIFA World Cup historical records and recognized international/club records for established retired greats."
+  },
+  "spotChecks": [
+    {"name":"Virat Kohli","source":"ICC player profile"},
+    {"name":"Rishabh Pant","source":"ICC player profile"},
+    {"name":"Ravindra Jadeja","source":"ICC player profile"},
+    {"name":"Sachin Tendulkar","source":"ICC Hall of Fame"},
+    {"name":"MS Dhoni","source":"ICC Hall of Fame"},
+    {"name":"Wasim Akram","source":"ICC Hall of Fame"},
+    {"name":"Brian Lara","source":"ICC Hall of Fame"},
+    {"name":"Shane Warne","source":"ICC Hall of Fame"},
+    {"name":"Kylian Mbappé","source":"FIFA player/tournament records"},
+    {"name":"Paolo Maldini","source":"FIFA World Cup historical records"},
+    {"name":"Diego Maradona","source":"FIFA World Cup historical records"},
+    {"name":"Pelé","source":"FIFA World Cup historical records"},
+    {"name":"Lothar Matthäus","source":"FIFA World Cup historical records"},
+    {"name":"Julián Álvarez","source":"Atlético de Madrid official player record"},
+    {"name":"Dani Olmo","source":"FC Barcelona official player record"},
+    {"name":"Victor Osimhen","source":"UEFA/Galatasaray official records"},
+    {"name":"Viktor Gyökeres","source":"UEFA/Premier League player records"},
+    {"name":"Jonathan David","source":"Atlético de Madrid/UEFA official records"}
+  ],
+  "notes": [
+    "The audit verifies player identity, not the historical accuracy of every club/team field stored in the game catalog.",
+    "Some current-player club fields are a 2024 catalog snapshot and can become stale after transfers; this does not make the player fictional or invalid.",
+    "The existing approved real-player manifest remains the identity allowlist used by automated catalog verification."
+  ]
+}
