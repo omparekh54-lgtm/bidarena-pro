@@ -6,7 +6,7 @@ import type { Athlete, AuctionRoom, FinalRoomResult, ParticipantView, PlayerPool
 export const BID_WINDOW_MS = 10_000;
 export const REVEAL_WINDOW_MS = 3_200;
 export const RESULT_WINDOW_MS = 2_400;
-export const MAX_PLAYERS = 10;
+export const MAX_PLAYERS = 12;
 
 const athleteById = new Map(athleteCatalog.map((athlete) => [athlete.id, athlete]));
 const LIVE_AUCTION_PHASES = new Set(["reveal", "bidding", "sold", "unsold", "between-lots"]);
@@ -146,7 +146,7 @@ export function createRoomState(code: string, admin: RoomParticipant, now = Date
 
 export function addParticipant(room: AuctionRoom, participant: RoomParticipant, now = Date.now()) {
   assertAuction(room.phase === "lobby", "This auction has already started.", 409, "ROOM_STARTED");
-  assertAuction(room.participants.length < MAX_PLAYERS, "This room already has 10 teams.", 409, "ROOM_FULL");
+  assertAuction(room.participants.length < MAX_PLAYERS, "This room already has 12 teams.", 409, "ROOM_FULL");
   const duplicate = room.participants.some(
     (existing) => existing.teamName.localeCompare(participant.teamName, undefined, { sensitivity: "accent" }) === 0,
   );
