@@ -19,6 +19,10 @@ function post(path, body, session) {
   return request(path, { method: "POST", ...(body ? { body: JSON.stringify(body) } : {}) }, session);
 }
 
+const status = await request("/api/status");
+assert.equal(status.status, "ok");
+assert.equal(status.multiplayer.maxTeams, 12);
+
 const created = await post("/api/rooms", { teamName: "Admin Athletic" });
 assert.match(created.session.roomCode, /^\d{4}$/);
 assert.equal(created.room.isAdmin, true);
@@ -31,7 +35,7 @@ assert.equal(joined.room.isAdmin, false);
 await post(`/api/rooms/${code}/configure`, { sport: "football", purse: 500, playerPoolMode: "mixed" }, created.session);
 const started = await post(`/api/rooms/${code}/start`, undefined, created.session);
 assert.equal(started.room.phase, "reveal");
-assert.equal(started.room.queueLength, 600);
+assert.equal(started.room.queueLength, 200);
 assert.equal(started.room.playerPoolMode, "mixed");
 assert.equal(started.room.participants.every((team) => team.budget === 500), true);
 

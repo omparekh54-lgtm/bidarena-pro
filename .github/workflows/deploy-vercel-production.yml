@@ -54,13 +54,13 @@ jobs:
           const fs = require("fs");
 
           const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-          pkg.scripts = { ...pkg.scripts, build: "node bootstrap-source.mjs && next build" };
+          pkg.scripts = { ...pkg.scripts, build: "node bootstrap-source.mjs && npm run data:verify && next build" };
 
           const bootstrap = `import { mkdtempSync, writeFileSync, cpSync, readdirSync, rmSync } from "node:fs";
           import { tmpdir } from "node:os";
           import { join } from "node:path";
           import { execFileSync } from "node:child_process";
-          const archiveUrl = "https://codeload.github.com/omparekh54-lgtm/bidarena-pro/tar.gz/refs/heads/main";
+          const archiveUrl = "https://codeload.github.com/omparekh54-lgtm/bidarena-pro/tar.gz/${process.env.GITHUB_SHA}";
           const response = await fetch(archiveUrl);
           if (!response.ok) throw new Error(\`Failed to download GitHub source: \${response.status}\`);
           const bytes = Buffer.from(await response.arrayBuffer());
@@ -75,7 +75,7 @@ jobs:
             cpSync(join(extract, name), join(process.cwd(), name), { recursive: true, force: true });
           }
           rmSync(work, { recursive: true, force: true });
-          console.log("BidArena source synchronized from GitHub main.");`;
+          console.log("BidArena source synchronized from the tested GitHub commit.");`;
 
           const body = {
             name: "bidarena-pro-live",
