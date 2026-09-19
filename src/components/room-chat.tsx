@@ -78,7 +78,6 @@ export function RoomChat({ session }: { session: PlayerSession }) {
 
   useEffect(() => {
     if (!open) return;
-    setUnread(0);
     const scroll = window.setTimeout(() => listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" }), 50);
     return () => window.clearTimeout(scroll);
   }, [open, messages.length]);
@@ -158,7 +157,7 @@ export function RoomChat({ session }: { session: PlayerSession }) {
 
   return (
     <>
-      <button className="room-chat-launcher" type="button" onClick={() => setOpen(true)} aria-label="Open room chat">
+      <button className="room-chat-launcher" type="button" onClick={() => { setUnread(0); setOpen(true); }} aria-label="Open room chat">
         <MessageCircle size={18} />
         <span>CHAT</span>
         {unread ? <b>{Math.min(unread, 99)}</b> : null}
