@@ -229,7 +229,7 @@ describe("full-game reliability stress", () => {
     const pool = room.queue.slice(0, 22);
 
     buyer.squad = pool.slice(0, 10).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 1).toISOString() }));
-    seller.squad = pool.slice(10, 21).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 20).toISOString() }));
+    seller.squad = pool.slice(10, 20).map((athleteId, index) => ({ athleteId, amount: 10, acquiredAt: new Date(index + 20).toISOString() }));
     seller.budget = 0;
 
     openTransferWindow(room, admin.id, 60, 1_000);
