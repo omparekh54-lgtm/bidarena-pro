@@ -25,8 +25,8 @@ Identity data, performance statistics, game ratings, and auction prices are deli
 
 - `gameRating` and `basePrice` are auction game mechanics, never presented as official statistics.
 - Every displayed performance field has a named source, competition/format scope, and retrieval or verification time.
-- The checked-in catalog contains 84 cricketers and 70 footballers: 34 current + 50 cricket icons and 20 current + 50 football icons.
-- All 154 player records have sourced statistics, totaling 2,465 performance data points. Current-player records come from the configured sports-data providers; retired icons use clearly labelled stable career records with direct source links.
+- The checked-in catalog contains 400 real players: 200 cricketers and 200 footballers, each split into 100 current/recent professionals and 100 legends. All 154 original records and their existing era assignments are preserved; new legend additions are retired players.
+- The original 154 player records retain their sourced statistics, totaling 2,465 performance data points. The 246 new identities do not invent performance statistics; their real-stat panels remain empty until sourced data is available. Current-player records come from the configured sports-data providers; retired icons use clearly labelled stable career records with direct source links.
 - Current Only excludes retired icons, Icons Only contains retired greats, and Ultimate Mix combines both pools before applying the auction sequence and per-room shuffle.
 - Expanding to 500 per sport is an incremental licensed-data ingestion project; free API quotas make a verified 1,000-player sync a multi-day process.
 
@@ -102,3 +102,13 @@ Provider keys previously pasted into chat should be treated as exposed: rotate t
 ## License
 
 Application source code: MIT. Third-party sports data remains subject to provider terms, quotas, and attribution requirements.
+
+### Maintaining the real-player catalog
+
+`src/data/player-seeds.json` keeps the original schema. `player-identities.json` is a separate, manually curated identity allowlist with biographical reference links; it is not a live retirement/status feed. New current entries use national associations instead of potentially stale club affiliations. Existing records are unchanged, including historical legend classifications for players who may still play franchise/club cricket or football.
+
+Run `npm run data:verify` after editing both files. Validation rejects unregistered identities, generated IDs, duplicate IDs, normalized duplicate names (including accents/punctuation), duplicate identity reference URLs, missing roles, insufficient country coverage, and counts other than 100 per sport/era. An allowlist cannot independently prove a person's existence: review the biography and aliases before adding or changing an identity. The former `expand-player-catalog.mjs` generator now only invokes validation and cannot create filler players.
+
+Identity research references include the [ICC squad lists](https://www.icc-cricket.com/tournaments/mens-t20-world-cup-2026/news/all-the-squads-for-icc-men-s-t20-world-cup-2026), [ICC Hall of Fame](https://www.icc-cricket.com/hall-of-fame), [FIFA 100](https://en.wikipedia.org/wiki/FIFA_100), and [World Cup squad lists](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads). Individual biographical references disambiguate names such as the retired Brazilian right-back Jorginho and current goalkeeper Ederson.
+
+Each individual-era pool has 100 players: enough for nine complete XIs, but not twelve. All twelve teams can auction in these modes; unsold players recycle and an entirely sold pool waits for the admin. Mixed pools have 200 unique players and retain supply protection for twelve complete XIs. No player is cloned to bridge a shortfall. The stress suite exercises selling and recycling all six pools with twelve teams, and the API end-to-end test checks the 200-player mixed pool.

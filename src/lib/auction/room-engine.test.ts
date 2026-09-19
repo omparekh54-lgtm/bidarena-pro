@@ -311,7 +311,8 @@ describe("server-authoritative auction room", () => {
     expect(athletes.slice(0, 10).every((athlete) => lower(athlete.role).includes("batter"))).toBe(true);
     expect(athletes.slice(10, 17).every((athlete) => lower(athlete.role).includes("fast bowler"))).toBe(true);
     expect(athletes.slice(17, 20).every((athlete) => lower(athlete.role).includes("spin bowler"))).toBe(true);
-    expect(athletes.slice(20, 24).every((athlete) => lower(athlete.role).includes("all-rounder"))).toBe(true);
+    const allRounders = athletes.filter((athlete) => lower(athlete.role).includes("all-rounder"));
+    expect(athletes.slice(20, 20 + allRounders.length)).toEqual(allRounders);
   });
 
   it("builds isolated current, legends, and mixed player pools", () => {
@@ -322,21 +323,21 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
-    expect(current.length).toBe(20);
-    expect(legends.length).toBe(50);
+    expect(current.length).toBe(100);
+    expect(legends.length).toBe(100);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
   });
 
   it("contains only curated real-player seeds with no generated catalog fillers", () => {
     const expectedCounts = {
-      "cricket-current": 34,
-      "cricket-legend": 50,
-      "football-current": 20,
-      "football-legend": 50,
+      "cricket-current": 100,
+      "cricket-legend": 100,
+      "football-current": 100,
+      "football-legend": 100,
     } as const;
 
-    expect(athleteCatalog).toHaveLength(154);
+    expect(athleteCatalog).toHaveLength(400);
     expect(athleteCatalog.every((athlete) => !athlete.id.startsWith("catalog-"))).toBe(true);
     for (const [key, expected] of Object.entries(expectedCounts)) {
       const [sport, era] = key.split("-") as ["cricket" | "football", "current" | "legend"];

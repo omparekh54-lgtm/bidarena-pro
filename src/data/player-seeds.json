@@ -2976,5 +2976,4187 @@
       0,
       0
     ]
+  },
+  {
+    "id": "football-21",
+    "sport": "football",
+    "era": "current",
+    "name": "Thibaut Courtois",
+    "shortName": "Thibaut Courtois",
+    "country": "Belgium",
+    "team": "Belgium",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Belgium"
+    ]
+  },
+  {
+    "id": "football-22",
+    "sport": "football",
+    "era": "current",
+    "name": "Ederson",
+    "shortName": "Ederson",
+    "country": "Brazil",
+    "team": "Brazil",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "L",
+      "Brazil"
+    ]
+  },
+  {
+    "id": "football-23",
+    "sport": "football",
+    "era": "current",
+    "name": "Emiliano Martínez",
+    "shortName": "Emiliano Martínez",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-24",
+    "sport": "football",
+    "era": "current",
+    "name": "Mike Maignan",
+    "shortName": "Mike Maignan",
+    "country": "France",
+    "team": "France",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "France"
+    ]
+  },
+  {
+    "id": "football-25",
+    "sport": "football",
+    "era": "current",
+    "name": "David Raya",
+    "shortName": "David Raya",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-26",
+    "sport": "football",
+    "era": "current",
+    "name": "Diogo Costa",
+    "shortName": "Diogo Costa",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-27",
+    "sport": "football",
+    "era": "current",
+    "name": "Yassine Bounou",
+    "shortName": "Yassine Bounou",
+    "country": "Morocco",
+    "team": "Morocco",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "L",
+      "Morocco"
+    ]
+  },
+  {
+    "id": "football-28",
+    "sport": "football",
+    "era": "current",
+    "name": "Gregor Kobel",
+    "shortName": "Gregor Kobel",
+    "country": "Switzerland",
+    "team": "Switzerland",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Switzerland"
+    ]
+  },
+  {
+    "id": "football-29",
+    "sport": "football",
+    "era": "current",
+    "name": "Unai Simón",
+    "shortName": "Unai Simón",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-30",
+    "sport": "football",
+    "era": "current",
+    "name": "Giorgi Mamardashvili",
+    "shortName": "Giorgi Mamardashvili",
+    "country": "Georgia",
+    "team": "Georgia",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "L",
+      "Georgia"
+    ]
+  },
+  {
+    "id": "football-31",
+    "sport": "football",
+    "era": "current",
+    "name": "André Onana",
+    "shortName": "André Onana",
+    "country": "Cameroon",
+    "team": "Cameroon",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Cameroon"
+    ]
+  },
+  {
+    "id": "football-32",
+    "sport": "football",
+    "era": "current",
+    "name": "Dominik Livaković",
+    "shortName": "Dominik Livaković",
+    "country": "Croatia",
+    "team": "Croatia",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "Croatia"
+    ]
+  },
+  {
+    "id": "football-33",
+    "sport": "football",
+    "era": "current",
+    "name": "Rúben Dias",
+    "shortName": "Rúben Dias",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-34",
+    "sport": "football",
+    "era": "current",
+    "name": "Gabriel Magalhães",
+    "shortName": "Gabriel Magalhães",
+    "country": "Brazil",
+    "team": "Brazil",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "L",
+      "Brazil"
+    ]
+  },
+  {
+    "id": "football-35",
+    "sport": "football",
+    "era": "current",
+    "name": "Alessandro Bastoni",
+    "shortName": "Alessandro Bastoni",
+    "country": "Italy",
+    "team": "Italy",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "L",
+      "Italy"
+    ]
+  },
+  {
+    "id": "football-36",
+    "sport": "football",
+    "era": "current",
+    "name": "Ronald Araújo",
+    "shortName": "Ronald Araújo",
+    "country": "Uruguay",
+    "team": "Uruguay",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "Uruguay"
+    ]
+  },
+  {
+    "id": "football-37",
+    "sport": "football",
+    "era": "current",
+    "name": "Cristian Romero",
+    "shortName": "Cristian Romero",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-38",
+    "sport": "football",
+    "era": "current",
+    "name": "Kim Min-jae",
+    "shortName": "Kim Min-jae",
+    "country": "South Korea",
+    "team": "South Korea",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "South Korea"
+    ]
+  },
+  {
+    "id": "football-39",
+    "sport": "football",
+    "era": "current",
+    "name": "Nayef Aguerd",
+    "shortName": "Nayef Aguerd",
+    "country": "Morocco",
+    "team": "Morocco",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "L",
+      "Morocco"
+    ]
+  },
+  {
+    "id": "football-40",
+    "sport": "football",
+    "era": "current",
+    "name": "Edmond Tapsoba",
+    "shortName": "Edmond Tapsoba",
+    "country": "Burkina Faso",
+    "team": "Burkina Faso",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "Burkina Faso"
+    ]
+  },
+  {
+    "id": "football-41",
+    "sport": "football",
+    "era": "current",
+    "name": "Piero Hincapié",
+    "shortName": "Piero Hincapié",
+    "country": "Ecuador",
+    "team": "Ecuador",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "L",
+      "Ecuador"
+    ]
+  },
+  {
+    "id": "football-42",
+    "sport": "football",
+    "era": "current",
+    "name": "Joško Gvardiol",
+    "shortName": "Joško Gvardiol",
+    "country": "Croatia",
+    "team": "Croatia",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "Croatia"
+    ]
+  },
+  {
+    "id": "football-43",
+    "sport": "football",
+    "era": "current",
+    "name": "Nuno Mendes",
+    "shortName": "Nuno Mendes",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-44",
+    "sport": "football",
+    "era": "current",
+    "name": "Theo Hernández",
+    "shortName": "Theo Hernández",
+    "country": "France",
+    "team": "France",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "France"
+    ]
+  },
+  {
+    "id": "football-45",
+    "sport": "football",
+    "era": "current",
+    "name": "Andrew Robertson",
+    "shortName": "Andrew Robertson",
+    "country": "Scotland",
+    "team": "Scotland",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "Scotland"
+    ]
+  },
+  {
+    "id": "football-46",
+    "sport": "football",
+    "era": "current",
+    "name": "Alejandro Balde",
+    "shortName": "Alejandro Balde",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-47",
+    "sport": "football",
+    "era": "current",
+    "name": "Milos Kerkez",
+    "shortName": "Milos Kerkez",
+    "country": "Hungary",
+    "team": "Hungary",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "Hungary"
+    ]
+  },
+  {
+    "id": "football-48",
+    "sport": "football",
+    "era": "current",
+    "name": "Trent Alexander-Arnold",
+    "shortName": "Trent Alexander-Arnold",
+    "country": "England",
+    "team": "England",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "England"
+    ]
+  },
+  {
+    "id": "football-49",
+    "sport": "football",
+    "era": "current",
+    "name": "Reece James",
+    "shortName": "Reece James",
+    "country": "England",
+    "team": "England",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "England"
+    ]
+  },
+  {
+    "id": "football-50",
+    "sport": "football",
+    "era": "current",
+    "name": "Denzel Dumfries",
+    "shortName": "Denzel Dumfries",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "Netherlands"
+    ]
+  },
+  {
+    "id": "football-51",
+    "sport": "football",
+    "era": "current",
+    "name": "Pedro Porro",
+    "shortName": "Pedro Porro",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-52",
+    "sport": "football",
+    "era": "current",
+    "name": "Vanderson",
+    "shortName": "Vanderson",
+    "country": "Brazil",
+    "team": "Brazil",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "Brazil"
+    ]
+  },
+  {
+    "id": "football-53",
+    "sport": "football",
+    "era": "current",
+    "name": "Joshua Kimmich",
+    "shortName": "Joshua Kimmich",
+    "country": "Germany",
+    "team": "Germany",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "Germany"
+    ]
+  },
+  {
+    "id": "football-54",
+    "sport": "football",
+    "era": "current",
+    "name": "Aurélien Tchouaméni",
+    "shortName": "Aurélien Tchouaméni",
+    "country": "France",
+    "team": "France",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "France"
+    ]
+  },
+  {
+    "id": "football-55",
+    "sport": "football",
+    "era": "current",
+    "name": "Moisés Caicedo",
+    "shortName": "Moisés Caicedo",
+    "country": "Ecuador",
+    "team": "Ecuador",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "Ecuador"
+    ]
+  },
+  {
+    "id": "football-56",
+    "sport": "football",
+    "era": "current",
+    "name": "Manuel Ugarte",
+    "shortName": "Manuel Ugarte",
+    "country": "Uruguay",
+    "team": "Uruguay",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "Uruguay"
+    ]
+  },
+  {
+    "id": "football-57",
+    "sport": "football",
+    "era": "current",
+    "name": "Martín Zubimendi",
+    "shortName": "Martín Zubimendi",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-58",
+    "sport": "football",
+    "era": "current",
+    "name": "Carlos Baleba",
+    "shortName": "Carlos Baleba",
+    "country": "Cameroon",
+    "team": "Cameroon",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "L",
+      "Cameroon"
+    ]
+  },
+  {
+    "id": "football-59",
+    "sport": "football",
+    "era": "current",
+    "name": "Sandro Tonali",
+    "shortName": "Sandro Tonali",
+    "country": "Italy",
+    "team": "Italy",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Italy"
+    ]
+  },
+  {
+    "id": "football-60",
+    "sport": "football",
+    "era": "current",
+    "name": "Nicolò Barella",
+    "shortName": "Nicolò Barella",
+    "country": "Italy",
+    "team": "Italy",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Italy"
+    ]
+  },
+  {
+    "id": "football-61",
+    "sport": "football",
+    "era": "current",
+    "name": "Frenkie de Jong",
+    "shortName": "Frenkie de Jong",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Netherlands"
+    ]
+  },
+  {
+    "id": "football-62",
+    "sport": "football",
+    "era": "current",
+    "name": "Vitinha",
+    "shortName": "Vitinha",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-63",
+    "sport": "football",
+    "era": "current",
+    "name": "Enzo Fernández",
+    "shortName": "Enzo Fernández",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-64",
+    "sport": "football",
+    "era": "current",
+    "name": "Alexis Mac Allister",
+    "shortName": "Alexis Mac Allister",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-65",
+    "sport": "football",
+    "era": "current",
+    "name": "Ryan Gravenberch",
+    "shortName": "Ryan Gravenberch",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Netherlands"
+    ]
+  },
+  {
+    "id": "football-66",
+    "sport": "football",
+    "era": "current",
+    "name": "Bruno Guimarães",
+    "shortName": "Bruno Guimarães",
+    "country": "Brazil",
+    "team": "Brazil",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Brazil"
+    ]
+  },
+  {
+    "id": "football-67",
+    "sport": "football",
+    "era": "current",
+    "name": "Hakan Çalhanoğlu",
+    "shortName": "Hakan Çalhanoğlu",
+    "country": "Türkiye",
+    "team": "Türkiye",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "Türkiye"
+    ]
+  },
+  {
+    "id": "football-68",
+    "sport": "football",
+    "era": "current",
+    "name": "Martin Ødegaard",
+    "shortName": "Martin Ødegaard",
+    "country": "Norway",
+    "team": "Norway",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "L",
+      "Norway"
+    ]
+  },
+  {
+    "id": "football-69",
+    "sport": "football",
+    "era": "current",
+    "name": "Bruno Fernandes",
+    "shortName": "Bruno Fernandes",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-70",
+    "sport": "football",
+    "era": "current",
+    "name": "Cole Palmer",
+    "shortName": "Cole Palmer",
+    "country": "England",
+    "team": "England",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "L",
+      "England"
+    ]
+  },
+  {
+    "id": "football-71",
+    "sport": "football",
+    "era": "current",
+    "name": "Jamal Musiala",
+    "shortName": "Jamal Musiala",
+    "country": "Germany",
+    "team": "Germany",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "Germany"
+    ]
+  },
+  {
+    "id": "football-72",
+    "sport": "football",
+    "era": "current",
+    "name": "Xavi Simons",
+    "shortName": "Xavi Simons",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "Netherlands"
+    ]
+  },
+  {
+    "id": "football-73",
+    "sport": "football",
+    "era": "current",
+    "name": "Dominik Szoboszlai",
+    "shortName": "Dominik Szoboszlai",
+    "country": "Hungary",
+    "team": "Hungary",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "Hungary"
+    ]
+  },
+  {
+    "id": "football-74",
+    "sport": "football",
+    "era": "current",
+    "name": "Takefusa Kubo",
+    "shortName": "Takefusa Kubo",
+    "country": "Japan",
+    "team": "Japan",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "Japan"
+    ]
+  },
+  {
+    "id": "football-75",
+    "sport": "football",
+    "era": "current",
+    "name": "Raphinha",
+    "shortName": "Raphinha",
+    "country": "Brazil",
+    "team": "Brazil",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "Brazil"
+    ]
+  },
+  {
+    "id": "football-76",
+    "sport": "football",
+    "era": "current",
+    "name": "Michael Olise",
+    "shortName": "Michael Olise",
+    "country": "France",
+    "team": "France",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "France"
+    ]
+  },
+  {
+    "id": "football-77",
+    "sport": "football",
+    "era": "current",
+    "name": "Nico Williams",
+    "shortName": "Nico Williams",
+    "country": "Spain",
+    "team": "Spain",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "Spain"
+    ]
+  },
+  {
+    "id": "football-78",
+    "sport": "football",
+    "era": "current",
+    "name": "Khvicha Kvaratskhelia",
+    "shortName": "Khvicha Kvaratskhelia",
+    "country": "Georgia",
+    "team": "Georgia",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "Georgia"
+    ]
+  },
+  {
+    "id": "football-79",
+    "sport": "football",
+    "era": "current",
+    "name": "Luis Díaz",
+    "shortName": "Luis Díaz",
+    "country": "Colombia",
+    "team": "Colombia",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "Colombia"
+    ]
+  },
+  {
+    "id": "football-80",
+    "sport": "football",
+    "era": "current",
+    "name": "Rafael Leão",
+    "shortName": "Rafael Leão",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-81",
+    "sport": "football",
+    "era": "current",
+    "name": "Kaoru Mitoma",
+    "shortName": "Kaoru Mitoma",
+    "country": "Japan",
+    "team": "Japan",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "Japan"
+    ]
+  },
+  {
+    "id": "football-82",
+    "sport": "football",
+    "era": "current",
+    "name": "Son Heung-min",
+    "shortName": "Son Heung-min",
+    "country": "South Korea",
+    "team": "South Korea",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "South Korea"
+    ]
+  },
+  {
+    "id": "football-83",
+    "sport": "football",
+    "era": "current",
+    "name": "Christian Pulisic",
+    "shortName": "Christian Pulisic",
+    "country": "United States",
+    "team": "United States",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "R",
+      "United States"
+    ]
+  },
+  {
+    "id": "football-84",
+    "sport": "football",
+    "era": "current",
+    "name": "Mohammed Kudus",
+    "shortName": "Mohammed Kudus",
+    "country": "Ghana",
+    "team": "Ghana",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "Ghana"
+    ]
+  },
+  {
+    "id": "football-85",
+    "sport": "football",
+    "era": "current",
+    "name": "Bryan Mbeumo",
+    "shortName": "Bryan Mbeumo",
+    "country": "Cameroon",
+    "team": "Cameroon",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "Cameroon"
+    ]
+  },
+  {
+    "id": "football-86",
+    "sport": "football",
+    "era": "current",
+    "name": "Lautaro Martínez",
+    "shortName": "Lautaro Martínez",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-87",
+    "sport": "football",
+    "era": "current",
+    "name": "Julián Álvarez",
+    "shortName": "Julián Álvarez",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "CF",
+    "secondaryRole": "CF",
+    "metrics": [
+      "CF",
+      "CF",
+      "R",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-88",
+    "sport": "football",
+    "era": "current",
+    "name": "Alexander Isak",
+    "shortName": "Alexander Isak",
+    "country": "Sweden",
+    "team": "Sweden",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Sweden"
+    ]
+  },
+  {
+    "id": "football-89",
+    "sport": "football",
+    "era": "current",
+    "name": "Viktor Gyökeres",
+    "shortName": "Viktor Gyökeres",
+    "country": "Sweden",
+    "team": "Sweden",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Sweden"
+    ]
+  },
+  {
+    "id": "football-90",
+    "sport": "football",
+    "era": "current",
+    "name": "Victor Osimhen",
+    "shortName": "Victor Osimhen",
+    "country": "Nigeria",
+    "team": "Nigeria",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Nigeria"
+    ]
+  },
+  {
+    "id": "football-91",
+    "sport": "football",
+    "era": "current",
+    "name": "Omar Marmoush",
+    "shortName": "Omar Marmoush",
+    "country": "Egypt",
+    "team": "Egypt",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Egypt"
+    ]
+  },
+  {
+    "id": "football-92",
+    "sport": "football",
+    "era": "current",
+    "name": "Benjamin Šeško",
+    "shortName": "Benjamin Šeško",
+    "country": "Slovenia",
+    "team": "Slovenia",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Slovenia"
+    ]
+  },
+  {
+    "id": "football-93",
+    "sport": "football",
+    "era": "current",
+    "name": "Dušan Vlahović",
+    "shortName": "Dušan Vlahović",
+    "country": "Serbia",
+    "team": "Serbia",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "L",
+      "Serbia"
+    ]
+  },
+  {
+    "id": "football-94",
+    "sport": "football",
+    "era": "current",
+    "name": "Jonathan David",
+    "shortName": "Jonathan David",
+    "country": "Canada",
+    "team": "Canada",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Canada"
+    ]
+  },
+  {
+    "id": "football-95",
+    "sport": "football",
+    "era": "current",
+    "name": "Chris Wood",
+    "shortName": "Chris Wood",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "New Zealand"
+    ]
+  },
+  {
+    "id": "football-96",
+    "sport": "football",
+    "era": "current",
+    "name": "Mehdi Taremi",
+    "shortName": "Mehdi Taremi",
+    "country": "Iran",
+    "team": "Iran",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Iran"
+    ]
+  },
+  {
+    "id": "football-97",
+    "sport": "football",
+    "era": "current",
+    "name": "Serhou Guirassy",
+    "shortName": "Serhou Guirassy",
+    "country": "Guinea",
+    "team": "Guinea",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Guinea"
+    ]
+  },
+  {
+    "id": "football-98",
+    "sport": "football",
+    "era": "current",
+    "name": "Patrik Schick",
+    "shortName": "Patrik Schick",
+    "country": "Czech Republic",
+    "team": "Czech Republic",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "L",
+      "Czech Republic"
+    ]
+  },
+  {
+    "id": "football-99",
+    "sport": "football",
+    "era": "current",
+    "name": "Lionel Messi",
+    "shortName": "Lionel Messi",
+    "country": "Argentina",
+    "team": "Argentina",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "Argentina"
+    ]
+  },
+  {
+    "id": "football-100",
+    "sport": "football",
+    "era": "current",
+    "name": "Cristiano Ronaldo",
+    "shortName": "Cristiano Ronaldo",
+    "country": "Portugal",
+    "team": "Portugal",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "Portugal"
+    ]
+  },
+  {
+    "id": "football-legend-51",
+    "sport": "football",
+    "era": "legend",
+    "name": "Dino Zoff",
+    "shortName": "Dino Zoff",
+    "country": "Italy",
+    "team": "Italy Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-52",
+    "sport": "football",
+    "era": "legend",
+    "name": "Gordon Banks",
+    "shortName": "Gordon Banks",
+    "country": "England",
+    "team": "England Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-53",
+    "sport": "football",
+    "era": "legend",
+    "name": "Sepp Maier",
+    "shortName": "Sepp Maier",
+    "country": "Germany",
+    "team": "Germany Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-54",
+    "sport": "football",
+    "era": "legend",
+    "name": "Oliver Kahn",
+    "shortName": "Oliver Kahn",
+    "country": "Germany",
+    "team": "Germany Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-55",
+    "sport": "football",
+    "era": "legend",
+    "name": "Edwin van der Sar",
+    "shortName": "Edwin van der Sar",
+    "country": "Netherlands",
+    "team": "Netherlands Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-56",
+    "sport": "football",
+    "era": "legend",
+    "name": "Rinat Dasayev",
+    "shortName": "Rinat Dasayev",
+    "country": "Soviet Union",
+    "team": "Soviet Union Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-57",
+    "sport": "football",
+    "era": "legend",
+    "name": "José Luis Chilavert",
+    "shortName": "José Luis Chilavert",
+    "country": "Paraguay",
+    "team": "Paraguay Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-58",
+    "sport": "football",
+    "era": "legend",
+    "name": "René Higuita",
+    "shortName": "René Higuita",
+    "country": "Colombia",
+    "team": "Colombia Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-59",
+    "sport": "football",
+    "era": "legend",
+    "name": "Dida",
+    "shortName": "Dida",
+    "country": "Brazil",
+    "team": "Brazil Legends",
+    "role": "GK",
+    "secondaryRole": "GK",
+    "metrics": [
+      "GK",
+      "GK",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-60",
+    "sport": "football",
+    "era": "legend",
+    "name": "Lilian Thuram",
+    "shortName": "Lilian Thuram",
+    "country": "France",
+    "team": "France Legends",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-61",
+    "sport": "football",
+    "era": "legend",
+    "name": "Carlos Alberto Torres",
+    "shortName": "Carlos Alberto Torres",
+    "country": "Brazil",
+    "team": "Brazil Legends",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-62",
+    "sport": "football",
+    "era": "legend",
+    "name": "Jorginho",
+    "shortName": "Jorginho",
+    "country": "Brazil",
+    "team": "Brazil Legends",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-63",
+    "sport": "football",
+    "era": "legend",
+    "name": "Gary Neville",
+    "shortName": "Gary Neville",
+    "country": "England",
+    "team": "England Legends",
+    "role": "RB",
+    "secondaryRole": "RB",
+    "metrics": [
+      "RB",
+      "RB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-64",
+    "sport": "football",
+    "era": "legend",
+    "name": "Giuseppe Bergomi",
+    "shortName": "Giuseppe Bergomi",
+    "country": "Italy",
+    "team": "Italy Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-65",
+    "sport": "football",
+    "era": "legend",
+    "name": "Marcel Desailly",
+    "shortName": "Marcel Desailly",
+    "country": "France",
+    "team": "France Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-66",
+    "sport": "football",
+    "era": "legend",
+    "name": "Bobby Moore",
+    "shortName": "Bobby Moore",
+    "country": "England",
+    "team": "England Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-67",
+    "sport": "football",
+    "era": "legend",
+    "name": "Daniel Passarella",
+    "shortName": "Daniel Passarella",
+    "country": "Argentina",
+    "team": "Argentina Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-68",
+    "sport": "football",
+    "era": "legend",
+    "name": "Elías Figueroa",
+    "shortName": "Elías Figueroa",
+    "country": "Chile",
+    "team": "Chile Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-69",
+    "sport": "football",
+    "era": "legend",
+    "name": "Nemanja Vidić",
+    "shortName": "Nemanja Vidić",
+    "country": "Serbia",
+    "team": "Serbia Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-70",
+    "sport": "football",
+    "era": "legend",
+    "name": "Jaap Stam",
+    "shortName": "Jaap Stam",
+    "country": "Netherlands",
+    "team": "Netherlands Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-71",
+    "sport": "football",
+    "era": "legend",
+    "name": "John Terry",
+    "shortName": "John Terry",
+    "country": "England",
+    "team": "England Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-72",
+    "sport": "football",
+    "era": "legend",
+    "name": "Lúcio",
+    "shortName": "Lúcio",
+    "country": "Brazil",
+    "team": "Brazil Legends",
+    "role": "CB",
+    "secondaryRole": "CB",
+    "metrics": [
+      "CB",
+      "CB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-73",
+    "sport": "football",
+    "era": "legend",
+    "name": "Andreas Brehme",
+    "shortName": "Andreas Brehme",
+    "country": "Germany",
+    "team": "Germany Legends",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "B",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-74",
+    "sport": "football",
+    "era": "legend",
+    "name": "Giacinto Facchetti",
+    "shortName": "Giacinto Facchetti",
+    "country": "Italy",
+    "team": "Italy Legends",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-75",
+    "sport": "football",
+    "era": "legend",
+    "name": "Bixente Lizarazu",
+    "shortName": "Bixente Lizarazu",
+    "country": "France",
+    "team": "France Legends",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-76",
+    "sport": "football",
+    "era": "legend",
+    "name": "Denis Irwin",
+    "shortName": "Denis Irwin",
+    "country": "Republic of Ireland",
+    "team": "Republic of Ireland Legends",
+    "role": "LB",
+    "secondaryRole": "LB",
+    "metrics": [
+      "LB",
+      "LB",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-77",
+    "sport": "football",
+    "era": "legend",
+    "name": "Claude Makélélé",
+    "shortName": "Claude Makélélé",
+    "country": "France",
+    "team": "France Legends",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-78",
+    "sport": "football",
+    "era": "legend",
+    "name": "Roy Keane",
+    "shortName": "Roy Keane",
+    "country": "Republic of Ireland",
+    "team": "Republic of Ireland Legends",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-79",
+    "sport": "football",
+    "era": "legend",
+    "name": "Dunga",
+    "shortName": "Dunga",
+    "country": "Brazil",
+    "team": "Brazil Legends",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-80",
+    "sport": "football",
+    "era": "legend",
+    "name": "Frank Rijkaard",
+    "shortName": "Frank Rijkaard",
+    "country": "Netherlands",
+    "team": "Netherlands Legends",
+    "role": "CDM",
+    "secondaryRole": "CDM",
+    "metrics": [
+      "CDM",
+      "CDM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-81",
+    "sport": "football",
+    "era": "legend",
+    "name": "Clarence Seedorf",
+    "shortName": "Clarence Seedorf",
+    "country": "Netherlands",
+    "team": "Netherlands Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-82",
+    "sport": "football",
+    "era": "legend",
+    "name": "Michael Ballack",
+    "shortName": "Michael Ballack",
+    "country": "Germany",
+    "team": "Germany Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-83",
+    "sport": "football",
+    "era": "legend",
+    "name": "Bastian Schweinsteiger",
+    "shortName": "Bastian Schweinsteiger",
+    "country": "Germany",
+    "team": "Germany Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-84",
+    "sport": "football",
+    "era": "legend",
+    "name": "Yaya Touré",
+    "shortName": "Yaya Touré",
+    "country": "Ivory Coast",
+    "team": "Ivory Coast Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-85",
+    "sport": "football",
+    "era": "legend",
+    "name": "Michael Essien",
+    "shortName": "Michael Essien",
+    "country": "Ghana",
+    "team": "Ghana Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-86",
+    "sport": "football",
+    "era": "legend",
+    "name": "Hidetoshi Nakata",
+    "shortName": "Hidetoshi Nakata",
+    "country": "Japan",
+    "team": "Japan Legends",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-87",
+    "sport": "football",
+    "era": "legend",
+    "name": "Jay-Jay Okocha",
+    "shortName": "Jay-Jay Okocha",
+    "country": "Nigeria",
+    "team": "Nigeria Legends",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-88",
+    "sport": "football",
+    "era": "legend",
+    "name": "Carlos Valderrama",
+    "shortName": "Carlos Valderrama",
+    "country": "Colombia",
+    "team": "Colombia Legends",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-89",
+    "sport": "football",
+    "era": "legend",
+    "name": "Gheorghe Hagi",
+    "shortName": "Gheorghe Hagi",
+    "country": "Romania",
+    "team": "Romania Legends",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-90",
+    "sport": "football",
+    "era": "legend",
+    "name": "Michael Laudrup",
+    "shortName": "Michael Laudrup",
+    "country": "Denmark",
+    "team": "Denmark Legends",
+    "role": "CAM",
+    "secondaryRole": "CAM",
+    "metrics": [
+      "CAM",
+      "CAM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-91",
+    "sport": "football",
+    "era": "legend",
+    "name": "Pavel Nedvěd",
+    "shortName": "Pavel Nedvěd",
+    "country": "Czech Republic",
+    "team": "Czech Republic Legends",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "B",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-92",
+    "sport": "football",
+    "era": "legend",
+    "name": "Arjen Robben",
+    "shortName": "Arjen Robben",
+    "country": "Netherlands",
+    "team": "Netherlands Legends",
+    "role": "RW",
+    "secondaryRole": "RW",
+    "metrics": [
+      "RW",
+      "RW",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-93",
+    "sport": "football",
+    "era": "legend",
+    "name": "Franck Ribéry",
+    "shortName": "Franck Ribéry",
+    "country": "France",
+    "team": "France Legends",
+    "role": "LW",
+    "secondaryRole": "LW",
+    "metrics": [
+      "LW",
+      "LW",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-94",
+    "sport": "football",
+    "era": "legend",
+    "name": "Park Ji-sung",
+    "shortName": "Park Ji-sung",
+    "country": "South Korea",
+    "team": "South Korea Legends",
+    "role": "CM",
+    "secondaryRole": "CM",
+    "metrics": [
+      "CM",
+      "CM",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-95",
+    "sport": "football",
+    "era": "legend",
+    "name": "George Weah",
+    "shortName": "George Weah",
+    "country": "Liberia",
+    "team": "Liberia Legends",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-96",
+    "sport": "football",
+    "era": "legend",
+    "name": "Samuel Eto'o",
+    "shortName": "Samuel Eto'o",
+    "country": "Cameroon",
+    "team": "Cameroon Legends",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-97",
+    "sport": "football",
+    "era": "legend",
+    "name": "Roger Milla",
+    "shortName": "Roger Milla",
+    "country": "Cameroon",
+    "team": "Cameroon Legends",
+    "role": "CF",
+    "secondaryRole": "CF",
+    "metrics": [
+      "CF",
+      "CF",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-98",
+    "sport": "football",
+    "era": "legend",
+    "name": "Gabriel Batistuta",
+    "shortName": "Gabriel Batistuta",
+    "country": "Argentina",
+    "team": "Argentina Legends",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-99",
+    "sport": "football",
+    "era": "legend",
+    "name": "Hugo Sánchez",
+    "shortName": "Hugo Sánchez",
+    "country": "Mexico",
+    "team": "Mexico Legends",
+    "role": "ST",
+    "secondaryRole": "ST",
+    "metrics": [
+      "ST",
+      "ST",
+      "L",
+      "ICON"
+    ]
+  },
+  {
+    "id": "football-legend-100",
+    "sport": "football",
+    "era": "legend",
+    "name": "Kenny Dalglish",
+    "shortName": "Kenny Dalglish",
+    "country": "Scotland",
+    "team": "Scotland Legends",
+    "role": "CF",
+    "secondaryRole": "CF",
+    "metrics": [
+      "CF",
+      "CF",
+      "R",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-35",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Sanju Samson",
+    "shortName": "Sanju Samson",
+    "country": "India",
+    "team": "India",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "IND",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-36",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Tilak Varma",
+    "shortName": "Tilak Varma",
+    "country": "India",
+    "team": "India",
+    "role": "Top-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "IND",
+      "BAT",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-37",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Rinku Singh",
+    "shortName": "Rinku Singh",
+    "country": "India",
+    "team": "India",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "IND",
+      "MID",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-38",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Axar Patel",
+    "shortName": "Axar Patel",
+    "country": "India",
+    "team": "India",
+    "role": "All-rounder",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "IND",
+      "AR",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-39",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Arshdeep Singh",
+    "shortName": "Arshdeep Singh",
+    "country": "India",
+    "team": "India",
+    "role": "Fast bowler",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "IND",
+      "PACE",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-40",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Mohammed Siraj",
+    "shortName": "Mohammed Siraj",
+    "country": "India",
+    "team": "India",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "IND",
+      "PACE",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-41",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Varun Chakaravarthy",
+    "shortName": "Varun Chakaravarthy",
+    "country": "India",
+    "team": "India",
+    "role": "Spin bowler",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "IND",
+      "SPIN",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-42",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Washington Sundar",
+    "shortName": "Washington Sundar",
+    "country": "India",
+    "team": "India",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "IND",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-43",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Mitchell Marsh",
+    "shortName": "Mitchell Marsh",
+    "country": "Australia",
+    "team": "Australia",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "AUS",
+      "AR",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-44",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Cameron Green",
+    "shortName": "Cameron Green",
+    "country": "Australia",
+    "team": "Australia",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "AUS",
+      "AR",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-45",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Josh Inglis",
+    "shortName": "Josh Inglis",
+    "country": "Australia",
+    "team": "Australia",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-46",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Nathan Ellis",
+    "shortName": "Nathan Ellis",
+    "country": "Australia",
+    "team": "Australia",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "AUS",
+      "PACE",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-47",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Tim David",
+    "shortName": "Tim David",
+    "country": "Australia",
+    "team": "Australia",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "MID",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-48",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Harry Brook",
+    "shortName": "Harry Brook",
+    "country": "England",
+    "team": "England",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "MID",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-49",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Ben Duckett",
+    "shortName": "Ben Duckett",
+    "country": "England",
+    "team": "England",
+    "role": "Opening batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-50",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Phil Salt",
+    "shortName": "Phil Salt",
+    "country": "England",
+    "team": "England",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-51",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Sam Curran",
+    "shortName": "Sam Curran",
+    "country": "England",
+    "team": "England",
+    "role": "All-rounder",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "ENG",
+      "AR",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-52",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Jofra Archer",
+    "shortName": "Jofra Archer",
+    "country": "England",
+    "team": "England",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "ENG",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-53",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Adil Rashid",
+    "shortName": "Adil Rashid",
+    "country": "England",
+    "team": "England",
+    "role": "Spin bowler",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "ENG",
+      "SPIN",
+      "LBG",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-54",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Will Jacks",
+    "shortName": "Will Jacks",
+    "country": "England",
+    "team": "England",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "ENG",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-55",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Fakhar Zaman",
+    "shortName": "Fakhar Zaman",
+    "country": "Pakistan",
+    "team": "Pakistan",
+    "role": "Opening batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "PAK",
+      "OPN",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-56",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Saim Ayub",
+    "shortName": "Saim Ayub",
+    "country": "Pakistan",
+    "team": "Pakistan",
+    "role": "Opening batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "PAK",
+      "OPN",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-57",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Naseem Shah",
+    "shortName": "Naseem Shah",
+    "country": "Pakistan",
+    "team": "Pakistan",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "PAK",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-58",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Shadab Khan",
+    "shortName": "Shadab Khan",
+    "country": "Pakistan",
+    "team": "Pakistan",
+    "role": "All-rounder",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "PAK",
+      "AR",
+      "LBG",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-59",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Abrar Ahmed",
+    "shortName": "Abrar Ahmed",
+    "country": "Pakistan",
+    "team": "Pakistan",
+    "role": "Spin bowler",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "PAK",
+      "SPIN",
+      "LBG",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-60",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Aiden Markram",
+    "shortName": "Aiden Markram",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "RSA",
+      "BAT",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-61",
+    "sport": "cricket",
+    "era": "current",
+    "name": "David Miller",
+    "shortName": "David Miller",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "RSA",
+      "MID",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-62",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Tristan Stubbs",
+    "shortName": "Tristan Stubbs",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "RSA",
+      "MID",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-63",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Marco Jansen",
+    "shortName": "Marco Jansen",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "All-rounder",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "RSA",
+      "AR",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-64",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Keshav Maharaj",
+    "shortName": "Keshav Maharaj",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "RSA",
+      "SPIN",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-65",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Anrich Nortje",
+    "shortName": "Anrich Nortje",
+    "country": "South Africa",
+    "team": "South Africa",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "RSA",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-66",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Daryl Mitchell",
+    "shortName": "Daryl Mitchell",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "NZ",
+      "MID",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-67",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Rachin Ravindra",
+    "shortName": "Rachin Ravindra",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "All-rounder",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "NZ",
+      "AR",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-68",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Glenn Phillips",
+    "shortName": "Glenn Phillips",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "NZ",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-69",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Mitchell Santner",
+    "shortName": "Mitchell Santner",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "All-rounder",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "NZ",
+      "AR",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-70",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Matt Henry",
+    "shortName": "Matt Henry",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "NZ",
+      "PACE",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-71",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Lockie Ferguson",
+    "shortName": "Lockie Ferguson",
+    "country": "New Zealand",
+    "team": "New Zealand",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "NZ",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-72",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Pathum Nissanka",
+    "shortName": "Pathum Nissanka",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "SL",
+      "OPN",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-73",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Kusal Mendis",
+    "shortName": "Kusal Mendis",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "SL",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-74",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Charith Asalanka",
+    "shortName": "Charith Asalanka",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "SL",
+      "MID",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-75",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Wanindu Hasaranga",
+    "shortName": "Wanindu Hasaranga",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "All-rounder",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "SL",
+      "AR",
+      "LBG",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-76",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Maheesh Theekshana",
+    "shortName": "Maheesh Theekshana",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "Spin bowler",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "SL",
+      "SPIN",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-77",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Matheesha Pathirana",
+    "shortName": "Matheesha Pathirana",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "SL",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-78",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Rahmanullah Gurbaz",
+    "shortName": "Rahmanullah Gurbaz",
+    "country": "Afghanistan",
+    "team": "Afghanistan",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AFG",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-79",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Ibrahim Zadran",
+    "shortName": "Ibrahim Zadran",
+    "country": "Afghanistan",
+    "team": "Afghanistan",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AFG",
+      "OPN",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-80",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Azmatullah Omarzai",
+    "shortName": "Azmatullah Omarzai",
+    "country": "Afghanistan",
+    "team": "Afghanistan",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "AFG",
+      "AR",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-81",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Fazalhaq Farooqi",
+    "shortName": "Fazalhaq Farooqi",
+    "country": "Afghanistan",
+    "team": "Afghanistan",
+    "role": "Fast bowler",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "AFG",
+      "PACE",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-82",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Noor Ahmad",
+    "shortName": "Noor Ahmad",
+    "country": "Afghanistan",
+    "team": "Afghanistan",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm wrist-spin",
+    "metrics": [
+      "AFG",
+      "SPIN",
+      "LWS",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-83",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Shai Hope",
+    "shortName": "Shai Hope",
+    "country": "West Indies",
+    "team": "West Indies",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "WI",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-84",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Shimron Hetmyer",
+    "shortName": "Shimron Hetmyer",
+    "country": "West Indies",
+    "team": "West Indies",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "WI",
+      "MID",
+      "LHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-85",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Jason Holder",
+    "shortName": "Jason Holder",
+    "country": "West Indies",
+    "team": "West Indies",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "WI",
+      "AR",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-86",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Akeal Hosein",
+    "shortName": "Akeal Hosein",
+    "country": "West Indies",
+    "team": "West Indies",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "WI",
+      "SPIN",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-87",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Alzarri Joseph",
+    "shortName": "Alzarri Joseph",
+    "country": "West Indies",
+    "team": "West Indies",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "WI",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-88",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Sikandar Raza",
+    "shortName": "Sikandar Raza",
+    "country": "Zimbabwe",
+    "team": "Zimbabwe",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "ZIM",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-89",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Blessing Muzarabani",
+    "shortName": "Blessing Muzarabani",
+    "country": "Zimbabwe",
+    "team": "Zimbabwe",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "ZIM",
+      "PACE",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-90",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Paul Stirling",
+    "shortName": "Paul Stirling",
+    "country": "Ireland",
+    "team": "Ireland",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "IRE",
+      "OPN",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-91",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Harry Tector",
+    "shortName": "Harry Tector",
+    "country": "Ireland",
+    "team": "Ireland",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "IRE",
+      "MID",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-92",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Joshua Little",
+    "shortName": "Joshua Little",
+    "country": "Ireland",
+    "team": "Ireland",
+    "role": "Fast bowler",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "IRE",
+      "PACE",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-93",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Scott Edwards",
+    "shortName": "Scott Edwards",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "NED",
+      "WK",
+      "RHB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-94",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Bas de Leede",
+    "shortName": "Bas de Leede",
+    "country": "Netherlands",
+    "team": "Netherlands",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "NED",
+      "AR",
+      "RFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-95",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Sandeep Lamichhane",
+    "shortName": "Sandeep Lamichhane",
+    "country": "Nepal",
+    "team": "Nepal",
+    "role": "Spin bowler",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "NEP",
+      "SPIN",
+      "LBG",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-96",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Dipendra Singh Airee",
+    "shortName": "Dipendra Singh Airee",
+    "country": "Nepal",
+    "team": "Nepal",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "NEP",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-97",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Gerhard Erasmus",
+    "shortName": "Gerhard Erasmus",
+    "country": "Namibia",
+    "team": "Namibia",
+    "role": "All-rounder",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "NAM",
+      "AR",
+      "OB",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-98",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Mark Watt",
+    "shortName": "Mark Watt",
+    "country": "Scotland",
+    "team": "Scotland",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "SCO",
+      "SPIN",
+      "SLA",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-99",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Saurabh Netravalkar",
+    "shortName": "Saurabh Netravalkar",
+    "country": "United States",
+    "team": "United States",
+    "role": "Fast bowler",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "USA",
+      "PACE",
+      "LFM",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-100",
+    "sport": "cricket",
+    "era": "current",
+    "name": "Taskin Ahmed",
+    "shortName": "Taskin Ahmed",
+    "country": "Bangladesh",
+    "team": "Bangladesh",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "BAN",
+      "PACE",
+      "RAF",
+      "INTL"
+    ]
+  },
+  {
+    "id": "cricket-legend-51",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Don Bradman",
+    "shortName": "Don Bradman",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-52",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Victor Trumper",
+    "shortName": "Victor Trumper",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-53",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Bill Ponsford",
+    "shortName": "Bill Ponsford",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-54",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Arthur Morris",
+    "shortName": "Arthur Morris",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "AUS",
+      "OPN",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-55",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Greg Chappell",
+    "shortName": "Greg Chappell",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "MID",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-56",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Allan Border",
+    "shortName": "Allan Border",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "AUS",
+      "MID",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-57",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Steve Waugh",
+    "shortName": "Steve Waugh",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "MID",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-58",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Michael Bevan",
+    "shortName": "Michael Bevan",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "AUS",
+      "MID",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-59",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Dean Jones",
+    "shortName": "Dean Jones",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-60",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Mark Waugh",
+    "shortName": "Mark Waugh",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-61",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Rod Marsh",
+    "shortName": "Rod Marsh",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "AUS",
+      "WK",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-62",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Ian Healy",
+    "shortName": "Ian Healy",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "AUS",
+      "WK",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-63",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Bill O'Reilly",
+    "shortName": "Bill O'Reilly",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "AUS",
+      "SPIN",
+      "LBG",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-64",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Clarrie Grimmett",
+    "shortName": "Clarrie Grimmett",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "AUS",
+      "SPIN",
+      "LBG",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-65",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Richie Benaud",
+    "shortName": "Richie Benaud",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "All-rounder",
+    "secondaryRole": "Leg-spin",
+    "metrics": [
+      "AUS",
+      "AR",
+      "LBG",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-66",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Jeff Thomson",
+    "shortName": "Jeff Thomson",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "AUS",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-67",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Ray Lindwall",
+    "shortName": "Ray Lindwall",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "AUS",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-68",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Keith Miller",
+    "shortName": "Keith Miller",
+    "country": "Australia",
+    "team": "Australia Legends",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "AUS",
+      "AR",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-69",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Jack Hobbs",
+    "shortName": "Jack Hobbs",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-70",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Len Hutton",
+    "shortName": "Len Hutton",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-71",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Herbert Sutcliffe",
+    "shortName": "Herbert Sutcliffe",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-72",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Wally Hammond",
+    "shortName": "Wally Hammond",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-73",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Denis Compton",
+    "shortName": "Denis Compton",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "MID",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-74",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Geoffrey Boycott",
+    "shortName": "Geoffrey Boycott",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-75",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Graham Gooch",
+    "shortName": "Graham Gooch",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-76",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "David Gower",
+    "shortName": "David Gower",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "ENG",
+      "BAT",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-77",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Kevin Pietersen",
+    "shortName": "Kevin Pietersen",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "MID",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-78",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Alec Stewart",
+    "shortName": "Alec Stewart",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "WK",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-79",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Alan Knott",
+    "shortName": "Alan Knott",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "ENG",
+      "WK",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-80",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Derek Underwood",
+    "shortName": "Derek Underwood",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "ENG",
+      "SPIN",
+      "SLA",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-81",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Jim Laker",
+    "shortName": "Jim Laker",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "ENG",
+      "SPIN",
+      "OB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-82",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Fred Trueman",
+    "shortName": "Fred Trueman",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "ENG",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-83",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Bob Willis",
+    "shortName": "Bob Willis",
+    "country": "England",
+    "team": "England Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "ENG",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-84",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Malcolm Marshall",
+    "shortName": "Malcolm Marshall",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "WI",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-85",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Joel Garner",
+    "shortName": "Joel Garner",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "WI",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-86",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Andy Roberts",
+    "shortName": "Andy Roberts",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Right-arm fast",
+    "metrics": [
+      "WI",
+      "PACE",
+      "RAF",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-87",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Lance Gibbs",
+    "shortName": "Lance Gibbs",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "WI",
+      "SPIN",
+      "OB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-88",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Gordon Greenidge",
+    "shortName": "Gordon Greenidge",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "WI",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-89",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Desmond Haynes",
+    "shortName": "Desmond Haynes",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Opening batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "WI",
+      "OPN",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-90",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Clive Lloyd",
+    "shortName": "Clive Lloyd",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Middle-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "WI",
+      "MID",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-91",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Rohan Kanhai",
+    "shortName": "Rohan Kanhai",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "WI",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-92",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Alvin Kallicharran",
+    "shortName": "Alvin Kallicharran",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "WI",
+      "BAT",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-93",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Jeff Dujon",
+    "shortName": "Jeff Dujon",
+    "country": "West Indies",
+    "team": "West Indies Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "WI",
+      "WK",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-94",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Andy Flower",
+    "shortName": "Andy Flower",
+    "country": "Zimbabwe",
+    "team": "Zimbabwe Legends",
+    "role": "Wicketkeeper-batter",
+    "secondaryRole": "Left-hand bat",
+    "metrics": [
+      "ZIM",
+      "WK",
+      "LHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-95",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Heath Streak",
+    "shortName": "Heath Streak",
+    "country": "Zimbabwe",
+    "team": "Zimbabwe Legends",
+    "role": "All-rounder",
+    "secondaryRole": "Right-arm fast-medium",
+    "metrics": [
+      "ZIM",
+      "AR",
+      "RFM",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-96",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Dilip Vengsarkar",
+    "shortName": "Dilip Vengsarkar",
+    "country": "India",
+    "team": "India Legends",
+    "role": "Top-order batter",
+    "secondaryRole": "Right-hand bat",
+    "metrics": [
+      "IND",
+      "BAT",
+      "RHB",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-97",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Chaminda Vaas",
+    "shortName": "Chaminda Vaas",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka Legends",
+    "role": "Fast bowler",
+    "secondaryRole": "Left-arm fast-medium",
+    "metrics": [
+      "SL",
+      "PACE",
+      "LFM",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-98",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Rangana Herath",
+    "shortName": "Rangana Herath",
+    "country": "Sri Lanka",
+    "team": "Sri Lanka Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "SL",
+      "SPIN",
+      "SLA",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-99",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Bishan Singh Bedi",
+    "shortName": "Bishan Singh Bedi",
+    "country": "India",
+    "team": "India Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Left-arm orthodox",
+    "metrics": [
+      "IND",
+      "SPIN",
+      "SLA",
+      "ICON"
+    ]
+  },
+  {
+    "id": "cricket-legend-100",
+    "sport": "cricket",
+    "era": "legend",
+    "name": "Srinivas Venkataraghavan",
+    "shortName": "Srinivas Venkataraghavan",
+    "country": "India",
+    "team": "India Legends",
+    "role": "Spin bowler",
+    "secondaryRole": "Off-spin",
+    "metrics": [
+      "IND",
+      "SPIN",
+      "OB",
+      "ICON"
+    ]
   }
 ]
