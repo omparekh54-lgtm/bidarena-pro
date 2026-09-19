@@ -397,6 +397,7 @@ const CHAT_ALLOWED_MIME_TYPES = new Set([
   "image/png",
   "image/jpeg",
   "image/webp",
+  "application/octet-stream",
 ]);
 const CHAT_MAX_FILE_BYTES = 2_000_000;
 const CHAT_MAX_TOTAL_BYTES = 2_500_000;
