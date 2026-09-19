@@ -11,6 +11,7 @@ import {
   configureRoom,
   createTransferOffer,
   createRoomState,
+  closeTransferWindow,
   openTransferWindow,
   pauseRoom,
   respondToTransferOffer,
@@ -224,6 +225,28 @@ describe("server-authoritative auction room", () => {
     expect(room.transferWindow.status).toBe("closed");
     expect(room.pausedAt).toBeNull();
     expect(room.phase).not.toBe("complete");
+  });
+
+  it("freezes auction bidding during transfers and lets the host close the window early", () => {
+    const admin = participant("admin", "Alpha Eleven", "#56e0c4");
+    const room = createRoomState("7907", admin, 0);
+    configureRoom(room, admin.id, "football", 500, "current", 1);
+    startRoom(room, admin.id, 10);
+    settleRoom(room, 10 + REVEAL_WINDOW_MS);
+    const originalDeadline = Date.parse(room.deadlineAt!);
+    const openAt = originalDeadline - 6_000;
+
+    openTransferWindow(room, admin.id, 300, openAt);
+    expect(room.transferWindow.status).toBe("open");
+    expect(room.pausedAt).toBe(new Date(openAt).toISOString());
+    expect(() => bidForParticipant(room, admin.id, openAt + 1_000)).toThrowError(AuctionError);
+
+    const earlyCloseAt = openAt + 20_000;
+    closeTransferWindow(room, admin.id, earlyCloseAt);
+    expect(room.transferWindow.status).toBe("closed");
+    expect(room.pausedAt).toBeNull();
+    expect(Date.parse(room.deadlineAt!)).toBe(originalDeadline + 20_000);
+    expect(room.phase).toBe("bidding");
   });
 
   it("rejects stale or unaffordable transfer acceptance", () => {
