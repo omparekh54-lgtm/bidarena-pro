@@ -221,8 +221,13 @@ export async function readFinalResult(code: string) {
 
 export async function readChatMessages(code: string, limit = 100) {
   if (redis) {
-    const rows = await redis.lrange<string>(chatKey(code), 0, Math.max(0, limit - 1));
-    return rows.map((row) => JSON.parse(row) as ChatMessage).reverse();
+    const rows = await redis.lrange<string | ChatMessage>(chatKey(code), 0, Math.max(0, limit - 1));
+    return rows.map((row) => {
+      // Upstash may return JSON values already deserialized even when older rows were
+      // written as JSON strings. Accept both representations so chat history remains
+      // readable across client/runtime serialization differences.
+      return typeof row === "string" ? JSON.parse(row) as ChatMessage : row;
+    }).reverse();
   }
   return structuredClone((memory.chats.get(code) ?? []).slice(-limit));
 }
