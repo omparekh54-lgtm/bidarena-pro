@@ -108,7 +108,7 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
               <small>{fixture.result ? fixture.result.summary : fixture.status === "ready" ? "READY" : "TEAM SETUP"}</small>
             </article>
           ))}</div>
-          {room.isAdmin ? <button className="primary-button round-start" disabled={Boolean(pending)} onClick={() => void onCommand("tournament/start-round")}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} {allReady ? "Start round" : "Auto-fill missing teams & start"}</button> : null}
+          {room.isAdmin ? <button className="primary-button round-start" disabled={Boolean(pending)} onClick={() => void onCommand("tournament/start-round", { expectedRound: room.tournament.currentRound })}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} {allReady ? "Start round" : "Auto-fill missing teams & start"}</button> : null}
         </aside>
 
         <section className="match-control">
