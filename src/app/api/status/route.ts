@@ -12,7 +12,7 @@ export function GET() {
     multiplayer: {
       durable: durableRoomStoreConfigured(),
       store: roomStoreMode(),
-      maxTeams: 10,
+      maxTeams: 12,
       bidWindowSeconds: 10,
     },
     generatedAt: new Date().toISOString(),
