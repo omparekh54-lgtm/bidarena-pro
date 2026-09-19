@@ -9,6 +9,25 @@ export const RESULT_WINDOW_MS = 2_400;
 export const MAX_PLAYERS = 10;
 
 const athleteById = new Map(athleteCatalog.map((athlete) => [athlete.id, athlete]));
+const LIVE_AUCTION_PHASES = new Set(["reveal", "bidding", "sold", "unsold", "between-lots"]);
+
+function isLiveAuctionPhase(room: AuctionRoom) {
+  return LIVE_AUCTION_PHASES.has(room.phase);
+}
+
+function projectedMissingSquadSlots(room: AuctionRoom, projectedSizes: Map<string, number> = new Map()) {
+  return room.participants.reduce(
+    (total, participant) => total + Math.max(0, 11 - (projectedSizes.get(participant.id) ?? participant.squad.length)),
+    0,
+  );
+}
+
+function remainingUnallocatedPlayers(room: AuctionRoom, additionalSales = 0) {
+  if (!room.sport) return 0;
+  const poolSize = athletesForPool(room.sport, room.playerPoolMode ?? "current").length;
+  const soldCount = new Set(room.sales.map((sale) => sale.athleteId)).size + additionalSales;
+  return Math.max(0, poolSize - soldCount);
+}
 
 function toIso(timestamp: number) {
   return new Date(timestamp).toISOString();
@@ -180,7 +199,7 @@ export function startRoom(room: AuctionRoom, adminPlayerId: string, now = Date.n
 export function pauseRoom(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can pause the auction.", 403, "ADMIN_ONLY");
   settleRoom(room, now);
-  assertAuction(room.phase !== "lobby" && room.phase !== "complete", "This auction cannot be paused now.", 409, "PAUSE_UNAVAILABLE");
+  assertAuction(isLiveAuctionPhase(room), "The auction can only be paused while the auction is active.", 409, "PAUSE_UNAVAILABLE");
   assertAuction(room.transferWindow.status === "closed", "The auction clock is already paused for the transfer window.", 409, "TRANSFER_WINDOW_OPEN");
   assertAuction(!room.pausedAt, "The auction is already paused.", 409, "ALREADY_PAUSED");
   room.pausedAt = toIso(now);
@@ -200,7 +219,7 @@ export function resumeRoom(room: AuctionRoom, adminPlayerId: string, now = Date.
 
 export function stopRoom(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can stop the auction.", 403, "ADMIN_ONLY");
-  assertAuction(room.phase !== "lobby" && room.phase !== "complete", "This auction has already ended.", 409, "AUCTION_ENDED");
+  assertAuction(isLiveAuctionPhase(room), "Only an active auction can be moved to the tournament.", 409, "AUCTION_ENDED");
   closeTransferWindowInternal(room, now, false);
   room.phase = "tournament-setup";
   room.deadlineAt = null;
@@ -265,7 +284,7 @@ function closeTransferWindowInternal(room: AuctionRoom, now: number, resumeAucti
 export function openTransferWindow(room: AuctionRoom, adminPlayerId: string, durationSeconds: number, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can open the transfer window.", 403, "ADMIN_ONLY");
   settleRoom(room, now);
-  assertAuction(room.phase !== "lobby" && room.phase !== "complete", "The transfer window is only available during a live auction.", 409, "TRANSFER_WINDOW_UNAVAILABLE");
+  assertAuction(isLiveAuctionPhase(room), "The transfer window is only available during a live auction.", 409, "TRANSFER_WINDOW_UNAVAILABLE");
   assertAuction(room.transferWindow.status === "closed", "The transfer window is already open.", 409, "TRANSFER_WINDOW_OPEN");
   assertAuction(Number.isInteger(durationSeconds) && durationSeconds >= 30 && durationSeconds <= 3_600, "Choose a transfer window between 30 seconds and 60 minutes.", 422, "INVALID_TRANSFER_DURATION");
 
@@ -347,7 +366,30 @@ function acceptTransferOffer(room: AuctionRoom, offer: TransferOffer, now: numbe
   const toBudget = to.budget + offer.cashAdjustment;
   const fromCommittedBid = room.leaderId === from.id && room.phase === "bidding" ? room.currentBid : 0;
   const toCommittedBid = room.leaderId === to.id && room.phase === "bidding" ? room.currentBid : 0;
-  assertAuction(fromBudget >= fromCommittedBid && toBudget >= toCommittedBid, "This transfer would leave one team unable to honor its active auction bid.", 409, "INSUFFICIENT_TRANSFER_BUDGET");
+
+  const fromProjectedSize = from.squad.length - offer.offeredAthleteIds.length + offer.requestedAthleteIds.length;
+  const toProjectedSize = to.squad.length - offer.requestedAthleteIds.length + offer.offeredAthleteIds.length;
+  const reservePerPlayer = minimumBasePriceForPool(room.sport!, room.playerPoolMode ?? "current");
+  const fromRequiredReserve = Math.max(0, 11 - fromProjectedSize - (fromCommittedBid > 0 ? 1 : 0)) * reservePerPlayer;
+  const toRequiredReserve = Math.max(0, 11 - toProjectedSize - (toCommittedBid > 0 ? 1 : 0)) * reservePerPlayer;
+
+  assertAuction(
+    fromBudget - fromCommittedBid >= fromRequiredReserve && toBudget - toCommittedBid >= toRequiredReserve,
+    "This transfer would leave one team unable to fund an 11-player squad or honor its active bid.",
+    409,
+    "INSUFFICIENT_TRANSFER_BUDGET",
+  );
+
+  const projectedSizes = new Map<string, number>([
+    [from.id, fromProjectedSize],
+    [to.id, toProjectedSize],
+  ]);
+  assertAuction(
+    remainingUnallocatedPlayers(room) >= projectedMissingSquadSlots(room, projectedSizes),
+    "This transfer would leave too few unallocated players for every team to complete an 11-player squad.",
+    409,
+    "INSUFFICIENT_PLAYER_SUPPLY",
+  );
 
   const offered = from.squad.filter((entry) => offer.offeredAthleteIds.includes(entry.athleteId));
   const requested = to.squad.filter((entry) => offer.requestedAthleteIds.includes(entry.athleteId));
@@ -510,6 +552,14 @@ export function bidForParticipant(room: AuctionRoom, participantId: string, now 
     "This bid would leave your team without enough reserve to complete an 11-player squad.",
     409,
     "INSUFFICIENT_BUDGET",
+  );
+
+  const projectedSizes = new Map<string, number>([[participant.id, participant.squad.length + 1]]);
+  assertAuction(
+    remainingUnallocatedPlayers(room, 1) >= projectedMissingSquadSlots(room, projectedSizes),
+    "This purchase would leave too few players for every team to complete an 11-player squad.",
+    409,
+    "INSUFFICIENT_PLAYER_SUPPLY",
   );
 
   room.currentBid = amount;
