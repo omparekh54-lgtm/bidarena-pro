@@ -214,6 +214,31 @@ export type ResumeGameInfo = {
   }>;
 };
 
+export type ChatAttachment = {
+  id: string;
+  name: string;
+  mimeType: string;
+  size: number;
+};
+
+export type ChatMessage = {
+  id: string;
+  participantId: string;
+  teamName: string;
+  teamCode: string;
+  color: string;
+  text: string;
+  attachments: ChatAttachment[];
+  createdAt: string;
+};
+
+export type ChatAttachmentPayload = {
+  name: string;
+  mimeType: string;
+  size: number;
+  base64: string;
+};
+
 export type AuctionPhase = "lobby" | "reveal" | "bidding" | "sold" | "unsold" | "between-lots" | "tournament-setup" | "tournament" | "complete";
 
 export type AuctionRoom = {

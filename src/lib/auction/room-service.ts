@@ -2,9 +2,9 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { athleteCatalog } from "@/data/catalog";
 import { AuctionError, assertAuction } from "./errors";
 import { addParticipant, bidForParticipant, cancelTransferOffer as cancelTransferOfferInRoom, closeTransferWindow as closeTransferWindowInRoom, configureRoom, createRoomState, createTransferOffer as createTransferOfferInRoom, endSession as endSessionInRoom, finalizeRoomResult, openTransferWindow as openTransferWindowInRoom, pauseRoom, requestSessionResume as requestSessionResumeInRoom, respondToTransferOffer as respondToTransferOfferInRoom, resumeRoom, roomNeedsSettlement, settleRoom, startRoom, stopRoom, toRoomView } from "./room-engine";
-import { createRoomIfAvailable, mutateStoredRoom, readFinalResult, readStoredRoom, writeFinalResult } from "./room-store";
+import { appendChatMessage, createRoomIfAvailable, mutateStoredRoom, readChatAttachment, readChatMessages, readFinalResult, readStoredRoom, writeChatAttachment, writeFinalResult } from "./room-store";
 import { callToss as callTossInRoom, chooseTossDecision as chooseTossDecisionInRoom, setupTournament as setupTournamentInRoom, startTournamentRound as startTournamentRoundInRoom, submitCricketLineup as submitCricketLineupInRoom, submitFootballLineup as submitFootballLineupInRoom } from "./tournament-engine";
-import type { AuctionRoom, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
+import type { AuctionRoom, ChatAttachmentPayload, ChatMessage, CricketLineup, FootballLineup, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomParticipant, RoomView, Sport, TournamentFormat, TransferOfferType } from "./types";
 
 const TEAM_COLORS = ["#56e0c4", "#ff6b67", "#5b8cff", "#f4b941", "#b987ff", "#38bdf8", "#fb7185", "#a3e635", "#f97316", "#e879f9"];
 
@@ -381,4 +381,89 @@ export async function approveResumeTeamClaim(code: string, adminPlayerId: string
     room.version += 1;
   });
   return toRoomView(result.room, adminPlayerId);
+}
+
+
+const CHAT_ALLOWED_MIME_TYPES = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "text/plain",
+  "text/csv",
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "application/octet-stream",
+]);
+const CHAT_MAX_FILE_BYTES = 2_000_000;
+const CHAT_MAX_TOTAL_BYTES = 2_500_000;
+const CHAT_MAX_ATTACHMENTS = 3;
+const CHAT_MAX_TEXT_LENGTH = 2_000;
+
+function validateChatAttachment(input: ChatAttachmentPayload) {
+  assertAuction(input.name.trim().length > 0 && input.name.length <= 120, "Choose a valid file name.", 422, "INVALID_CHAT_FILE_NAME");
+  assertAuction(CHAT_ALLOWED_MIME_TYPES.has(input.mimeType), "That file type is not supported in room chat.", 422, "UNSUPPORTED_CHAT_FILE");
+  assertAuction(Number.isInteger(input.size) && input.size > 0 && input.size <= CHAT_MAX_FILE_BYTES, "Each chat file must be 2 MB or smaller.", 422, "CHAT_FILE_TOO_LARGE");
+  const bytes = Buffer.from(input.base64, "base64");
+  assertAuction(bytes.length === input.size, "That chat file could not be validated.", 422, "INVALID_CHAT_FILE");
+  return bytes;
+}
+
+export async function getRoomChat(code: string, playerId: string, token: string) {
+  validateRoomCode(code);
+  const room = await readStoredRoom(code);
+  authenticate(room, playerId, token);
+  return readChatMessages(code, 100);
+}
+
+export async function sendRoomChatMessage(
+  code: string,
+  playerId: string,
+  token: string,
+  text: string,
+  attachments: ChatAttachmentPayload[],
+) {
+  validateRoomCode(code);
+  const room = await readStoredRoom(code);
+  const participant = authenticate(room, playerId, token);
+  const normalizedText = text.trim();
+  assertAuction(normalizedText.length <= CHAT_MAX_TEXT_LENGTH, "Chat messages can contain at most 2,000 characters.", 422, "CHAT_MESSAGE_TOO_LONG");
+  assertAuction(attachments.length <= CHAT_MAX_ATTACHMENTS, "Attach at most three files to one message.", 422, "TOO_MANY_CHAT_FILES");
+  assertAuction(normalizedText.length > 0 || attachments.length > 0, "Write a message or attach a file.", 422, "EMPTY_CHAT_MESSAGE");
+
+  const decoded = attachments.map((attachment) => ({ attachment, bytes: validateChatAttachment(attachment) }));
+  const totalBytes = decoded.reduce((total, item) => total + item.bytes.length, 0);
+  assertAuction(totalBytes <= CHAT_MAX_TOTAL_BYTES, "The files in one chat message must total 2.5 MB or less.", 422, "CHAT_FILES_TOO_LARGE");
+
+  const storedAttachments = [];
+  for (const item of decoded) {
+    const id = crypto.randomUUID();
+    await writeChatAttachment(code, id, item.attachment.name.trim(), item.attachment.mimeType, item.bytes);
+    storedAttachments.push({ id, name: item.attachment.name.trim(), mimeType: item.attachment.mimeType, size: item.bytes.length });
+  }
+
+  const message: ChatMessage = {
+    id: crypto.randomUUID(),
+    participantId: participant.id,
+    teamName: participant.teamName,
+    teamCode: participant.code,
+    color: participant.color,
+    text: normalizedText,
+    attachments: storedAttachments,
+    createdAt: new Date().toISOString(),
+  };
+  await appendChatMessage(code, message);
+  return message;
+}
+
+export async function getRoomChatAttachment(code: string, playerId: string, token: string, attachmentId: string) {
+  validateRoomCode(code);
+  assertAuction(/^[0-9a-f-]{36}$/i.test(attachmentId), "That attachment is invalid.", 422, "INVALID_CHAT_FILE");
+  const room = await readStoredRoom(code);
+  authenticate(room, playerId, token);
+  return readChatAttachment(code, attachmentId);
 }

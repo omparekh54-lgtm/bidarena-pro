@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { AuctionError } from "./errors";
-import type { AuctionRoom, FinalRoomResult } from "./types";
+import type { AuctionRoom, ChatMessage, FinalRoomResult } from "./types";
 
 const ROOM_TTL_SECONDS = 60 * 60 * 24 * 30;
 const LOCK_TTL_MS = 5_000;
@@ -17,6 +17,8 @@ type MemoryState = {
   expiresAt: Map<string, number>;
   locks: Map<string, Promise<void>>;
   results: Map<string, FinalRoomResult>;
+  chats: Map<string, ChatMessage[]>;
+  chatFiles: Map<string, { name: string; mimeType: string; bytes: Uint8Array }>;
 };
 
 const globalMemory = globalThis as typeof globalThis & { __bidarenaMemory?: MemoryState };
@@ -25,8 +27,12 @@ const memory = globalMemory.__bidarenaMemory ??= {
   expiresAt: new Map(),
   locks: new Map(),
   results: new Map(),
+  chats: new Map(),
+  chatFiles: new Map(),
 };
 memory.results ??= new Map();
+memory.chats ??= new Map();
+memory.chatFiles ??= new Map();
 
 function hydrateRoomDefaults(room: AuctionRoom) {
   room.cycleCount ??= 1;
@@ -77,6 +83,18 @@ function lockKey(code: string) {
 
 function resultKey(code: string) {
   return `bidarena:result:${code}`;
+}
+
+function chatKey(code: string) {
+  return `bidarena:chat:${code}`;
+}
+
+function chatFileMetaKey(code: string, attachmentId: string) {
+  return `bidarena:chat-file:${code}:${attachmentId}:meta`;
+}
+
+function chatFileChunkKey(code: string, attachmentId: string, index: number) {
+  return `bidarena:chat-file:${code}:${attachmentId}:${index}`;
 }
 
 function cloneRoom(room: AuctionRoom) {
@@ -198,4 +216,60 @@ export async function readFinalResult(code: string) {
     : memory.results.get(code);
   if (!result) throw new AuctionError("Final results are not available for that room.", 404, "RESULT_NOT_FOUND");
   return structuredClone(result);
+}
+
+
+export async function readChatMessages(code: string, limit = 100) {
+  if (redis) {
+    const rows = await redis.lrange<string>(chatKey(code), 0, Math.max(0, limit - 1));
+    return rows.map((row) => JSON.parse(row) as ChatMessage).reverse();
+  }
+  return structuredClone((memory.chats.get(code) ?? []).slice(-limit));
+}
+
+export async function appendChatMessage(code: string, message: ChatMessage) {
+  if (redis) {
+    await redis.lpush(chatKey(code), JSON.stringify(message));
+    await redis.ltrim(chatKey(code), 0, 99);
+    await redis.expire(chatKey(code), ROOM_TTL_SECONDS);
+    return;
+  }
+  const messages = memory.chats.get(code) ?? [];
+  messages.push(structuredClone(message));
+  memory.chats.set(code, messages.slice(-100));
+}
+
+export async function writeChatAttachment(code: string, attachmentId: string, name: string, mimeType: string, bytes: Uint8Array) {
+  const memoryKey = `${code}:${attachmentId}`;
+  if (!redis) {
+    memory.chatFiles.set(memoryKey, { name, mimeType, bytes: new Uint8Array(bytes) });
+    return;
+  }
+
+  const chunkSize = 180_000;
+  const base64 = Buffer.from(bytes).toString("base64");
+  const chunks: string[] = [];
+  for (let index = 0; index < base64.length; index += chunkSize) chunks.push(base64.slice(index, index + chunkSize));
+  await redis.set(chatFileMetaKey(code, attachmentId), { name, mimeType, chunks: chunks.length, size: bytes.length }, { ex: ROOM_TTL_SECONDS });
+  for (let index = 0; index < chunks.length; index += 1) {
+    await redis.set(chatFileChunkKey(code, attachmentId, index), chunks[index], { ex: ROOM_TTL_SECONDS });
+  }
+}
+
+export async function readChatAttachment(code: string, attachmentId: string) {
+  const memoryKey = `${code}:${attachmentId}`;
+  if (!redis) {
+    const stored = memory.chatFiles.get(memoryKey);
+    if (!stored) throw new AuctionError("That chat attachment is no longer available.", 404, "CHAT_FILE_NOT_FOUND");
+    return { name: stored.name, mimeType: stored.mimeType, bytes: new Uint8Array(stored.bytes) };
+  }
+
+  const meta = await redis.get<{ name: string; mimeType: string; chunks: number; size: number }>(chatFileMetaKey(code, attachmentId));
+  if (!meta) throw new AuctionError("That chat attachment is no longer available.", 404, "CHAT_FILE_NOT_FOUND");
+  const chunks = await Promise.all(
+    Array.from({ length: meta.chunks }, (_, index) => redis.get<string>(chatFileChunkKey(code, attachmentId, index))),
+  );
+  if (chunks.some((chunk) => chunk == null)) throw new AuctionError("That chat attachment is incomplete.", 410, "CHAT_FILE_INCOMPLETE");
+  const bytes = Buffer.from(chunks.join(""), "base64");
+  return { name: meta.name, mimeType: meta.mimeType, bytes: new Uint8Array(bytes) };
 }

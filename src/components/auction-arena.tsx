@@ -34,6 +34,7 @@ import {
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TournamentArena } from "@/components/tournament-arena";
+import { RoomChat } from "@/components/room-chat";
 import { canBid, formatMoney, minimumBasePriceForPool, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
@@ -450,11 +451,11 @@ export function AuctionArena() {
   }
 
   if (room.phase === "lobby") {
-    return <Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse, playerPoolMode) => void command("configure", { sport, purse, playerPoolMode })} onStart={() => void command("start")} />;
+    return <><Lobby room={room} copied={copied} pending={pending} error={error} onCopy={copyCode} onLeave={leaveLocalRoom} onConfigure={(sport, purse, playerPoolMode) => void command("configure", { sport, purse, playerPoolMode })} onStart={() => void command("start")} /><RoomChat session={session} /></>;
   }
 
   if (room.phase === "tournament-setup" || room.phase === "tournament" || (room.phase === "complete" && room.tournament.status === "complete")) {
-    return <TournamentArena room={room} pending={pending} error={error} onCommand={command} onLeave={leaveLocalRoom} />;
+    return <><TournamentArena room={room} pending={pending} error={error} onCommand={command} onLeave={leaveLocalRoom} /><RoomChat session={session} /></>;
   }
 
   if (room.phase === "complete") {
@@ -531,6 +532,7 @@ export function AuctionArena() {
       <footer><span><ShieldCheck size={14} /> SERVER-AUTHORITY ACTIVE</span><span>10-SECOND RESET · ADMIN PURSE · CATEGORY QUEUE</span><button onClick={leaveLocalRoom}>LEAVE ROOM</button></footer>
       {showTransferSetup ? <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowTransferSetup(false)}><div className="transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transfer-window-title" onMouseDown={(event) => event.stopPropagation()}><ArrowRightLeft size={28} /><span>HOST CONTROL</span><h2 id="transfer-window-title">Open transfer window</h2><p>The auction timer will freeze while teams negotiate.</p><label><span>DURATION (MINUTES)</span><input type="number" min="0.5" max="60" step="0.5" value={transferMinutes} onChange={(event) => setTransferMinutes(Number(event.target.value))} /></label><div><button onClick={() => setShowTransferSetup(false)}>Cancel</button><button className="primary-button" disabled={Boolean(pending) || transferMinutes < .5 || transferMinutes > 60} onClick={() => void startTransferWindow()}>{pending ? <LoaderCircle className="spin" size={16} /> : <Play size={16} />} Start window</button></div></div></div> : null}
       {error ? <div className="floating-error" role="alert">{error}</div> : null}
+      <RoomChat session={session} />
     </main>
   );
 }
