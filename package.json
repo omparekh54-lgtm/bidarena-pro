@@ -11,7 +11,7 @@
     "test:e2e": "node scripts/run-room-e2e.mjs",
     "data:sync": "node scripts/sync-player-stats.mjs",
     "data:backfill": "node scripts/backfill-stable-records.mjs",
-    "data:verify": "node scripts/verify-catalog-sizes.mjs"
+    "data:verify": "node scripts/verify-catalog-sizes.mjs && node scripts/verify-real-player-audit.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.3",
@@ -29,8 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
-    "tailwindcss": "^4",
-    "typescript": "^5",
+    "tailwindcss": "^5.3.0",
     "vitest": "^4.1.11"
   }
 }
