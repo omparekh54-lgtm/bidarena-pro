@@ -7,8 +7,11 @@ import {
   endGameSession,
   getResumeGameInfo,
   getResumeTeamClaimStatus,
+  getRoomChat,
+  getRoomChatAttachment,
   joinGame,
   requestResumeTeamClaim,
+  sendRoomChatMessage,
   startGame,
   stopGame,
 } from "./room-service";
@@ -33,6 +36,27 @@ describe("auction room service tournament handoff", () => {
     expect(stopped.tournament.status).toBe("setup");
     expect(stopped.participants[0].budget).toBe(455);
     expect(stopped.participants[0].squad[0]).toMatchObject({ athleteId: athlete.id, amount: 45, athlete: { name: athlete.name } });
+  });
+
+  it("keeps room chat private to authenticated teams and persists file attachments", async () => {
+    const { session: host } = await createGame("Chat Host");
+    const { session: guest } = await joinGame(host.roomCode, "Chat Guest");
+    const bytes = Buffer.from("match-sheet");
+    const sent = await sendRoomChatMessage(host.roomCode, host.playerId, host.token, "See attached", [{
+      name: "match.txt",
+      mimeType: "text/plain",
+      size: bytes.length,
+      base64: bytes.toString("base64"),
+    }]);
+
+    const guestMessages = await getRoomChat(host.roomCode, guest.playerId, guest.token);
+    expect(guestMessages).toHaveLength(1);
+    expect(guestMessages[0]).toMatchObject({ text: "See attached", teamName: "Chat Host" });
+    expect(guestMessages[0].attachments).toHaveLength(1);
+
+    const attachment = await getRoomChatAttachment(host.roomCode, guest.playerId, guest.token, sent.attachments[0].id);
+    expect(Buffer.from(attachment.bytes).toString("utf8")).toBe("match-sheet");
+    await expect(getRoomChat(host.roomCode, guest.playerId, "bad-token")).rejects.toMatchObject({ status: 401, code: "INVALID_SESSION" });
   });
 
   it("lets a new device request a saved team and receive access only after host approval", async () => {
