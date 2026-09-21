@@ -1,11 +1,28 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { assertAuction } from "./errors";
+import { finalizeRoomResult } from "./room-engine";
+import { mutateStoredRoom, writeFinalResult } from "./room-store";
 import { startTournamentRound as resolveTournamentRound } from "./tournament-engine";
-import type { AuctionRoom } from "./types";
+import type { AuctionRoom, RoomView } from "./types";
+import { toRoomView } from "./room-engine";
 
 export const ROUND_COUNTDOWN_MS = 5_000;
 
 function iso(now = Date.now()) {
   return new Date(now).toISOString();
+}
+
+function tokenHash(token: string) {
+  return createHash("sha256").update(token).digest("hex");
+}
+
+function authenticate(room: AuctionRoom, playerId: string, token: string) {
+  const participant = room.participants.find((candidate) => candidate.id === playerId);
+  assertAuction(participant && token, "Your room session is invalid. Join the room again.", 401, "INVALID_SESSION");
+  const expected = Buffer.from(participant.tokenHash, "hex");
+  const actual = Buffer.from(tokenHash(token), "hex");
+  assertAuction(expected.length === actual.length && timingSafeEqual(expected, actual), "Your room session is invalid. Join the room again.", 401, "INVALID_SESSION");
+  return participant;
 }
 
 function touch(room: AuctionRoom, now = Date.now()) {
@@ -14,9 +31,8 @@ function touch(room: AuctionRoom, now = Date.now()) {
 }
 
 /**
- * Starts a synchronized five-second round countdown. A second call by the host
- * after the countdown resolves the round using the existing tournament engine.
- * This keeps the existing match simulation and progression logic intact.
+ * Starts a synchronized five-second round countdown. A second host call after
+ * the countdown resolves the round through the existing simulation engine.
  */
 export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can start the round.", 403, "ADMIN_ONLY");
@@ -27,9 +43,7 @@ export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayer
 
   const countdownEndsAt = room.tournament.roundCountdownEndsAt ? Date.parse(room.tournament.roundCountdownEndsAt) : 0;
 
-  if (room.tournament.roundPhase === "countdown" && countdownEndsAt > now) {
-    return;
-  }
+  if (room.tournament.roundPhase === "countdown" && countdownEndsAt > now) return;
 
   if (room.tournament.roundPhase !== "countdown") {
     room.tournament.roundPhase = "countdown";
@@ -51,8 +65,23 @@ export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayer
 
   room.tournament.lastCompletedRound = playedRound;
   room.tournament.roundCompletedAt = iso(now);
-  room.tournament.roundPhase = room.tournament.status === "complete" ? "results" : "results";
+  room.tournament.roundPhase = "results";
   touch(room, now);
+}
+
+export async function startTournamentRound(code: string, playerId: string, token: string, expectedRound?: number): Promise<RoomView> {
+  assertAuction(/^\d{4}$/.test(code), "Enter the four-digit room code.", 422, "INVALID_ROOM_CODE");
+  const result = await mutateStoredRoom(code, async (room) => {
+    authenticate(room, playerId, token);
+    if (expectedRound !== undefined) {
+      assertAuction(room.tournament.currentRound === expectedRound, "That tournament round has already advanced. Refreshing the latest game state.", 409, "STALE_TOURNAMENT_ROUND");
+    }
+    startTournamentRoundWithCountdown(room, playerId);
+    if (room.phase === "complete" && room.sport && room.purse) {
+      await writeFinalResult(finalizeRoomResult(room));
+    }
+  });
+  return toRoomView(result.room, playerId);
 }
 
 export function isRoundCountdownActive(room: AuctionRoom, now = Date.now()) {
