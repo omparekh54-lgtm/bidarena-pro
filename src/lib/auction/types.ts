@@ -98,13 +98,13 @@ export type TransferWindow = {
   endsAt: string | null;
   durationSeconds: number | null;
   offers: TransferOffer[];
-  /** True only when opening the window paused an otherwise-running auction. */
   resumeAuctionOnClose: boolean;
 };
 
 export type TournamentFormat = "league" | "league-knockout" | "knockout" | "groups-knockout";
 export type TournamentStatus = "setup" | "active" | "complete";
 export type MatchStatus = "scheduled" | "ready" | "complete";
+export type TournamentRoundPhase = "idle" | "countdown" | "live" | "results";
 
 export type FootballFormation = "4-3-3" | "4-4-2" | "4-2-3-1" | "3-5-2" | "3-4-3" | "5-3-2" | "4-1-4-1";
 export type FootballLineup = {
@@ -127,6 +127,15 @@ export type TossState = {
   decision?: "bat" | "bowl";
 };
 
+export type TournamentEvent = {
+  id: string;
+  type: "goal" | "assist" | "yellow-card" | "red-card" | "top-scorer" | "wicket" | "top-bowler";
+  minute?: number;
+  participantId: string;
+  athleteId: string;
+  label: string;
+};
+
 export type TournamentResult = {
   homeScore: number;
   awayScore: number;
@@ -137,6 +146,8 @@ export type TournamentResult = {
   awayOvers?: number;
   homeAllOut?: boolean;
   awayAllOut?: boolean;
+  events?: TournamentEvent[];
+  playerOfMatchAthleteId?: string;
 };
 
 export type TournamentFixture = {
@@ -177,6 +188,11 @@ export type TournamentState = {
   championParticipantId?: string;
   startedAt?: string;
   completedAt?: string;
+  roundPhase?: TournamentRoundPhase;
+  roundCountdownEndsAt?: string;
+  roundStartedAt?: string;
+  roundCompletedAt?: string;
+  lastCompletedRound?: number;
 };
 
 export type ResumeClaim = {
@@ -196,9 +212,7 @@ export type SessionResumeState = {
   claims: ResumeClaim[];
 };
 
-export type SessionResumeView = Omit<SessionResumeState, "claims"> & {
-  claims: ResumeClaimView[];
-};
+export type SessionResumeView = Omit<SessionResumeState, "claims"> & { claims: ResumeClaimView[] };
 
 export type ResumeGameInfo = {
   code: string;
