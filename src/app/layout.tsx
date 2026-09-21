@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AdminFundsShortcut } from "@/components/admin-funds-shortcut";
 import "./globals.css";
+import "./game-mobile.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
