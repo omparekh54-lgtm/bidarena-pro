@@ -85,9 +85,7 @@ function orderAthletes(athletes: Athlete[]) {
   const tierQueues = new Map<AuctionTier, Athlete[]>();
   for (const tier of [1, 2, 3] as const) {
     const tierAthletes = secureShuffle(athletes.filter((athlete) => auctionTier(athlete) === tier));
-    const groupNames = [
-      ...new Set(tierAthletes.map((athlete) => auctionRoleGroup(athlete.sport, athlete))),
-    ];
+    const groupNames = [...new Set(tierAthletes.map((athlete) => auctionRoleGroup(athlete.sport, athlete)))];
     const groups = groupNames.map((group) => secureShuffle(tierAthletes.filter((athlete) => auctionRoleGroup(athlete.sport, athlete) === group)));
     tierQueues.set(tier, interleaveGroups(groups));
   }
@@ -482,7 +480,7 @@ function advanceLot(room: AuctionRoom, now: number) {
       room.lotIndex = 0;
       return;
     }
-    room.queue = secureShuffle(recyclable);
+    room.queue = orderAthletes(recyclable.flatMap((athleteId) => { const athlete = athleteById.get(athleteId); return athlete ? [athlete] : []; })).map((athlete) => athlete.id);
     room.unsoldAthleteIds = [];
     room.lotIndex = 0;
     room.cycleCount += 1;
