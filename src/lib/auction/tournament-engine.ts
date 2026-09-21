@@ -263,7 +263,8 @@ function simulateCricketInnings(batting: CricketLineup, bowling: CricketLineup, 
   let wickets = 0;
   let balls = 0;
   for (let over = 0; over < overs && wickets < 10; over += 1) {
-    const bowlerId = bowling.bowlingPlan[over] ?? bowlerPool(bowling)[over % Math.max(1, bowlerPool(bowling).length)];
+    const availableBowlers = bowlerPool(bowling);
+    const bowlerId = bowling.bowlingPlan[over] ?? availableBowlers[availableBowlers.length ? over % availableBowlers.length : 0];
     const bowlerRating = athleteById.get(bowlerId)?.gameRating ?? 70;
     for (let ball = 0; ball < 6 && wickets < 10; ball += 1) {
       const batterId = batting.battingOrder[Math.min(10, wickets + (balls % 2))] ?? batting.playingXi[0];
@@ -291,7 +292,6 @@ function autoFootballLineup(room: AuctionRoom, participantId: string): FootballL
     .sort((a, b) => (athleteById.get(b.athleteId)?.gameRating ?? 70) - (athleteById.get(a.athleteId)?.gameRating ?? 70))
     .slice(0, 11)
     .map((entry) => entry.athleteId);
-  assertAuction(chosen.length === 11, `${participant.teamName} needs 11 players before a tournament round can start.`, 422, "SQUAD_TOO_SMALL");
   const slots = ["GK","LB","CB1","CB2","RB","CM1","CM2","CM3","LW","ST","RW"];
   return {
     formation: "4-3-3",
@@ -307,11 +307,10 @@ function autoCricketLineup(room: AuctionRoom, participantId: string): CricketLin
     .sort((a, b) => (athleteById.get(b.athleteId)?.gameRating ?? 70) - (athleteById.get(a.athleteId)?.gameRating ?? 70))
     .slice(0, 11)
     .map((entry) => entry.athleteId);
-  assertAuction(playingXi.length === 11, `${participant.teamName} needs 11 players before a tournament round can start.`, 422, "SQUAD_TOO_SMALL");
   const battingOrder = [...playingXi].sort((a, b) => (athleteById.get(b)?.gameRating ?? 70) - (athleteById.get(a)?.gameRating ?? 70));
   const provisional: CricketLineup = { playingXi, battingOrder, bowlingPlan: [] };
   const bowlers = bowlerPool(provisional).slice(0, Math.min(5, playingXi.length));
-  const bowlingPlan = Array.from({ length: room.tournament.cricketOvers }, (_, index) => bowlers[index % bowlers.length]);
+  const bowlingPlan = Array.from({ length: room.tournament.cricketOvers }, (_, index) => bowlers.length ? bowlers[index % bowlers.length] : undefined).filter((id): id is string => Boolean(id));
   return { playingXi, battingOrder, bowlingPlan };
 }
 
