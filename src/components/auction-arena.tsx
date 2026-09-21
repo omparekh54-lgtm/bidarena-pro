@@ -35,7 +35,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TournamentArena } from "@/components/tournament-arena";
 import { RoomChat } from "@/components/room-chat";
-import { canBid, formatMoney, minimumBasePriceForPool, nextBidAmount } from "@/lib/auction/engine";
+import { auctionTier, canBid, formatMoney, minimumBasePriceForPool, nextBidAmount } from "@/lib/auction/engine";
 import type { Athlete, FinalRoomResult, PlayerPoolMode, PlayerSession, ResumeGameInfo, RoomView, Sport, TransferOfferType } from "@/lib/auction/types";
 
 const SESSION_KEY = "bidarena-player-session-v1";
@@ -465,6 +465,7 @@ export function AuctionArena() {
   const self = room.participants.find((participant) => participant.id === room.selfPlayerId);
   const leader = room.participants.find((participant) => participant.id === room.leaderId);
   const current = room.currentAthlete;
+  const currentTier = current ? auctionTier(current) : null;
   const proposedBid = current ? (room.leaderId ? nextBidAmount(room.currentBid, current.basePrice) : current.basePrice) : 0;
   const reservePerPlayer = room.sport ? minimumBasePriceForPool(room.sport, room.playerPoolMode ?? "current") : 0;
   const canSelfBid = Boolean(self && !room.pausedAt && room.phase === "bidding" && room.leaderId !== self.id && canBid(self, proposedBid, MINIMUM_SQUAD_SIZE, reservePerPlayer));
@@ -509,7 +510,7 @@ export function AuctionArena() {
         <section className="auction-stage"><div className="stage-lights" aria-hidden="true"><i /><i /><i /><i /><i /></div><div className="stage-grid" aria-hidden="true" />
           <AnimatePresence mode="wait">{current ? (
             <motion.div key={current.id} className="player-presentation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.96 }}>
-              <motion.div className="reveal-kicker" initial={{ y: -12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }}><Sparkles size={14} /> {current.role} · {current.country}</motion.div>
+              <motion.div className="reveal-kicker" initial={{ y: -12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.25 }}><Sparkles size={14} /> TIER {currentTier} · {current.role} · {current.country}</motion.div>
               <motion.div className={`player-card ${room.phase} ${current.era === "legend" ? "legend-card" : ""}`} initial={{ rotateY: 90, scale: 0.72 }} animate={{ rotateY: 0, scale: 1 }} transition={{ type: "spring", stiffness: 90, damping: 14 }}>
                 <div className="card-shine" /><div className="card-top"><div><strong>{current.gameRating}</strong><span>{current.era === "legend" ? "ICON RATING" : "GAME RATING"}</span></div>{current.era === "legend" ? <Crown size={22} /> : <BadgeCheck size={22} />}</div><div className={`player-silhouette ${current.imageUrl ? "has-photo" : ""}`}>{current.imageUrl ? <Image src={current.imageUrl} alt={`${current.name} player portrait`} width={220} height={220} sizes="220px" /> : <span aria-hidden="true">{current.shortName.split(" ").map((part) => part[0]).join("")}</span>}</div>
                 <div className="card-identity"><span>{current.era === "legend" ? "ICON · " : ""}{current.country.toUpperCase()} · {current.team.toUpperCase()}</span><h1>{current.name}</h1><p>{current.secondaryRole ?? current.role}</p></div><div className="stat-grid">{current.identity.map((stat) => <div key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>)}</div><div className="data-stamp"><BadgeCheck size={12} /> {current.era === "legend" ? "Verified icon record" : `Profile source · ${current.source.provider}`}</div>

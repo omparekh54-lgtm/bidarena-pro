@@ -1,5 +1,5 @@
 import { athleteCatalog, athletesForPool } from "@/data/catalog";
-import { canBid, minimumBasePriceForPool, nextBidAmount, secureShuffle } from "./engine";
+import { auctionTier, canBid, minimumBasePriceForPool, nextBidAmount, secureShuffle, type AuctionTier } from "./engine";
 import { assertAuction } from "./errors";
 import type { Athlete, AuctionRoom, FinalRoomResult, ParticipantView, PlayerPoolMode, RoomParticipant, RoomView, Sport, TransferOffer, TransferOfferType } from "./types";
 
@@ -48,41 +48,54 @@ function currentAthlete(room: AuctionRoom): Athlete | null {
   return athleteId ? athleteById.get(athleteId) ?? null : null;
 }
 
-function cricketGroup(athlete: Athlete) {
+function auctionRoleGroup(sport: Sport, athlete: Athlete) {
   const role = athlete.role.toLowerCase();
   const secondary = athlete.secondaryRole?.toLowerCase() ?? "";
-  if (role.includes("all-rounder")) return "all-rounder";
-  if (role.includes("bowler")) {
-    return role.includes("spin") || secondary.includes("spin") || secondary.includes("orthodox")
-      ? "spinner"
-      : "pacer";
+  if (sport === "cricket") {
+    if (role.includes("all-rounder")) return "all-rounder";
+    if (role.includes("bowler")) return role.includes("spin") || secondary.includes("spin") || secondary.includes("orthodox") ? "spinner" : "pacer";
+    if (role.includes("batter") || role.includes("wicketkeeper")) return "batter";
+    return "other";
   }
-  if (role.includes("batter") || role.includes("wicketkeeper")) return "batter";
+  if (role.includes("goalkeeper") || role.includes("goalie")) return "goalkeeper";
+  if (role.includes("defender") || role.includes("centre-back") || role.includes("full-back") || role.includes("wing-back")) return "defender";
+  if (role.includes("midfielder") || role.includes("midfield")) return "midfielder";
+  if (role.includes("forward") || role.includes("striker") || role.includes("winger") || role.includes("attacker")) return "forward";
   return "other";
 }
 
+function interleaveGroups(groups: Athlete[][]) {
+  const result: Athlete[] = [];
+  const queues = groups.map((group) => [...group]);
+  let added = true;
+  while (added) {
+    added = false;
+    for (const queue of queues) {
+      const athlete = queue.shift();
+      if (athlete) {
+        result.push(athlete);
+        added = true;
+      }
+    }
+  }
+  return result;
+}
+
+function orderAthletes(athletes: Athlete[]) {
+  const tierQueues = new Map<AuctionTier, Athlete[]>();
+  for (const tier of [1, 2, 3] as const) {
+    const tierAthletes = secureShuffle(athletes.filter((athlete) => auctionTier(athlete) === tier));
+    const groupNames = [
+      ...new Set(tierAthletes.map((athlete) => auctionRoleGroup(athlete.sport, athlete))),
+    ];
+    const groups = groupNames.map((group) => secureShuffle(tierAthletes.filter((athlete) => auctionRoleGroup(athlete.sport, athlete) === group)));
+    tierQueues.set(tier, interleaveGroups(groups));
+  }
+  return [1, 2, 3].flatMap((tier) => tierQueues.get(tier as AuctionTier) ?? []);
+}
+
 export function buildAuctionQueue(sport: Sport, playerPoolMode: PlayerPoolMode = "current") {
-  const athletes = athletesForPool(sport, playerPoolMode);
-  if (sport === "football") return secureShuffle(athletes.map((athlete) => athlete.id));
-
-  const groups = {
-    batter: secureShuffle(athletes.filter((athlete) => cricketGroup(athlete) === "batter")),
-    pacer: secureShuffle(athletes.filter((athlete) => cricketGroup(athlete) === "pacer")),
-    spinner: secureShuffle(athletes.filter((athlete) => cricketGroup(athlete) === "spinner")),
-    allRounder: secureShuffle(athletes.filter((athlete) => cricketGroup(athlete) === "all-rounder")),
-    other: secureShuffle(athletes.filter((athlete) => cricketGroup(athlete) === "other")),
-  };
-
-  return [
-    ...groups.batter.slice(0, 10),
-    ...groups.pacer.slice(0, 7),
-    ...groups.spinner.slice(0, 3),
-    ...groups.allRounder,
-    ...groups.batter.slice(10),
-    ...groups.pacer.slice(7),
-    ...groups.spinner.slice(3),
-    ...groups.other,
-  ].map((athlete) => athlete.id);
+  return orderAthletes(athletesForPool(sport, playerPoolMode)).map((athlete) => athlete.id);
 }
 
 export function createRoomState(code: string, admin: RoomParticipant, now = Date.now()): AuctionRoom {
