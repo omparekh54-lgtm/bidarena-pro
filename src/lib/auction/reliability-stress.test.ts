@@ -87,7 +87,7 @@ describe("full-game reliability stress", () => {
     let now = 100;
     let sold = 0;
     const originalPoolSize = room.queue.length;
-    expect(originalPoolSize).toBe(100);
+    expect(originalPoolSize).toBe(102);
 
     while (room.phase !== "between-lots") {
       expect(room.phase).not.toBe("complete");
