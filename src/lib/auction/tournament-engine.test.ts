@@ -104,6 +104,25 @@ describe("tournament engine regression coverage", () => {
     expect(room.phase).toBe("complete");
   });
 
+  it("starts football simulation when one squad has fewer than 11 players", () => {
+    const admin = participant("admin", "Alpha", "#111");
+    const guest = participant("guest", "Bravo", "#222");
+    const room = createRoomState("1118", admin, 0);
+    addParticipant(room, guest, 1);
+    configureRoom(room, admin.id, "football", 500, "current", 2);
+    addSquad(room, admin.id, "football");
+    const guestTeam = room.participants.find((candidate) => candidate.id === guest.id)!;
+    guestTeam.squad = guestTeam.squad.slice(0, 7);
+    room.phase = "tournament-setup";
+    setupTournament(room, admin.id, "league", 20, 3);
+    startTournamentRound(room, admin.id, 4);
+    const fixture = room.tournament.fixtures[0];
+    expect(fixture.status).toBe("complete");
+    expect(fixture.result?.summary).toMatch(/^\d+-\d+$/);
+    expect(fixture.footballLineups?.[guest.id]?.starterIds).toHaveLength(7);
+    expect(room.phase).toBe("complete");
+  });
+
   it("auto-fills cricket plans, completes a match, and calculates finite NRR", () => {
     const admin = participant("admin", "Alpha", "#111");
     const guest = participant("guest", "Bravo", "#222");
@@ -119,6 +138,25 @@ describe("tournament engine regression coverage", () => {
     expect(room.tournament.fixtures[0].cricketLineups?.[admin.id]?.bowlingPlan).toHaveLength(20);
     expect(room.tournament.standings.every((row) => Number.isFinite(row.nrr))).toBe(true);
     expect(room.tournament.standings.some((row) => row.nrr !== 0)).toBe(true);
+  });
+
+  it("starts cricket simulation when one squad has fewer than 11 players", () => {
+    const admin = participant("admin", "Alpha", "#111");
+    const guest = participant("guest", "Bravo", "#222");
+    const room = createRoomState("1119", admin, 0);
+    addParticipant(room, guest, 1);
+    configureRoom(room, admin.id, "cricket", 10000, "current", 2);
+    addSquad(room, admin.id, "cricket");
+    const guestTeam = room.participants.find((candidate) => candidate.id === guest.id)!;
+    guestTeam.squad = guestTeam.squad.slice(0, 7);
+    room.phase = "tournament-setup";
+    setupTournament(room, admin.id, "league", 20, 3);
+    startTournamentRound(room, admin.id, 4);
+    const fixture = room.tournament.fixtures[0];
+    expect(fixture.status).toBe("complete");
+    expect(fixture.result?.summary).toContain("won");
+    expect(fixture.cricketLineups?.[guest.id]?.playingXi).toHaveLength(7);
+    expect(room.phase).toBe("complete");
   });
 
   it("requires ceil(75%) resume votes and keeps a transfer-window pause intact", () => {
