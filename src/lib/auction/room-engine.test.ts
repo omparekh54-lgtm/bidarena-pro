@@ -324,7 +324,7 @@ describe("server-authoritative auction room", () => {
     const tiers = athletes.map((athlete) => auctionTier(athlete));
 
     expect(new Set(queue).size).toBe(queue.length);
-    expect(queue).toHaveLength(100);
+    expect(queue).toHaveLength(102);
     for (let index = 1; index < tiers.length; index += 1) {
       expect(tiers[index]).toBeGreaterThanOrEqual(tiers[index - 1]);
     }
@@ -341,7 +341,7 @@ describe("server-authoritative auction room", () => {
 
     expect(current.every((id) => athlete(id).era === "current")).toBe(true);
     expect(legends.every((id) => athlete(id).era === "legend")).toBe(true);
-    expect(current.length).toBe(100);
+    expect(current.length).toBe(102);
     expect(legends.length).toBe(100);
     expect(mixed.length).toBe(current.length + legends.length);
     expect(new Set(mixed).size).toBe(mixed.length);
@@ -351,7 +351,7 @@ describe("server-authoritative auction room", () => {
     const expectedCounts = {
       "cricket-current": 100,
       "cricket-legend": 100,
-      "football-current": 100,
+      "football-current": 102,
       "football-legend": 100,
     } as const;
     const normalizeName = (value: string) => value
@@ -361,9 +361,9 @@ describe("server-authoritative auction room", () => {
       .trim()
       .toLowerCase();
 
-    expect(athleteCatalog).toHaveLength(400);
+    expect(athleteCatalog).toHaveLength(402);
     expect(athleteCatalog.every((athlete) => !athlete.id.startsWith("catalog-"))).toBe(true);
-    expect(new Set(athleteCatalog.map((athlete) => normalizeName(athlete.name))).size).toBe(400);
+    expect(new Set(athleteCatalog.map((athlete) => normalizeName(athlete.name))).size).toBe(402);
     expect(athleteCatalog.every((athlete) => !/\b(catalog|generated|fictional|placeholder|filler|fake)\b/i.test(
       [athlete.id, athlete.name, athlete.shortName, athlete.team, athlete.role, athlete.secondaryRole ?? ""].join(" "),
     ))).toBe(true);
