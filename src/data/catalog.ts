@@ -1,6 +1,7 @@
 import type { Athlete, AthleteEra, AthleteStat, Sport } from "@/lib/auction/types";
 import generatedPlayerData from "./generated/player-stats.json";
 import playerSeeds from "./player-seeds.json";
+import { supplementalFootballStars } from "./supplemental-football-stars";
 
 type PlayerSeed = {
   id: string;
@@ -48,7 +49,36 @@ function buildAthlete(seed: PlayerSeed, index: number): Athlete {
   };
 }
 
-export const athleteCatalog: Athlete[] = (playerSeeds as PlayerSeed[]).map(buildAthlete);
+const baseAthleteCatalog: Athlete[] = (playerSeeds as PlayerSeed[]).map(buildAthlete);
+
+const supplementalAthleteCatalog: Athlete[] = supplementalFootballStars.map((seed) => ({
+  id: seed.id,
+  sport: seed.sport,
+  era: seed.era,
+  name: seed.name,
+  shortName: seed.shortName,
+  country: seed.country,
+  team: seed.team,
+  role: seed.role,
+  secondaryRole: seed.secondaryRole,
+  metrics: seed.metrics,
+  basePrice: seed.basePrice,
+  gameRating: seed.gameRating,
+  accent: "#56e0c4",
+  imageUrl: undefined,
+  providerId: undefined,
+  source: {
+    provider: "Curated profile",
+    kind: "identity",
+  },
+  identity: seed.metrics.map((value, metricIndex) => ({
+    label: ["PRIMARY", "SECONDARY", "FOOT", "CLASS"][metricIndex],
+    value,
+  })),
+  realStats: [],
+}));
+
+export const athleteCatalog: Athlete[] = [...baseAthleteCatalog, ...supplementalAthleteCatalog];
 
 export function athletesForPool(sport: Sport, mode: "current" | "legends" | "mixed") {
   return athleteCatalog.filter((athlete) => athlete.sport === sport && (
