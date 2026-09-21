@@ -100,10 +100,7 @@ function decorateFootballResult(room: AuctionRoom, fixture: TournamentFixture) {
   const addGoals = (participantId: string, count: number, side: "home" | "away") => {
     const lineup = lineups[participantId];
     if (!lineup) return;
-    const candidates = lineup.starterIds.filter((id) => {
-      const role = (athleteById.get(id)?.role ?? "").toLowerCase();
-      return /forward|striker|winger|attacker|midfield/.test(role);
-    });
+    const candidates = lineup.starterIds.filter((id) => /forward|striker|winger|attacker|midfield/i.test(athleteById.get(id)?.role ?? ""));
     const pool = candidates.length ? candidates : lineup.starterIds;
     for (let index = 0; index < count; index += 1) {
       const athleteId = pool[index % Math.max(1, pool.length)];
@@ -156,6 +153,7 @@ function decorateRoundResults(room: AuctionRoom, round: number) {
 export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
   const isAdmin = room.adminPlayerId === adminPlayerId;
   assertAuction(room.phase === "tournament" && room.tournament.status === "active", "The tournament is not active.", 409, "TOURNAMENT_INACTIVE");
+  if (room.tournament.roundPhase === "results" && room.tournament.lastCompletedRound === room.tournament.currentRound) return;
   const fixtures = room.tournament.fixtures.filter((fixture) => fixture.round === room.tournament.currentRound);
   assertAuction(fixtures.length > 0, "There are no fixtures in this round.", 409, "ROUND_EMPTY");
 
