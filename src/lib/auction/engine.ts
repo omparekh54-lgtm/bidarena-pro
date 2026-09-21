@@ -2,7 +2,24 @@ import type { Athlete, PlayerPoolMode, RoomParticipant, Sport } from "./types";
 
 export type AuctionTier = 1 | 2 | 3;
 
-export function auctionTier(athlete: Pick<Athlete, "era" | "gameRating">): AuctionTier {
+// Explicit legacy/elite overrides keep iconic players from being downgraded by
+// the generic rating formula. These players are Tier 1 by design in Bid Arena.
+const TIER_ONE_NAMES = new Set([
+  "Lionel Messi",
+  "Cristiano Ronaldo",
+  "Neymar Jr.",
+  "Neymar",
+  "Andres Iniesta",
+  "Andrés Iniesta",
+  "Xavi",
+  "Xavi Hernandez",
+  "Xavi Hernández",
+  "Paolo Maldini",
+]);
+
+export function auctionTier(athlete: Pick<Athlete, "era" | "gameRating" | "name">): AuctionTier {
+  if (TIER_ONE_NAMES.has(athlete.name)) return 1;
+
   if (athlete.era === "legend") {
     if (athlete.gameRating >= 95) return 1;
     if (athlete.gameRating >= 92) return 2;
