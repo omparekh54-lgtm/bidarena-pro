@@ -1,20 +1,16 @@
 import { createHash, timingSafeEqual } from "node:crypto";
+import { athleteCatalog } from "@/data/catalog";
 import { assertAuction } from "./errors";
-import { finalizeRoomResult } from "./room-engine";
+import { finalizeRoomResult, toRoomView } from "./room-engine";
 import { mutateStoredRoom, writeFinalResult } from "./room-store";
 import { startTournamentRound as resolveTournamentRound } from "./tournament-engine";
-import type { AuctionRoom, RoomView } from "./types";
-import { toRoomView } from "./room-engine";
+import type { AuctionRoom, RoomView, TournamentEvent, TournamentFixture } from "./types";
 
 export const ROUND_COUNTDOWN_MS = 5_000;
+const athleteById = new Map(athleteCatalog.map((athlete) => [athlete.id, athlete]));
 
-function iso(now = Date.now()) {
-  return new Date(now).toISOString();
-}
-
-function tokenHash(token: string) {
-  return createHash("sha256").update(token).digest("hex");
-}
+function iso(now = Date.now()) { return new Date(now).toISOString(); }
+function tokenHash(token: string) { return createHash("sha256").update(token).digest("hex"); }
 
 function authenticate(room: AuctionRoom, playerId: string, token: string) {
   const participant = room.participants.find((candidate) => candidate.id === playerId);
@@ -30,19 +26,72 @@ function touch(room: AuctionRoom, now = Date.now()) {
   room.version += 1;
 }
 
-/**
- * Starts a synchronized five-second round countdown. A second host call after
- * the countdown resolves the round through the existing simulation engine.
- */
+function choosePlayer(ids: string[]) {
+  return [...ids].sort((a, b) => (athleteById.get(b)?.gameRating ?? 70) - (athleteById.get(a)?.gameRating ?? 70))[0];
+}
+
+function decorateFootballResult(room: AuctionRoom, fixture: TournamentFixture) {
+  if (!fixture.result) return;
+  const events: TournamentEvent[] = [];
+  const lineups = fixture.footballLineups ?? {};
+  const addGoals = (participantId: string, count: number, side: "home" | "away") => {
+    const lineup = lineups[participantId];
+    if (!lineup) return;
+    const candidates = lineup.starterIds.filter((id) => {
+      const role = (athleteById.get(id)?.role ?? "").toLowerCase();
+      return /forward|striker|winger|attacker|midfield/.test(role);
+    });
+    const pool = candidates.length ? candidates : lineup.starterIds;
+    for (let index = 0; index < count; index += 1) {
+      const athleteId = pool[index % Math.max(1, pool.length)];
+      events.push({ id: `${fixture.id}-${side}-goal-${index}`, type: "goal", minute: 8 + ((index * 17 + (side === "away" ? 11 : 0)) % 82), participantId, athleteId, label: `Goal · ${athleteById.get(athleteId)?.shortName ?? "Player"}` });
+    }
+  };
+  addGoals(fixture.homeParticipantId, fixture.result.homeScore, "home");
+  addGoals(fixture.awayParticipantId, fixture.result.awayScore, "away");
+  fixture.result.events = events.sort((a, b) => (a.minute ?? 0) - (b.minute ?? 0));
+  const winningParticipantId = fixture.result.homeScore >= fixture.result.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId;
+  const winnerLineup = lineups[winningParticipantId];
+  fixture.result.playerOfMatchAthleteId = winnerLineup ? choosePlayer(winnerLineup.starterIds) : undefined;
+}
+
+function decorateCricketResult(room: AuctionRoom, fixture: TournamentFixture) {
+  if (!fixture.result) return;
+  const events: TournamentEvent[] = [];
+  const lineups = fixture.cricketLineups ?? {};
+  for (const [side, participantId, score, wickets] of [
+    ["home", fixture.homeParticipantId, fixture.result.homeScore, fixture.result.homeAllOut ? 10 : 0],
+    ["away", fixture.awayParticipantId, fixture.result.awayScore, fixture.result.awayAllOut ? 10 : 0],
+  ] as const) {
+    const lineup = lineups[participantId];
+    if (!lineup) continue;
+    const batterId = choosePlayer(lineup.battingOrder);
+    const topRuns = Math.min(Math.max(0, score), Math.max(1, Math.round(score * 0.42)));
+    events.push({ id: `${fixture.id}-${side}-top-batter`, type: "top-scorer", participantId, athleteId: batterId, label: `Top scorer · ${athleteById.get(batterId)?.shortName ?? "Player"} ${topRuns} runs` });
+    const bowlerId = choosePlayer(lineup.playingXi.filter((id) => /bowler|all-rounder/i.test(athleteById.get(id)?.role ?? ""))) ?? choosePlayer(lineup.playingXi);
+    const wicketsTaken = wickets || Math.min(4, Math.max(1, Math.round((100 - (athleteById.get(bowlerId)?.gameRating ?? 70)) / 12)));
+    events.push({ id: `${fixture.id}-${side}-top-bowler`, type: "top-bowler", participantId, athleteId: bowlerId, label: `Top bowler · ${athleteById.get(bowlerId)?.shortName ?? "Player"} ${wicketsTaken} wickets` });
+  }
+  fixture.result.events = events;
+  const winnerId = fixture.result.homeScore >= fixture.result.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId;
+  const winnerLineup = lineups[winnerId];
+  fixture.result.playerOfMatchAthleteId = winnerLineup ? choosePlayer(winnerLineup.battingOrder) : undefined;
+}
+
+function decorateRoundResults(room: AuctionRoom, round: number) {
+  room.tournament.fixtures.filter((fixture) => fixture.round === round && fixture.status === "complete").forEach((fixture) => {
+    if (room.sport === "football") decorateFootballResult(room, fixture);
+    else decorateCricketResult(room, fixture);
+  });
+}
+
 export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayerId: string, now = Date.now()) {
   assertAuction(room.adminPlayerId === adminPlayerId, "Only the administrator can start the round.", 403, "ADMIN_ONLY");
   assertAuction(room.phase === "tournament" && room.tournament.status === "active", "The tournament is not active.", 409, "TOURNAMENT_INACTIVE");
-
   const fixtures = room.tournament.fixtures.filter((fixture) => fixture.round === room.tournament.currentRound);
   assertAuction(fixtures.length > 0, "There are no fixtures in this round.", 409, "ROUND_EMPTY");
 
   const countdownEndsAt = room.tournament.roundCountdownEndsAt ? Date.parse(room.tournament.roundCountdownEndsAt) : 0;
-
   if (room.tournament.roundPhase === "countdown" && countdownEndsAt > now) return;
 
   if (room.tournament.roundPhase !== "countdown") {
@@ -54,7 +103,6 @@ export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayer
   }
 
   assertAuction(countdownEndsAt <= now, "The round countdown is still running.", 409, "ROUND_COUNTDOWN_ACTIVE");
-
   const playedRound = room.tournament.currentRound;
   room.tournament.roundPhase = "live";
   room.tournament.roundCountdownEndsAt = undefined;
@@ -62,7 +110,7 @@ export function startTournamentRoundWithCountdown(room: AuctionRoom, adminPlayer
   touch(room, now);
 
   resolveTournamentRound(room, adminPlayerId, now);
-
+  decorateRoundResults(room, playedRound);
   room.tournament.lastCompletedRound = playedRound;
   room.tournament.roundCompletedAt = iso(now);
   room.tournament.roundPhase = "results";
@@ -77,9 +125,7 @@ export async function startTournamentRound(code: string, playerId: string, token
       assertAuction(room.tournament.currentRound === expectedRound, "That tournament round has already advanced. Refreshing the latest game state.", 409, "STALE_TOURNAMENT_ROUND");
     }
     startTournamentRoundWithCountdown(room, playerId);
-    if (room.phase === "complete" && room.sport && room.purse) {
-      await writeFinalResult(finalizeRoomResult(room));
-    }
+    if (room.phase === "complete" && room.sport && room.purse) await writeFinalResult(finalizeRoomResult(room));
   });
   return toRoomView(result.room, playerId);
 }
