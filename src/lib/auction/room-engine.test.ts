@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { AuctionError } from "./errors";
 import { athleteCatalog } from "@/data/catalog";
+import { auctionTier } from "./engine";
 import {
   BID_WINDOW_MS,
   REVEAL_WINDOW_MS,
@@ -302,16 +303,34 @@ describe("server-authoritative auction room", () => {
     expect(room.pausedAt).toBeNull();
   });
 
-  it("orders cricket as ten batters, seven pacers, three spinners, then all-rounders", () => {
+  it("orders cricket strictly by tier before tier 2 and tier 3", () => {
     const queue = buildAuctionQueue("cricket", "current");
     const athletes = queue.map((id) => athleteCatalog.find((athlete) => athlete.id === id)!);
-    const lower = (value: string | undefined) => value?.toLowerCase() ?? "";
+    const tiers = athletes.map((athlete) => auctionTier(athlete));
 
     expect(new Set(queue).size).toBe(queue.length);
-    expect(athletes.slice(0, 10).every((athlete) => lower(athlete.role).includes("batter"))).toBe(true);
-    expect(athletes.slice(10, 17).every((athlete) => lower(athlete.role).includes("fast bowler"))).toBe(true);
-    expect(athletes.slice(17, 20).every((athlete) => lower(athlete.role).includes("spin bowler"))).toBe(true);
-    expect(athletes.slice(20, 24).every((athlete) => lower(athlete.role).includes("all-rounder"))).toBe(true);
+    expect(queue).toHaveLength(100);
+    for (let index = 1; index < tiers.length; index += 1) {
+      expect(tiers[index]).toBeGreaterThanOrEqual(tiers[index - 1]);
+    }
+    expect(tiers.includes(1)).toBe(true);
+    expect(tiers.includes(2)).toBe(true);
+    expect(tiers.includes(3)).toBe(true);
+  });
+
+  it("orders football strictly by tier before tier 2 and tier 3", () => {
+    const queue = buildAuctionQueue("football", "current");
+    const athletes = queue.map((id) => athleteCatalog.find((athlete) => athlete.id === id)!);
+    const tiers = athletes.map((athlete) => auctionTier(athlete));
+
+    expect(new Set(queue).size).toBe(queue.length);
+    expect(queue).toHaveLength(100);
+    for (let index = 1; index < tiers.length; index += 1) {
+      expect(tiers[index]).toBeGreaterThanOrEqual(tiers[index - 1]);
+    }
+    expect(tiers.includes(1)).toBe(true);
+    expect(tiers.includes(2)).toBe(true);
+    expect(tiers.includes(3)).toBe(true);
   });
 
   it("builds isolated current, legends, and mixed player pools", () => {
@@ -337,7 +356,7 @@ describe("server-authoritative auction room", () => {
     } as const;
     const normalizeName = (value: string) => value
       .normalize("NFD")
-      .replace(/[\\u0300-\\u036f]/g, "")
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9]+/gi, " ")
       .trim()
       .toLowerCase();
@@ -345,7 +364,7 @@ describe("server-authoritative auction room", () => {
     expect(athleteCatalog).toHaveLength(400);
     expect(athleteCatalog.every((athlete) => !athlete.id.startsWith("catalog-"))).toBe(true);
     expect(new Set(athleteCatalog.map((athlete) => normalizeName(athlete.name))).size).toBe(400);
-    expect(athleteCatalog.every((athlete) => !/\\b(catalog|generated|fictional|placeholder|filler|fake)\\b/i.test(
+    expect(athleteCatalog.every((athlete) => !/\b(catalog|generated|fictional|placeholder|filler|fake)\b/i.test(
       [athlete.id, athlete.name, athlete.shortName, athlete.team, athlete.role, athlete.secondaryRole ?? ""].join(" "),
     ))).toBe(true);
     for (const [key, expected] of Object.entries(expectedCounts)) {
