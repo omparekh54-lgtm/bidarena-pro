@@ -94,7 +94,7 @@ function repairRoundLineups(room: AuctionRoom, fixtures: TournamentFixture[]) {
 }
 
 function decorateFootballResult(room: AuctionRoom, fixture: TournamentFixture) {
-  if (!fixture.result) return;
+  if (!fixture.result || fixture.result.events?.length) return;
   const events: TournamentEvent[] = [];
   const lineups = fixture.footballLineups ?? {};
   const addGoals = (participantId: string, count: number, side: "home" | "away") => {
@@ -113,11 +113,11 @@ function decorateFootballResult(room: AuctionRoom, fixture: TournamentFixture) {
   fixture.result.events = events.sort((a, b) => (a.minute ?? 0) - (b.minute ?? 0));
   const winningParticipantId = fixture.result.homeScore >= fixture.result.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId;
   const winnerLineup = lineups[winningParticipantId];
-  fixture.result.playerOfMatchAthleteId = winnerLineup ? choosePlayer(winnerLineup.starterIds) : undefined;
+  fixture.result.playerOfMatchAthleteId ??= winnerLineup ? choosePlayer(winnerLineup.starterIds) : undefined;
 }
 
 function decorateCricketResult(room: AuctionRoom, fixture: TournamentFixture) {
-  if (!fixture.result) return;
+  if (!fixture.result || fixture.result.events?.length) return;
   const events: TournamentEvent[] = [];
   const lineups = fixture.cricketLineups ?? {};
   for (const [side, participantId, score, wickets] of [
@@ -140,7 +140,7 @@ function decorateCricketResult(room: AuctionRoom, fixture: TournamentFixture) {
   fixture.result.events = events;
   const winnerId = fixture.result.homeScore >= fixture.result.awayScore ? fixture.homeParticipantId : fixture.awayParticipantId;
   const winnerLineup = lineups[winnerId];
-  fixture.result.playerOfMatchAthleteId = winnerLineup ? choosePlayer(winnerLineup.battingOrder) : undefined;
+  fixture.result.playerOfMatchAthleteId ??= winnerLineup ? choosePlayer(winnerLineup.battingOrder) : undefined;
 }
 
 function decorateRoundResults(room: AuctionRoom, round: number) {
