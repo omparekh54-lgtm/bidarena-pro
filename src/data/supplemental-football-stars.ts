@@ -44,4 +44,18 @@ export const supplementalFootballStars: SupplementalPlayerSeed[] = [
     gameRating: 97,
     basePrice: 50,
   },
+  {
+    id: "football-current-neymar",
+    sport: "football",
+    era: "current",
+    name: "Neymar Jr.",
+    shortName: "Neymar Jr.",
+    country: "Brazil",
+    team: "Santos",
+    role: "Forward / attacking midfielder",
+    secondaryRole: "Left-footed dribbler",
+    metrics: ["BRA", "FWD", "LFP", "ICON"],
+    gameRating: 96,
+    basePrice: 50,
+  },
 ];
