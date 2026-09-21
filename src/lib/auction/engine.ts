@@ -1,5 +1,18 @@
 import type { Athlete, PlayerPoolMode, RoomParticipant, Sport } from "./types";
 
+export type AuctionTier = 1 | 2 | 3;
+
+export function auctionTier(athlete: Pick<Athlete, "era" | "gameRating">): AuctionTier {
+  if (athlete.era === "legend") {
+    if (athlete.gameRating >= 95) return 1;
+    if (athlete.gameRating >= 92) return 2;
+    return 3;
+  }
+  if (athlete.gameRating >= 90) return 1;
+  if (athlete.gameRating >= 87) return 2;
+  return 3;
+}
+
 export function secureShuffle<T>(items: readonly T[]): T[] {
   const result = [...items];
   const values = new Uint32Array(result.length);
