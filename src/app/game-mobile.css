@@ -1,0 +1,81 @@
+/* Bid Arena Pro: mobile-first visual layer. No game logic is changed. */
+
+button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 900px) {
+  .app-shell { overflow-x: hidden; }
+  .topbar { grid-template-columns: 1fr auto; height: 64px; padding: 0 14px; }
+  .room-status > span, .room-status > strong { display: none; }
+  .brand-lockup { gap: 8px; }
+  .brand-mark { width: 34px; height: 34px; }
+  .brand-lockup strong { font-size: 13px; }
+  .brand-lockup span { font-size: 7px; }
+  .sport-switch button { padding: 8px 11px; font-size: 10px; }
+
+  .command-strip { height: 42px; grid-template-columns: 1fr auto; padding: 0 14px; gap: 8px; }
+  .command-strip > div:nth-child(2) { display: none; }
+  .command-meta { gap: 8px; }
+
+  .workspace { grid-template-columns: 1fr; min-height: calc(100vh - 106px); }
+  .panel { display: none; }
+  .auction-stage { min-height: calc(100vh - 106px); padding: 14px 12px 28px; }
+  .player-presentation { width: 100%; padding: 18px 0 18px; }
+
+  .player-card {
+    width: min(314px, 82vw);
+    min-height: min(415px, 112vw);
+    transform: scale(.92);
+    margin: -8px 0 -8px;
+  }
+
+  .bid-console {
+    width: min(100%, 430px);
+    grid-template-columns: 1fr 70px 1fr;
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+  .bid-console button {
+    min-height: 50px;
+    border-radius: 14px;
+    font-weight: 850;
+  }
+  .admin-game-controls {
+    position: fixed;
+    right: 10px;
+    bottom: 12px;
+    z-index: 20;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar { height: 60px; }
+  .sport-switch { display: none; }
+  .auction-stage { min-height: calc(100vh - 102px); padding-bottom: 20px; }
+  .player-card { transform: scale(.84); margin-top: -18px; margin-bottom: -24px; }
+  .reveal-kicker { margin-bottom: 3px; font-size: 8px; }
+
+  /* Keep the decision simple: price first, one big action, optional pass. */
+  .bid-console {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(8,11,17,.96);
+    box-shadow: 0 18px 42px rgba(0,0,0,.38);
+  }
+  .bid-console > div { order: -1; }
+  .bid-console button { width: 100%; min-height: 52px; }
+  .bid-console button + button { min-height: 42px; }
+
+  .stage-grid { inset: 46% -80% -25%; }
+  .team-card { min-height: 54px; }
+  .icon-button { width: 40px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bid-console button:active { transform: scale(.97); }
+  .player-card { transition: transform .2s ease, filter .2s ease; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
