@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, CircleDot, LoaderCircle, Play, Trophy, Users, ChevronUp, ChevronDown } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import type { FootballFormation, RoomView, TournamentFormat, TournamentFixture } from "@/lib/auction/types";
 
 type Props = {
@@ -66,88 +66,39 @@ export function TournamentArena({ room, pending, error, onCommand, onLeave }: Pr
   useEffect(() => {
     if (!room.isAdmin || room.tournament.roundPhase !== "countdown" || !room.tournament.roundCountdownEndsAt) return;
     const remaining = Math.max(0, Date.parse(room.tournament.roundCountdownEndsAt) - Date.now());
-    const timer = window.setTimeout(() => {
-      void onCommand("tournament/start-round", { expectedRound: room.tournament.currentRound });
-    }, remaining + 150);
+    const timer = window.setTimeout(() => { void onCommand("tournament/start-round", { expectedRound: room.tournament.currentRound }); }, remaining + 150);
     return () => window.clearTimeout(timer);
   }, [room.isAdmin, room.tournament.roundPhase, room.tournament.roundCountdownEndsAt, room.tournament.currentRound, onCommand]);
 
   if (room.tournament.status === "complete") {
     const champion = room.participants.find((participant) => participant.id === room.tournament.championParticipantId);
-    return (
-      <main className="tournament-shell">
-        <header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · COMPLETE · TEAMS LOCKED</small></span></div><button onClick={onLeave}>Dashboard</button></header>
-        <section className="tournament-champion"><Trophy size={58}/><span>BID ARENA PRO CHAMPIONS</span><h1>{champion?.teamName ?? "Champion"}</h1><h2>{room.sport === "football" ? "Football Champion" : "Cricket Champion"}</h2><p>Every team stayed locked from registration through the final. The full auction squads, fixtures and results remain attached to this saved game.</p><button className="primary-button" onClick={onLeave}>Return to dashboard</button></section>
-      </main>
-    );
+    return <main className="tournament-shell"><header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · COMPLETE · TEAMS LOCKED</small></span></div><button onClick={onLeave}>Dashboard</button></header><section className="tournament-champion"><Trophy size={58}/><span>BID ARENA PRO CHAMPIONS</span><h1>{champion?.teamName ?? "Champion"}</h1><h2>{room.sport === "football" ? "Football Champion" : "Cricket Champion"}</h2><p>Every team stayed locked from registration through the final. The full auction squads, fixtures and results remain attached to this saved game.</p><button className="primary-button" onClick={onLeave}>Return to dashboard</button></section></main>;
   }
 
   if (room.phase === "tournament-setup") {
-    return (
-      <main className="tournament-shell">
-        <header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · {room.sport?.toUpperCase()}</small></span></div><div className="tournament-header-actions"><span>🔒 TEAMS LOCK AFTER START</span><button onClick={onLeave}>Leave room</button></div></header>
-        <section className="tournament-setup-card">
-          <span className="tournament-kicker">AUCTION COMPLETE</span><h1>Choose your tournament.</h1><p>Your auction teams are carried into the tournament once and stay locked for the entire competition.</p>
-          <div className="format-grid">{([['league','League only'],['league-knockout','League + knockouts'],['knockout','Straight knockout'],['groups-knockout','Groups + knockouts']] as Array<[TournamentFormat,string]>).map(([value,label]) => (
-            <button key={value} className={format === value ? "active" : ""} onClick={() => setFormat(value)} disabled={!room.isAdmin || ((value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4)}><strong>{label}</strong><small>{(value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4 ? "Requires at least 4 teams." : value === "league" ? "Every team plays every team." : value === "league-knockout" ? "League table, top 4, semifinals and final." : value === "knockout" ? "One loss and you are out." : "Groups followed by knockouts."}</small></button>
-          ))}</div>
-          {room.sport === "cricket" ? <div className="overs-control"><span>MATCH FORMAT</span>{([10,20,50] as const).map((value) => <button key={value} className={overs === value ? "active" : ""} onClick={() => setOvers(value)} disabled={!room.isAdmin}>{value === 10 ? "T10" : value === 20 ? "T20" : "ODI"}</button>)}</div> : null}
-          {room.isAdmin ? <button className="primary-button tournament-start" disabled={Boolean(pending) || !formatAllowed} onClick={() => void onCommand("tournament/setup", { format, cricketOvers: overs })}>{pending === "tournament/setup" ? <LoaderCircle className="spin" size={17}/> : <Play size={17}/>} Generate fixtures & lock tournament</button> : <div className="waiting-state"><LoaderCircle className="spin" size={18}/><span><strong>Waiting for administrator</strong>The host is choosing the tournament format.</span></div>}
-          {error ? <div className="error-banner">{error}</div> : null}
-        </section>
-      </main>
-    );
+    return <main className="tournament-shell"><header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>ROOM {room.code} · {room.sport?.toUpperCase()}</small></span></div><div className="tournament-header-actions"><span>🔒 TEAMS LOCK AFTER START</span><button onClick={onLeave}>Leave room</button></div></header><section className="tournament-setup-card"><span className="tournament-kicker">AUCTION COMPLETE</span><h1>Choose your tournament.</h1><p>Your auction teams are carried into the tournament once and stay locked for the entire competition.</p><div className="format-grid">{([['league','League only'],['league-knockout','League + knockouts'],['knockout','Straight knockout'],['groups-knockout','Groups + knockouts']] as Array<[TournamentFormat,string]>).map(([value,label]) => <button key={value} className={format === value ? "active" : ""} onClick={() => setFormat(value)} disabled={!room.isAdmin || ((value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4)}><strong>{label}</strong><small>{(value === "league-knockout" || value === "groups-knockout") && room.participants.length < 4 ? "Requires at least 4 teams." : value === "league" ? "Every team plays every team." : value === "league-knockout" ? "League table, top 4, semifinals and final." : value === "knockout" ? "One loss and you are out." : "Groups followed by knockouts."}</small></button>)}</div>{room.sport === "cricket" ? <div className="overs-control"><span>MATCH FORMAT</span>{([10,20,50] as const).map((value) => <button key={value} className={overs === value ? "active" : ""} onClick={() => setOvers(value)} disabled={!room.isAdmin}>{value === 10 ? "T10" : value === 20 ? "T20" : "ODI"}</button>)}</div> : null}{room.isAdmin ? <button className="primary-button tournament-start" disabled={Boolean(pending) || !formatAllowed} onClick={() => void onCommand("tournament/setup", { format, cricketOvers: overs })}>{pending === "tournament/setup" ? <LoaderCircle className="spin" size={17}/> : <Play size={17}/>} Generate fixtures & lock tournament</button> : <div className="waiting-state"><LoaderCircle className="spin" size={18}/><span><strong>Waiting for administrator</strong>The host is choosing the tournament format.</span></div>}{error ? <div className="error-banner">{error}</div> : null}</section></main>;
   }
 
-  return (
-    <main className="tournament-shell">
-      <header className="tournament-topbar">
-        <div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>{room.tournament.format?.replaceAll("-"," ").toUpperCase()} · ROUND {room.tournament.currentRound} · 🔒 LOCKED</small></span></div>
-        <div className="tournament-header-actions"><div className="tournament-round-status"><CircleDot size={14}/>{roundFixtures.filter((fixture) => fixture.status === "ready").length}/{roundFixtures.length} MATCHES READY</div>{room.isAdmin ? <button onClick={() => void onCommand("session/end")}>Save & End</button> : null}</div>
-      </header>
-
-      {room.tournament.roundPhase === "countdown" ? <div style={countdownOverlay}><div style={countdownBadge}>ROUND {room.tournament.currentRound}</div><div style={countdownNumber}>{countdown || 1}</div><div style={countdownLabel}>GET READY · ALL MATCHES START TOGETHER</div></div> : null}
-
-      <section className="tournament-dashboard">
-        <aside className="tournament-side">
-          <div className="tournament-section-title"><span>STANDINGS</span><Users size={14}/></div>
-          <div className="standings-table">{[...room.tournament.standings].sort((a,b) => b.points-a.points || (room.sport === "cricket" ? b.nrr-a.nrr : b.difference-a.difference)).map((row,index) => <div key={row.participantId}><b>{index+1}</b><strong>{teamName(room,row.participantId)}</strong><span>{room.sport === "cricket" ? `NRR ${row.nrr.toFixed(2)}` : `${row.played}P`}</span><span>{row.points} pts</span></div>)}</div>
-          <div className="tournament-section-title fixtures-title"><span>ROUND {room.tournament.currentRound} FIXTURES</span></div>
-          <div className="fixture-list">{roundFixtures.map((fixture) => <article key={fixture.id} className={fixture.status}><div><strong>{teamName(room,fixture.homeParticipantId)}</strong><span>vs</span><strong>{teamName(room,fixture.awayParticipantId)}</strong></div><small>{fixture.result ? fixture.result.summary : fixture.status === "ready" ? "READY" : "TEAM SETUP"}</small></article>)}</div>
-          {room.isAdmin && room.tournament.roundPhase !== "countdown" ? <button className="primary-button round-start" disabled={Boolean(pending) || room.tournament.roundPhase === "live"} onClick={() => void onCommand("tournament/start-round", { expectedRound: room.tournament.currentRound })}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} {room.tournament.roundPhase === "results" ? "Start next round" : allReady ? "Start round" : "Auto-fill missing teams & start"}</button> : null}
-        </aside>
-
-        <section className="match-control">
-          {room.tournament.roundPhase === "results" && completedRoundFixtures.length > 0 ? <RoundResults room={room} fixtures={completedRoundFixtures} round={resultsRound!}/> : selfFixture ? <>
-            <div className="match-heading"><span>YOUR MATCH</span><h1>{formatFixture(room,selfFixture)}</h1><p>{selfFixture.stage.toUpperCase()} · {selfFixture.status === "ready" ? "Starting lineup ready." : "Complete your team setup or let the host auto-fill."}</p></div>
-            {selfFixture.result ? <ResultCard room={room} fixture={selfFixture}/> : room.sport === "football" ? <FootballSetup room={room} fixture={selfFixture} onCommand={onCommand} pending={pending}/> : <CricketSetup room={room} fixture={selfFixture} onCommand={onCommand} pending={pending}/>}</> : <div className="no-fixture"><Trophy size={42}/><h2>No match this round</h2><p>Your team has a bye. Follow every other game in the round from the results centre.</p></div>}
-          {error ? <div className="error-banner floating-match-error">{error}</div> : null}
-        </section>
-      </section>
-    </main>
-  );
+  return <main className="tournament-shell"><header className="tournament-topbar"><div><Trophy size={22}/><span><strong>BIDARENA TOURNAMENT</strong><small>{room.tournament.format?.replaceAll("-"," ").toUpperCase()} · ROUND {room.tournament.currentRound} · 🔒 LOCKED</small></span></div><div className="tournament-header-actions"><div className="tournament-round-status"><CircleDot size={14}/>{roundFixtures.filter((fixture) => fixture.status === "ready").length}/{roundFixtures.length} MATCHES READY</div>{room.isAdmin ? <button onClick={() => void onCommand("session/end")}>Save & End</button> : null}</div></header>
+    {room.tournament.roundPhase === "countdown" ? <div style={countdownOverlay}><div style={countdownBadge}>ROUND {room.tournament.currentRound}</div><div style={countdownNumber}>{countdown || 1}</div><div style={countdownLabel}>GET READY · ALL MATCHES START TOGETHER</div></div> : null}
+    <section className="tournament-dashboard"><aside className="tournament-side"><div className="tournament-section-title"><span>STANDINGS</span><Users size={14}/></div><div className="standings-table">{[...room.tournament.standings].sort((a,b) => b.points-a.points || (room.sport === "cricket" ? b.nrr-a.nrr : b.difference-a.difference)).map((row,index) => <div key={row.participantId}><b>{index+1}</b><strong>{teamName(room,row.participantId)}</strong><span>{room.sport === "cricket" ? `NRR ${row.nrr.toFixed(2)}` : `${row.played}P`}</span><span>{row.points} pts</span></div>)}</div><div className="tournament-section-title fixtures-title"><span>ROUND {room.tournament.currentRound} FIXTURES</span></div><div className="fixture-list">{roundFixtures.map((fixture) => <article key={fixture.id} className={fixture.status}><div><strong>{teamName(room,fixture.homeParticipantId)}</strong><span>vs</span><strong>{teamName(room,fixture.awayParticipantId)}</strong></div><small>{fixture.result ? fixture.result.summary : fixture.status === "ready" ? "READY" : "TEAM SETUP"}</small></article>)}</div>{room.isAdmin && room.tournament.roundPhase !== "countdown" ? <button className="primary-button round-start" disabled={Boolean(pending) || room.tournament.roundPhase === "live"} onClick={() => void onCommand("tournament/start-round", { expectedRound: room.tournament.currentRound })}>{pending === "tournament/start-round" ? <LoaderCircle className="spin" size={16}/> : <Play size={16}/>} {room.tournament.roundPhase === "results" ? "Start next round" : allReady ? "Start round" : "Auto-fill missing teams & start"}</button> : null}</aside>
+      <section className="match-control">{room.tournament.roundPhase === "results" && completedRoundFixtures.length > 0 ? <RoundResults room={room} fixtures={completedRoundFixtures} round={resultsRound!}/> : selfFixture ? <><div className="match-heading"><span>YOUR MATCH</span><h1>{formatFixture(room,selfFixture)}</h1><p>{selfFixture.stage.toUpperCase()} · {selfFixture.status === "ready" ? "Starting lineup ready." : "Complete your team setup or let the host auto-fill."}</p></div>{selfFixture.result ? <ResultCard room={room} fixture={selfFixture}/> : room.sport === "football" ? <FootballSetup room={room} fixture={selfFixture} onCommand={onCommand} pending={pending}/> : <CricketSetup room={room} fixture={selfFixture} onCommand={onCommand} pending={pending}/>}</> : <div className="no-fixture"><Trophy size={42}/><h2>No match this round</h2><p>Your team has a bye. Follow every other game in the round from the results centre.</p></div>}{error ? <div className="error-banner floating-match-error">{error}</div> : null}</section></section></main>;
 }
 
-const countdownOverlay: React.CSSProperties = { position:"fixed", inset:0, zIndex:50, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"rgba(4,9,15,.94)", backdropFilter:"blur(12px)" };
-const countdownBadge: React.CSSProperties = { fontSize:14, letterSpacing:".18em", textTransform:"uppercase", color:"#56e0c4", fontWeight:800 };
-const countdownNumber: React.CSSProperties = { fontSize:"clamp(110px,25vw,220px)", lineHeight:.9, fontWeight:900, margin:"18px 0", color:"white" };
-const countdownLabel: React.CSSProperties = { fontSize:13, letterSpacing:".12em", color:"#a7b1bf", textAlign:"center" };
+const countdownOverlay: CSSProperties = { position:"fixed", inset:0, zIndex:50, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", background:"rgba(4,9,15,.94)", backdropFilter:"blur(12px)" };
+const countdownBadge: CSSProperties = { fontSize:14, letterSpacing:".18em", textTransform:"uppercase", color:"#56e0c4", fontWeight:800 };
+const countdownNumber: CSSProperties = { fontSize:"clamp(110px,25vw,220px)", lineHeight:.9, fontWeight:900, margin:"18px 0", color:"white" };
+const countdownLabel: CSSProperties = { fontSize:13, letterSpacing:".12em", color:"#a7b1bf", textAlign:"center" };
 
 function RoundResults({ room, fixtures, round }: { room: RoomView; fixtures: TournamentFixture[]; round: number }) {
-  return <div style={{display:"grid",gap:16}}><div className="match-heading"><span>ROUND {round} COMPLETE</span><h1>🏟️ Round Results</h1><p>Every game from this round is now visible to every team.</p></div>{fixtures.map((fixture) => <ResultCard key={fixture.id} room={room} fixture={fixture} full/>) }<div className="tournament-section-title"><span>ROUND {round} SUMMARY</span></div><div className="result-summary-grid"><div><strong>{fixtures.length}</strong><span>matches</span></div><div><strong>{fixtures.reduce((sum, f) => sum + (f.result?.homeScore ?? 0) + (f.result?.awayScore ?? 0), 0)}</strong><span>{room.sport === "football" ? "goals" : "runs"} scored</span></div><div><strong>{fixtures.filter((f) => f.result && f.result.homeScore !== f.result.awayScore).length}</strong><span>decided games</span></div></div></div>;
+  return <div style={{display:"grid",gap:16}}><div className="match-heading"><span>ROUND {round} COMPLETE</span><h1>🏟️ Round Results</h1><p>Every game from this round is now visible to every team.</p></div>{fixtures.map((fixture) => <ResultCard key={fixture.id} room={room} fixture={fixture}/>)}<div className="tournament-section-title"><span>ROUND {round} SUMMARY</span></div><div className="result-summary-grid"><div><strong>{fixtures.length}</strong><span>matches</span></div><div><strong>{fixtures.reduce((sum, f) => sum + (f.result?.homeScore ?? 0) + (f.result?.awayScore ?? 0), 0)}</strong><span>{room.sport === "football" ? "goals" : "runs"} scored</span></div><div><strong>{fixtures.filter((f) => f.result && f.result.homeScore !== f.result.awayScore).length}</strong><span>decided games</span></div></div></div>;
 }
 
-function ResultCard({ room, fixture, full = false }: { room: RoomView; fixture: TournamentFixture; full?: boolean }) {
+function ResultCard({ room, fixture }: { room: RoomView; fixture: TournamentFixture }) {
   const result = fixture.result;
   if (!result) return null;
   const playerOfMatch = result.playerOfMatchAthleteId ? playerName(room, result.playerOfMatchAthleteId) : null;
-  return <article className="fixture-result-card" style={{padding:18,border:"1px solid rgba(86,224,196,.22)",borderRadius:16,background:"rgba(11,18,27,.82)"}}>
-    <div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"center"}}><span style={{fontSize:12,letterSpacing:".1em",color:"#56e0c4"}}>{fixture.stage.toUpperCase()}</span><strong style={{fontSize:24}}>{result.summary}</strong></div>
-    <div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:10,alignItems:"center",margin:"16px 0"}}><strong>{teamName(room,fixture.homeParticipantId)}</strong><span style={{color:"#778396"}}>VS</span><strong style={{textAlign:"right"}}>{teamName(room,fixture.awayParticipantId)}</strong></div>
-    <div style={{display:"grid",gap:8}}><div style={{color:"#9aa6b6",fontSize:13}}>{result.homeDetail ?? ""}<span style={{float:"right"}}>{result.awayDetail ?? ""}</span></div>{result.events?.map((event) => <div key={event.id} style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:13}}><span>{event.minute ? `${event.minute}' ` : ""}{event.type === "goal" ? "⚽" : event.type === "wicket" ? "🎯" : event.type === "top-scorer" ? "🏏" : "🎯"}</span><strong>{playerName(room,event.athleteId)}</strong><span style={{color:"#9aa6b6"}}>{event.label}</span></div>)}</div>
-    {playerOfMatch ? <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,.08)",fontSize:13}}>⭐ <strong>Player of the Match:</strong> {playerOfMatch}</div> : null}
-    {!full && result.events?.length ? null : null}
-  </article>;
+  return <article style={{padding:18,border:"1px solid rgba(86,224,196,.22)",borderRadius:16,background:"rgba(11,18,27,.82)"}}><div style={{display:"flex",justifyContent:"space-between",gap:12,alignItems:"center"}}><span style={{fontSize:12,letterSpacing:".1em",color:"#56e0c4"}}>{fixture.stage.toUpperCase()}</span><strong style={{fontSize:24}}>{result.summary}</strong></div><div style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:10,alignItems:"center",margin:"16px 0"}}><strong>{teamName(room,fixture.homeParticipantId)}</strong><span style={{color:"#778396"}}>VS</span><strong style={{textAlign:"right"}}>{teamName(room,fixture.awayParticipantId)}</strong></div><div style={{color:"#9aa6b6",fontSize:13}}>{result.homeDetail ?? ""}<span style={{float:"right"}}>{result.awayDetail ?? ""}</span></div><div style={{display:"grid",gap:8,marginTop:12}}>{result.events?.map((event) => <div key={event.id} style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:13}}><span>{event.minute ? `${event.minute}' ` : ""}{event.type === "goal" ? "⚽" : event.type === "top-scorer" ? "🏏" : "🎯"}</span><strong>{playerName(room,event.athleteId)}</strong><span style={{color:"#9aa6b6",textAlign:"right"}}>{event.label}</span></div>)}</div>{playerOfMatch ? <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,.08)",fontSize:13}}>⭐ <strong>Player of the Match:</strong> {playerOfMatch}</div> : null}</article>;
 }
 
 function FootballSetup({ room, fixture, onCommand, pending }: { room: RoomView; fixture: TournamentFixture; onCommand: Props["onCommand"]; pending: string | null }) {
